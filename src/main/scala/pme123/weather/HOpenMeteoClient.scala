@@ -9,7 +9,7 @@ import io.circe.generic.auto.*
 import sttp.client3.*
 import sttp.client3.circe.*
 
-object HOpenMeteoClient:
+object HOpenMeteoClient extends MeteoClient:
 
   def fetchWeatherData(latitude: Double, longitude: Double): Future[Vector[HourlyDataSet]] =
     for
@@ -32,7 +32,7 @@ object HOpenMeteoClient:
   ): Future[WeatherResponse] =
     val backend = FetchBackend()
     val url =
-      uri"https://archive-api.open-meteo.com/v1/archive?timezone=Europe/Berlin&start_date=2024-01-15&end_date=2024-09-25&latitude=$latitude&longitude=$longitude&hourly=temperature_2m,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
+      uri"$openMeteoArchiveUrl?timezone=Europe/Berlin&start_date=2024-01-15&end_date=2024-09-25&latitude=$latitude&longitude=$longitude&hourly=temperature_2m,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
 
     val request = basicRequest.get(url).response(asJson[WeatherResponse])
 

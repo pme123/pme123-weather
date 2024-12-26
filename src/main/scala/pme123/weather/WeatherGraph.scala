@@ -1,5 +1,7 @@
 package pme123.weather
 
+import com.raquo.airstream.core.Signal
+import com.raquo.laminar.api.L.*
 import plotly.*
 import plotly.Plotly.*
 import plotly.element.*
@@ -7,8 +9,12 @@ import plotly.layout.*
 
 object WeatherGraph:
 
-  def apply(stationGroupDiff: WeatherStationGroupDiff, resp: Seq[WeatherStationResponse]) =
-    val data = resp.head.data
+  def apply(
+      stationGroupDiff: WeatherStationGroupDiff,
+      resp: Seq[WeatherStationResponse],
+      selectedOptions: Set[String]
+  ) =
+    val data  = resp.head.data
     val times = data.map(_.time)
 
     def threshold(posNeg: Int) =
@@ -16,17 +22,20 @@ object WeatherGraph:
         .withName("Threshold for wind")
         .withLine(Line().withColor(Color.StringColor("blue")).withDash(Dash.Dot))
 
-    def diffScatters = stationGroupDiff.stationDiffs.map:
-      case WeatherStationDiff(station1, station2, color) =>
-        val data1 = resp.filter(_.station == station1).flatMap(_.data)
-        val data2 = resp.filter(_.station == station2).flatMap(_.data)
-        Scatter(
-          data1.map(_.time),
-          data1.zip(data2).map:
-            case (d1, d2) =>
-              d1.pressure_msl - d2.pressure_msl
-        ).withName(s"${station1.name} - ${station2.name}")
-          .withLine(Line().withColor(Color.StringColor(color)))
+    def diffScatters =
+      stationGroupDiff.stationDiffs
+        .filter(d => selectedOptions.contains(d.id))
+        .map:
+          case WeatherStationDiff(station1, station2, color) =>
+            val data1 = resp.filter(_.station == station1).flatMap(_.data)
+            val data2 = resp.filter(_.station == station2).flatMap(_.data)
+            Scatter(
+              data1.map(_.time),
+              data1.zip(data2).map:
+                case (d1, d2) =>
+                  d1.pressure_msl - d2.pressure_msl
+            ).withName(s"${station1.name} - ${station2.name}")
+              .withLine(Line().withColor(Color.StringColor(color)))
 
     val plot =
       diffScatters ++
@@ -34,7 +43,7 @@ object WeatherGraph:
           threshold(1),
           threshold(-1)
         )
-    val lay = Layout().withTitle(s"${stationGroupDiff.label}: Druckdifferenz (hPa)")
+    val lay  = Layout().withTitle(s"${stationGroupDiff.label}: Druckdifferenz (hPa)")
     plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end apply
 
@@ -42,7 +51,7 @@ object WeatherGraph:
     val windStation: WeatherStation = stationGroupDiff.windStation.getOrElse:
       throw new Exception("No wind station defined")
 
-    val data = resp.filter(_.station == windStation).flatMap(_.data)
+    val data         = resp.filter(_.station == windStation).flatMap(_.data)
     val windScatters =
       val kmhToKn = 0.539957
       Seq(
@@ -70,8 +79,8 @@ object WeatherGraph:
       case d if d > (22.5 + 4 * 45) && d <= (22.5 + 5 * 45) => "SW"
       case d if d > (22.5 + 5 * 45) && d <= (22.5 + 6 * 45) => "W"
       case d if d > (22.5 + 6 * 45) && d <= (22.5 + 7 * 45) => "NW"
-      case d if d > (22.5 + 7 * 45) || d <= 22.5 => "N"
-      case d =>
+      case d if d > (22.5 + 7 * 45) || d <= 22.5            => "N"
+      case d                                                =>
         println(s"BAD DATA: $d")
         ""
       end match
@@ -98,11 +107,11 @@ object WeatherGraph:
     val windStation: WeatherStation = stationGroupDiff.windStation.getOrElse:
       throw new Exception("No wind station defined")
 
-    val dataStation = resp.filter(_.station == windStation).flatMap(_.data)
+    val dataStation  = resp.filter(_.station == windStation).flatMap(_.data)
     def diffScatters = stationGroupDiff.stationDiffs.flatMap:
       case WeatherStationDiff(station1, station2, _) =>
-        val data1 = resp.filter(_.station == station1).flatMap(_.data)
-        val data2 = resp.filter(_.station == station2).flatMap(_.data)
+        val data1                        = resp.filter(_.station == station1).flatMap(_.data)
+        val data2                        = resp.filter(_.station == station2).flatMap(_.data)
         val data: Seq[((Int, Int), Int)] = data1.zip(data2).zip(dataStation)
           .map:
             case d1 -> d2 -> std =>
@@ -115,8 +124,7 @@ object WeatherGraph:
                   std.wind_speed_10m > 10 &&
                     std.wind_direction_10m > 112 &&
                     std.wind_direction_10m < (360 - 112)
-
-              }")
+                }")
 
               prDiff -> (
                 std.wind_speed_10m > 10 &&
@@ -143,7 +151,7 @@ object WeatherGraph:
           ).withName(s"Hours without feen")
             .withLine(Line().withColor(Color.StringColor("green")))
         )
-    val plot = diffScatters
+    val plot         = diffScatters
 
     val lay = Layout()
       .withTitle(s"${stationGroupDiff.label}: History Data")

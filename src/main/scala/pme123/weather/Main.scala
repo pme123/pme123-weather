@@ -11,6 +11,6 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 object Main :
 
   @JSExportTopLevel("main")
-  def main(args: Array[String]): Unit =
+  def main(args: Array[String] = Array.empty): Unit =
     lazy val appContainer = dom.document.querySelector("#laminar")
     renderOnDomContentLoaded(appContainer, WeatherView())

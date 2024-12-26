@@ -11,84 +11,90 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 object WeatherView:
-  val weatherDataVar = Var(Seq.empty[WeatherStationResponse])
+  val weatherDataVar  = Var(Seq.empty[WeatherStationResponse])
   val weatherHDataVar = Var(Seq.empty[WeatherStationResponse])
 
   def apply(): HtmlElement =
 
-    // Fetch weather data on component mount
-    allStations
-      .foreach:
-        case station @ WeatherStation(_, latitude, longitude) =>
-          HOpenMeteoClient
-            .fetchWeatherData(latitude, longitude)
-            .foreach: data =>
-              weatherHDataVar.update(_ :+ WeatherStationResponse(station, data))
-          OpenMeteoClient
-            .fetchWeatherData(latitude, longitude)
-            .foreach: data =>
-              weatherDataVar.update(_ :+ WeatherStationResponse(station, data))
-    Seq(altdorf, lugano, zurich)
-      .foreach:
-        case station @ WeatherStation(_, latitude, longitude) =>
-          HOpenMeteoClient
-            .fetchWeatherData(latitude, longitude)
-            .foreach: data =>
-              weatherHDataVar.update(_ :+ WeatherStationResponse(station, data))
+    fetchWeatherData()
 
     val responseSignal: Signal[Seq[ReactiveHtmlElement[HTMLDivElement]]] =
       weatherDataVar.signal.map: data =>
-        stationDiffs.map: d =>
-          div(
+        println(s"weatherDataVar changed: ${data.size}")
+        if data.isEmpty then
+          Seq(div("No Weather Data"))
+        else
+          stationDiffs.map: d =>
+            println(s"StationDiff: ${d.id} - ${d.stationDiffs.size}")
+            val options = Var(d.stationDiffs.map(_.id).toSet)
             div(
-              idAttr := d.id,
-              onMountUnmountCallback(
-                mount = ctx =>
-                  WeatherGraph(d, data),
-                unmount = _ => ()
-              )
-            ),
-            div(
-              idAttr := s"wind-${d.id}",
-              onMountUnmountCallback(
-                mount = ctx =>
-                  d.windStation.foreach: _ =>
-                    WeatherGraph.windGraph(d, data),
-                unmount = _ => ()
+              child <-- options.signal.map: opts =>
+                div(
+                  idAttr := d.id,
+                  onMountUnmountCallback(
+                    mount = ctx =>
+                      WeatherGraph(d, data, opts),
+                    unmount = _ => ()
+                  )
+                )
+            ,
+              if d.stationDiffs.size > 1 then
+                StationsCheckboxGroup(options)
+              else div(),
+              div(
+                idAttr := s"wind-${d.id}",
+                onMountUnmountCallback(
+                  mount = ctx =>
+                    d.windStation.foreach: _ =>
+                      WeatherGraph.windGraph(d, data),
+                  unmount = _ => ()
+                )
               )
             )
-          )
-    val responseHSignal: Signal[ReactiveHtmlElement[HTMLDivElement]] =
+    val responseHSignal: Signal[ReactiveHtmlElement[HTMLDivElement]]     =
       weatherHDataVar.signal.map: data =>
-          div(
-              idAttr := s"history-${altdorfHistory.id}",
-              onMountUnmountCallback(
-                mount = ctx =>
-                  altdorfHistory.windStation.foreach: _ =>
-                    WeatherGraph.historyGraph(altdorfHistory, data),
-                unmount = _ => ()
-              )
+        div(
+          idAttr := s"history-${altdorfHistory.id}",
+          onMountUnmountCallback(
+            mount = ctx =>
+              altdorfHistory.windStation.foreach: _ =>
+                WeatherGraph.historyGraph(altdorfHistory, data),
+            unmount = _ => ()
           )
+        )
     div(
+      h1("pme123 Weather Experiments"),
+      p("Using Data from OpenMeteo (REST APIs)"),
+      ul(
+        li(div(s"Forcast: $openMeteoForcastUrl")),
+        li(s"History: $openMeteoArchiveUrl")
+      ),
       div(
         children <-- responseSignal
       ),
       div(
-        child <-- responseHSignal
+     //   child <-- responseHSignal
       )
     )
   end apply
 
-  private def diff(data1: Seq[HourlyDataSet], data2: Seq[HourlyDataSet]): Seq[HourlyDataSet] =
-    data1.zip(data2).map:
-      case (d1, d2) =>
-        HourlyDataSet(
-          time = d1.time,
-          temperature_2m = d1.temperature_2m - d2.temperature_2m,
-          surface_pressure = d1.surface_pressure - d2.surface_pressure,
-          pressure_msl = d1.pressure_msl - d2.pressure_msl,
-          wind_speed_10m = d1.wind_speed_10m - d2.wind_speed_10m,
-          wind_direction_10m = d1.wind_direction_10m - d2.wind_direction_10m,
-          wind_gusts_10m = d1.wind_gusts_10m - d2.wind_gusts_10m
-        )
+  private def fetchWeatherData(): Unit =
+    // Fetch weather data on component mount
+    def fetch(meteoClient: MeteoClient) =
+      Future.sequence(
+      allStations
+        .map:
+          case station@WeatherStation(_, latitude, longitude) =>
+            meteoClient
+              .fetchWeatherData(latitude, longitude)
+              .map: data =>
+                WeatherStationResponse(station, data),
+    )
+    fetch(OpenMeteoClient).map:
+      weatherDataVar.set
+  //  fetch(HOpenMeteoClient).map:
+  //    weatherHDataVar.set
+
+
+  end fetchWeatherData
 end WeatherView
