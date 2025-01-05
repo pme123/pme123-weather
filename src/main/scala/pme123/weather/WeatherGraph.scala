@@ -64,7 +64,12 @@ object WeatherGraph:
           data.map(_.time),
           data.map(_.wind_gusts_10m * kmhToKn)
         ).withName("Wind gust (10m)")
-          .withLine(Line().withColor(Color.StringColor("blue")))
+          .withLine(Line().withColor(Color.StringColor("blue"))),
+        Scatter(
+          data.map(_.time),
+          data.map(_.temperature_2m)
+        ).withName("Temperature (2m)")
+          .withLine(Line().withColor(Color.StringColor("orange")))
       )
     end windScatters
 
