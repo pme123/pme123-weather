@@ -51,3 +51,4 @@ build/
 /.idea/
 /node_modules/
 /project/project/
+/dist/

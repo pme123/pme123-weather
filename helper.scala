@@ -13,5 +13,7 @@ def main(args: String*) =
   val indexPath = os.pwd / "dist" / "index.html"
   val index = os.read(indexPath)
   os.write.over(indexPath, index.replace("\"/assets/", "\"assets/"))
+  os.remove.all(os.pwd / "docs")
+  os.copy(os.pwd / "dist", os.pwd / "docs")
   //os.copy.over(os.pwd / "target" / "scala-3.6.2" / s"pme123-weather-${proc.replace("full", "")}opt.js", os.pwd / "pme123-weather.js")
   println("Done")
