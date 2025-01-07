@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
     <title>Weather App</title>
-    <style>
-        body {
-            font-family: "Open Sans", verdana, arial, sans-serif;
-        }
+    <style data-ui5-font-face="">
+      @font-face {
+        font-family: "72";
+        font-style: normal;
+        font-weight: 400;
+        src: local("72-Regular");
+      }
     </style>
-</head>
-<body>
-
-<div id="laminar"></div>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script src="pme123-weather.js"></script> <!-- Adjust the path as necessary -->
-</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="module" src="main.js"></script>
+  </body>
 </html>

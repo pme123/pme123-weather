@@ -1,57 +1,64 @@
 package pme123.weather
 
+import be.doeraene.webcomponents.ui5
+import be.doeraene.webcomponents.ui5.*
+import be.doeraene.webcomponents.ui5.configkeys.*
 import com.raquo.laminar.api.L.{*, given}
 import com.raquo.laminar.nodes.ReactiveHtmlElement
 import org.scalajs.dom.HTMLDivElement
-import plotly.*
-import plotly.Plotly.*
-import plotly.layout.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.scalajs.js.Object.keys
 
 object WeatherView:
-  val weatherDataVar  = Var(Seq.empty[WeatherStationResponse])
-  val weatherHDataVar = Var(Seq.empty[WeatherStationResponse])
+  val weatherDataVar  = Var(Seq.empty[WeatherStationData])
+  val weatherHDataVar = Var(Seq.empty[WeatherStationData])
 
-  def apply(): HtmlElement =
+  def apply(selectedTabVar: Var[String]): HtmlElement =
 
     fetchWeatherData()
 
-    val responseSignal: Signal[Seq[ReactiveHtmlElement[HTMLDivElement]]] =
-      weatherDataVar.signal.map: data =>
-        println(s"weatherDataVar changed: ${data.size}")
-        if data.isEmpty then
-          Seq(div("No Weather Data"))
-        else
-          stationDiffs.map: d =>
-            println(s"StationDiff: ${d.id} - ${d.stationDiffs.size}")
-            val options = Var(d.stationDiffs.map(_.id).toSet)
-            div(
-              child <-- options.signal.map: opts =>
+    val weatherDataSignal: Signal[Seq[WeatherStationGroupDiffData]] =
+      weatherDataVar.signal.map(createWeatherData)
+
+    val weatherViewSignal: Signal[ReactiveHtmlElement[HTMLDivElement]] =
+      selectedTabVar.signal.combineWith(weatherDataSignal)
+        .map: all =>
+          val selectedTab = all._1
+          val wsDiffs     = all._2
+          println(s"Selected Tab: ${all._1}")
+          wsDiffs
+            .find(d => selectedTab.contains(d.id))
+            .map: wsDiff =>
+              val options = Var(wsDiff.stationDiffs.map(_.id))
+              div(
+                child <-- options.signal.map: opts =>
+                  div(
+                    idAttr := wsDiff.id,
+                    onMountUnmountCallback(
+                      mount = ctx =>
+                        WeatherGraph(wsDiff, opts),
+                      unmount = _ => ()
+                    )
+                  ),
+                if wsDiff.stationDiffs.size > 1 then
+                  StationsCheckboxGroup(options)
+                else div(),
+                hr(),
                 div(
-                  idAttr := d.id,
+                  idAttr := s"wind-${wsDiff.id}",
                   onMountUnmountCallback(
                     mount = ctx =>
-                      WeatherGraph(d, data, opts),
+                      wsDiff.windStation.foreach: _ =>
+                        WeatherGraph.windGraph(wsDiff),
                     unmount = _ => ()
                   )
                 )
-            ,
-              if d.stationDiffs.size > 1 then
-                StationsCheckboxGroup(options)
-              else div(),
-              div(
-                idAttr := s"wind-${d.id}",
-                onMountUnmountCallback(
-                  mount = ctx =>
-                    d.windStation.foreach: _ =>
-                      WeatherGraph.windGraph(d, data),
-                  unmount = _ => ()
-                )
               )
-            )
-    val responseHSignal: Signal[ReactiveHtmlElement[HTMLDivElement]]     =
+            .getOrElse(div("No Data"))
+
+    val responseHSignal: Signal[ReactiveHtmlElement[HTMLDivElement]] =
       weatherHDataVar.signal.map: data =>
         div(
           idAttr := s"history-${altdorfHistory.id}",
@@ -62,19 +69,13 @@ object WeatherView:
             unmount = _ => ()
           )
         )
+
+    // val selectedWeatherSignal: Signal[Option[ReactiveHtmlElement[HTMLDivElement]]] =
+    //   weatherViewSignal.map(_.headOption)
+
     div(
-      h1("pme123 Weather Experiments"),
-      p("Using Data from OpenMeteo (REST APIs)"),
-      ul(
-        li(div(s"Forcast: $openMeteoForcastUrl")),
-        li(s"History: $openMeteoArchiveUrl")
-      ),
-      div(
-        children <-- responseSignal
-      ),
-      div(
-     //   child <-- responseHSignal
-      )
+      // children <-- selectedWeatherSignal.map(_.toSeq)
+      child <-- weatherViewSignal
     )
   end apply
 
@@ -82,19 +83,38 @@ object WeatherView:
     // Fetch weather data on component mount
     def fetch(meteoClient: MeteoClient) =
       Future.sequence(
-      allStations
-        .map:
-          case station@WeatherStation(_, latitude, longitude) =>
-            meteoClient
-              .fetchWeatherData(latitude, longitude)
-              .map: data =>
-                WeatherStationResponse(station, data),
-    )
+        allStations
+          .map:
+            case station @ WeatherStation(_, latitude, longitude) =>
+              meteoClient
+                .fetchWeatherData(latitude, longitude)
+                .map: data =>
+                  WeatherStationData(station, data),
+      )
     fetch(OpenMeteoClient).map:
       weatherDataVar.set
   //  fetch(HOpenMeteoClient).map:
   //    weatherHDataVar.set
 
-
   end fetchWeatherData
 end WeatherView
+
+object WeatherTabs:
+
+  def apply(selectedTabVar: Var[String]) =
+    TabContainer(
+      _.collapsed := true,
+      width := "100%",
+      stationDiffs.map(stDiff =>
+        TabContainer.tab(
+          _.id       := stDiff.id + "-tab",
+          _.text     := stDiff.id,
+          _.selected := (stDiff.id == "Urnersee")
+        )
+      ),
+      _.events.onTabSelect
+        .map(_.detail.tab.id) --> Observer(x =>
+        selectedTabVar.set(x.toString.replace("-tab", ""))
+      )
+    )
+end WeatherTabs

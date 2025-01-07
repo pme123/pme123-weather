@@ -1,6 +1,5 @@
 package pme123.weather
 
-import com.raquo.airstream.core.Signal
 import com.raquo.laminar.api.L.*
 import plotly.*
 import plotly.Plotly.*
@@ -10,11 +9,11 @@ import plotly.layout.*
 object WeatherGraph:
 
   def apply(
-      stationGroupDiff: WeatherStationGroupDiff,
-      resp: Seq[WeatherStationResponse],
-      selectedOptions: Set[String]
+      stationGroupDiff: WeatherStationGroupDiffData,
+      selectedOptions: Seq[String]
   ) =
-    val data  = resp.head.data
+    val resp  = stationGroupDiff.stationDiffs
+    val data  = resp.head.station1.data
     val times = data.map(_.time)
 
     def threshold(posNeg: Int) =
@@ -26,12 +25,11 @@ object WeatherGraph:
       stationGroupDiff.stationDiffs
         .filter(d => selectedOptions.contains(d.id))
         .map:
-          case WeatherStationDiff(station1, station2, color) =>
-            val data1 = resp.filter(_.station == station1).flatMap(_.data)
-            val data2 = resp.filter(_.station == station2).flatMap(_.data)
+          case WeatherStationDiffData(station1, station2, color) =>
+            val data1 = station1.data
             Scatter(
-              data1.map(_.time),
-              data1.zip(data2).map:
+              station1.data.map(_.time),
+              station1.data.zip(station2.data).map:
                 case (d1, d2) =>
                   d1.pressure_msl - d2.pressure_msl
             ).withName(s"${station1.name} - ${station2.name}")
@@ -47,11 +45,12 @@ object WeatherGraph:
     plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end apply
 
-  def windGraph(stationGroupDiff: WeatherStationGroupDiff, resp: Seq[WeatherStationResponse]) =
-    val windStation: WeatherStation = stationGroupDiff.windStation.getOrElse:
+  def windGraph(stationGroupDiff: WeatherStationGroupDiffData) =
+    val resp        = stationGroupDiff.stationDiffs
+    val windStation = stationGroupDiff.windStation.getOrElse:
       throw new Exception("No wind station defined")
 
-    val data         = resp.filter(_.station == windStation).flatMap(_.data)
+    val data         = windStation.data
     val windScatters =
       val kmhToKn = 0.539957
       Seq(
@@ -108,7 +107,7 @@ object WeatherGraph:
     plot.plot("wind-" + stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end windGraph
 
-  def historyGraph(stationGroupDiff: WeatherStationGroupDiff, resp: Seq[WeatherStationResponse]) =
+  def historyGraph(stationGroupDiff: WeatherStationGroupDiff, resp: Seq[WeatherStationData]) =
     val windStation: WeatherStation = stationGroupDiff.windStation.getOrElse:
       throw new Exception("No wind station defined")
 

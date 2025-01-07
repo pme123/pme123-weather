@@ -30,7 +30,7 @@ bin/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/dist/
+
 /nbdist/
 /.nb-gradle/
 build/
@@ -47,3 +47,7 @@ build/
 .bsp/
 /.idea/*
 /.scala-build/*
+/.scala-build/
+/.idea/
+/node_modules/
+/project/project/

@@ -1,0 +1,23 @@
+{
+  "name": "pme123-weather",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@scala-js/vite-plugin-scalajs": "^1.0.0",
+    "vite": "^4.1.0"
+  },
+  "dependencies": {
+    "@ui5/webcomponents": "^2.1.0",
+    "@ui5/webcomponents-compat": "2.1.0",
+    "@ui5/webcomponents-fiori": "2.1.0",
+    "@ui5/webcomponents-icons": "2.1.0",
+    "fix": "^0.0.6",
+    "highlight.js": "^11.6.0"
+  }
+}

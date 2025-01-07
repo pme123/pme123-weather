@@ -40,35 +40,7 @@ lazy val allStations =
     .distinct
 
 lazy val stationDiffs = Seq(
-  WeatherStationGroupDiff(
-    "Urnersee",
-    "Urnersee",
-    4,
-    Seq(
-      historyDiff,
-      WeatherStationDiff(
-        lugano,
-        andermatt,
-        "orange"
-      ),
-      WeatherStationDiff(
-        andermatt,
-        zurich,
-        "lightblue"
-      ),
-      WeatherStationDiff(
-        lugano,
-        altdorf,
-        "lightgreen"
-      ),
-      WeatherStationDiff(
-        altdorf,
-        zurich,
-        "lila"
-      )
-    ),
-    windStation = Some(altdorf)
-  ),
+  urnersee,
   WeatherStationGroupDiff(
     "Comersee",
     "Comersee",
@@ -113,4 +85,33 @@ lazy val stationDiffs = Seq(
     ),
     windStation = Some(hyeres)
   )
+)
+lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
+  "Urnersee",
+  "Urnersee",
+  4,
+  Seq(
+    historyDiff,
+    WeatherStationDiff(
+      lugano,
+      andermatt,
+      "orange"
+    ),
+    WeatherStationDiff(
+      lugano,
+      altdorf,
+      "lightgreen"
+    ),
+    WeatherStationDiff(
+      andermatt,
+      zurich,
+      "lightblue"
+    ),
+    WeatherStationDiff(
+      altdorf,
+      zurich,
+      "lila"
+    )
+  ),
+  windStation = Some(altdorf)
 )

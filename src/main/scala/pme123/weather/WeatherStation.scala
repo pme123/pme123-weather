@@ -13,14 +13,3 @@ case class WeatherStationGroupDiff(
     windStation: Option[WeatherStation]
 )
 
-case class WeatherStationGroupResponse(
-    stationGroupDiff: WeatherStationGroupDiff,
-    dataDiff: Seq[WeatherStationResponse]
-)
-
-case class WeatherStationResponse(
-    station: WeatherStation,
-    data: Seq[HourlyDataSet]
-)
-
-end WeatherStationResponse
