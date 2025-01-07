@@ -9,6 +9,9 @@ def main(args: String*) =
   println(s"Running ${proc}LinkJS")
   os.proc("sbt", s"${proc}LinkJS").call()
   os.proc("npm", "run", "build").call()
-  println("Copy result to root")
-  os.copy.over(os.pwd / "target" / "scala-3.6.2" / s"pme123-weather-${proc.replace("full", "")}opt.js", os.pwd / "pme123-weather.js")
+  println("Adjusting file")
+  val indexPath = os.pwd / "dist" / "index.html"
+  val index = os.read(indexPath)
+  os.write.over(indexPath, index.replace("\"/assets/", "\"assets/"))
+  //os.copy.over(os.pwd / "target" / "scala-3.6.2" / s"pme123-weather-${proc.replace("full", "")}opt.js", os.pwd / "pme123-weather.js")
   println("Done")
