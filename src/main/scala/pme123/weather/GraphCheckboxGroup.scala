@@ -3,7 +3,7 @@ package pme123.weather
 import be.doeraene.webcomponents.ui5.CheckBox
 import com.raquo.laminar.api.L.*
 
-object StationsCheckboxGroup:
+object GraphCheckboxGroup:
   def apply(selectedOptionsVar: Var[Seq[String]]): HtmlElement =
     val options = selectedOptionsVar.now()
     div(
@@ -25,4 +25,4 @@ object StationsCheckboxGroup:
         )
     )
   end apply
-end StationsCheckboxGroup
+end GraphCheckboxGroup

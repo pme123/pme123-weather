@@ -31,9 +31,10 @@ object WeatherView:
           wsDiffs
             .find(d => selectedTab.contains(d.id))
             .map: wsDiff =>
-              val options = Var(wsDiff.stationDiffs.map(_.id))
+              val stationOptions = Var(wsDiff.stationDiffs.map(_.id))
+              val windStationOptions = Var(WindStationGraph.allNameOptions)
               div(
-                child <-- options.signal.map: opts =>
+                child <-- stationOptions.signal.map: opts =>
                   div(
                     idAttr := wsDiff.id,
                     onMountUnmountCallback(
@@ -43,18 +44,22 @@ object WeatherView:
                     )
                   ),
                 if wsDiff.stationDiffs.size > 1 then
-                  StationsCheckboxGroup(options)
+                  GraphCheckboxGroup(stationOptions)
                 else div(),
                 hr(),
                 div(
-                  idAttr := s"wind-${wsDiff.id}",
-                  onMountUnmountCallback(
-                    mount = ctx =>
-                      wsDiff.windStation.foreach: _ =>
-                        WeatherGraph.windGraph(wsDiff),
-                    unmount = _ => ()
-                  )
-                )
+                  child <-- windStationOptions.signal.map: opts =>
+                    div(
+                      idAttr := s"wind-${wsDiff.id}",
+                      onMountUnmountCallback(
+                        mount = ctx =>
+                          wsDiff.windStation.foreach: _ =>
+                            WindStationGraph(wsDiff, opts),
+                        unmount = _ => ()
+                      )
+                    )
+                ),
+                GraphCheckboxGroup(windStationOptions)
               )
             .getOrElse(div("No Data"))
 
