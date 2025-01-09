@@ -19,7 +19,7 @@ object WeatherGraph:
     def threshold(posNeg: Int) =
       Scatter(times, data.map(_ => posNeg * stationGroupDiff.threshold))
         .withName("Threshold for wind")
-        .withLine(Line().withColor(Color.StringColor("blue")).withDash(Dash.Dot))
+        .withLine(Line().withColor(Color.StringColor("lightblue")).withDash(Dash.Dot))
 
     def diffScatters =
       stationGroupDiff.stationDiffs
@@ -41,7 +41,7 @@ object WeatherGraph:
           threshold(1),
           threshold(-1)
         )
-    val lay  = Layout().withTitle(s"${stationGroupDiff.label}: Pressure difference (hPa)")
+    val lay  = Layout().withTitle(stationGroupDiff.label)
     plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end apply
 

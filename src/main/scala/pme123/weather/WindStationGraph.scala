@@ -22,7 +22,10 @@ object WindStationGraph:
           ).withName(name)
             .withLine(Line().withColor(Color.StringColor(color)))
 
-    val plot = windScatters
+    val plot =
+      Scatter(data.map(_.time), data.map(_ => 20))
+      .withName("Threshold for high pressure (1020hPa)")
+      .withLine(Line().withColor(Color.StringColor("lightblue")).withDash(Dash.Dot)) +: windScatters
 
     def direction(deg: Double) =
       deg match
@@ -68,7 +71,6 @@ object WindStationGraph:
     ("Wind gust (10m)", "blue", windGustScatter),
     ("Temperature (2m)", "orange", temperatureScatter),
     ("Pressure at Sea Level (hPa - 1000hPa)", "purple", _.map(_.pressure_msl - 1000)),
-    ("High Pressure at Sea Level (1020hPa)", "yellow", _.map(_ => 20)),
   )
   lazy val allNameOptions = allOptions.map(_._1)
 

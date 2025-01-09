@@ -6,6 +6,11 @@ val zurich = WeatherStation("Zurich", 47.3667, 8.55)
 val andermatt = WeatherStation("Andermatt", 46.6356, 8.5939)
 val altdorf = WeatherStation("Altdorf", 46.8804, 8.6444)
 //val altdorf = WeatherStation("Isleten", 46.9204, 8.5928)
+// sempachersee
+val genf = WeatherStation("Genf", 46.2376, 6.1092)
+val guettingen = WeatherStation("Guettingen", 47.6035, 9.2874)
+val bern = WeatherStation("Bern", 46.9481, 7.4474)
+
 // comersee
 val lecco = WeatherStation("Lecco", 45.8559, 9.397)
 val andeer = WeatherStation("Andeer", 46.6034, 9.4261)
@@ -41,6 +46,7 @@ lazy val allStations =
 
 lazy val stationDiffs = Seq(
   urnersee,
+  sempachersee,
   WeatherStationGroupDiff(
     "Comersee",
     "Comersee",
@@ -69,7 +75,7 @@ lazy val stationDiffs = Seq(
   ),
   WeatherStationGroupDiff(
     "Hyeres",
-    "Mittelmeer - Hyeres",
+    "Diff Hyeres - Lyon > 5hPa Mistral",
     5,
     Seq(
       WeatherStationDiff(
@@ -88,7 +94,7 @@ lazy val stationDiffs = Seq(
 )
 lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
   "Urnersee",
-  "Urnersee",
+  "Diff. Lugano - Zurich > 4hPa South foehn | > 4hPa North foehn",
   4,
   Seq(
     historyDiff,
@@ -105,12 +111,36 @@ lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
     WeatherStationDiff(
       andermatt,
       zurich,
-      "lightblue"
+      "blue"
     ),
     WeatherStationDiff(
       altdorf,
       zurich,
       "lila"
+    )
+  ),
+  windStation = Some(altdorf)
+)
+
+lazy val sempachersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
+  "Sempachersee",
+  "Diff. Guettingen - Genf > 2hPa Bise | < 2hPa Westwind",
+  2,
+  Seq(
+    WeatherStationDiff(
+      guettingen,
+      genf,
+      "orange"
+    ),
+    WeatherStationDiff(
+      guettingen,
+      bern,
+      "blue"
+    ),
+    WeatherStationDiff(
+      bern,
+      genf,
+      "lightgreen"
     )
   ),
   windStation = Some(altdorf)
