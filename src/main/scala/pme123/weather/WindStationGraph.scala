@@ -41,7 +41,7 @@ object WindStationGraph:
     end direction
 
     val lay = Layout()
-      .withTitle(s"${windStation.name}: Wind forecast (knots)")
+      .withTitle(s"${windStation.name}")
       .withAnnotations(
         data.zipWithIndex
           .collect:
@@ -66,7 +66,9 @@ object WindStationGraph:
   lazy val allOptions = Seq[(String, String, ToScatter)](
     ("Wind speed (10m)", "green", windSpeedScatter),
     ("Wind gust (10m)", "blue", windGustScatter),
-    ("Temperature (2m)", "orange", temperatureScatter)
+    ("Temperature (2m)", "orange", temperatureScatter),
+    ("Pressure at Sea Level (hPa - 1000hPa)", "purple", _.map(_.pressure_msl - 1000)),
+    ("High Pressure at Sea Level (1020hPa)", "yellow", _.map(_ => 20)),
   )
   lazy val allNameOptions = allOptions.map(_._1)
 

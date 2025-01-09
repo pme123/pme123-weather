@@ -41,7 +41,7 @@ object WeatherGraph:
           threshold(1),
           threshold(-1)
         )
-    val lay  = Layout().withTitle(s"${stationGroupDiff.label}: Druckdifferenz (hPa)")
+    val lay  = Layout().withTitle(s"${stationGroupDiff.label}: Pressure difference (hPa)")
     plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end apply
 
