@@ -12,6 +12,8 @@ object WeatherGraph:
       stationGroupDiff: WeatherStationGroupDiffData,
       selectedOptions: Seq[String]
   ) =
+    println(s"Weathergrapf: ${stationGroupDiff.id}")
+
     val resp  = stationGroupDiff.stationDiffs
     val data  = resp.head.station1.data
     val times = data.map(_.time)
@@ -26,7 +28,6 @@ object WeatherGraph:
         .filter(d => selectedOptions.contains(d.id))
         .map:
           case WeatherStationDiffData(station1, station2, color) =>
-            val data1 = station1.data
             Scatter(
               station1.data.map(_.time),
               station1.data.zip(station2.data).map:
@@ -45,70 +46,8 @@ object WeatherGraph:
     plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end apply
 
-  def windGraph(stationGroupDiff: WeatherStationGroupDiffData) =
-    val resp        = stationGroupDiff.stationDiffs
-    val windStation = stationGroupDiff.windStation.getOrElse:
-      throw new Exception("No wind station defined")
-
-    val data         = windStation.data
-    val windScatters =
-      val kmhToKn = 0.539957
-      Seq(
-        Scatter(
-          data.map(_.time),
-          data.map(_.wind_speed_10m * kmhToKn)
-        ).withName("Wind speed (10m)")
-          .withLine(Line().withColor(Color.StringColor("green"))),
-        Scatter(
-          data.map(_.time),
-          data.map(_.wind_gusts_10m * kmhToKn)
-        ).withName("Wind gust (10m)")
-          .withLine(Line().withColor(Color.StringColor("blue"))),
-        Scatter(
-          data.map(_.time),
-          data.map(_.temperature_2m)
-        ).withName("Temperature (2m)")
-          .withLine(Line().withColor(Color.StringColor("orange")))
-      )
-    end windScatters
-
-    val plot = windScatters
-
-    def direction(deg: Double) =
-      deg match
-      case d if d > (22.5 + 0 * 45) && d <= (22.5 + 1 * 45) => "NE"
-      case d if d > (22.5 + 1 * 45) && d <= (22.5 + 2 * 45) => "E"
-      case d if d > (22.5 + 2 * 45) && d <= (22.5 + 3 * 45) => "SE"
-      case d if d > (22.5 + 3 * 45) && d <= (22.5 + 4 * 45) => "S"
-      case d if d > (22.5 + 4 * 45) && d <= (22.5 + 5 * 45) => "SW"
-      case d if d > (22.5 + 5 * 45) && d <= (22.5 + 6 * 45) => "W"
-      case d if d > (22.5 + 6 * 45) && d <= (22.5 + 7 * 45) => "NW"
-      case d if d > (22.5 + 7 * 45) || d <= 22.5            => "N"
-      case d                                                =>
-        println(s"BAD DATA: $d")
-        ""
-      end match
-    end direction
-
-    val lay = Layout()
-      .withTitle(s"${windStation.name}: Wind forecast (knots)")
-      .withAnnotations(
-        data.zipWithIndex
-          .collect:
-            case (d, index) if index % 2 == 0 => d
-          .map: d =>
-            Annotation()
-              .withShowarrow(false)
-              .withY(-0.5)
-              .withX(d.time)
-              .withText(direction(d.wind_direction_10m))
-              .withFont(Font().withSize(6).withColor(Color.StringColor("grey")))
-      )
-    plot.plot("wind-" + stationGroupDiff.id, lay) // attaches to div element with id 'plot'
-  end windGraph
-
   def historyGraph(stationGroupDiff: WeatherStationGroupDiff, resp: Seq[WeatherStationData]) =
-    val windStation: WeatherStation = stationGroupDiff.windStation.getOrElse:
+    val windStation: WeatherStation = stationGroupDiff.windStations.headOption.getOrElse:
       throw new Exception("No wind station defined")
 
     val dataStation  = resp.filter(_.station == windStation).flatMap(_.data)

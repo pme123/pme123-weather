@@ -10,8 +10,9 @@ https://pme123.github.io/pme123-weather/
 
 ## Development
 
-- Run `sbt ~fastOptJS` to start the development server.
-- Open `index-dev.html` in your browser.
+- Run `sbt ~fastLinkJS` to generate the Javascript from Scala code.
+- Run `npm run dev` to start the webserver (Vite).
+- Open `http://localhost:5173/` in your browser.
 
 ## Production
 

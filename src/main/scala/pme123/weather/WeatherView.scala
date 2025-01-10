@@ -48,32 +48,21 @@ object WeatherView:
                 else div(),
                 hr(),
                 div(
-                  child <-- windStationOptions.signal.map: opts =>
-                    div(
-                      idAttr := s"wind-${wsDiff.id}",
-                      onMountUnmountCallback(
-                        mount = ctx =>
-                          wsDiff.windStation.foreach: _ =>
-                            WindStationGraph(wsDiff, opts),
-                        unmount = _ => ()
+                  children <-- windStationOptions.signal.map: opts =>
+                    wsDiff.windStations.map: st =>
+                      println(s"WindStation: ${st.name}")
+                      div(
+                        idAttr := s"wind-${st.name}",
+                        onMountUnmountCallback(
+                          mount = ctx =>
+                              WindStationGraph(st, opts),
+                          unmount = _ => ()
+                        )
                       )
-                    )
                 ),
                 GraphCheckboxGroup(windStationOptions)
               )
             .getOrElse(div("No Data"))
-
-    val responseHSignal: Signal[ReactiveHtmlElement[HTMLDivElement]] =
-      weatherHDataVar.signal.map: data =>
-        div(
-          idAttr := s"history-${altdorfHistory.id}",
-          onMountUnmountCallback(
-            mount = ctx =>
-              altdorfHistory.windStation.foreach: _ =>
-                WeatherGraph.historyGraph(altdorfHistory, data),
-            unmount = _ => ()
-          )
-        )
 
     // val selectedWeatherSignal: Signal[Option[ReactiveHtmlElement[HTMLDivElement]]] =
     //   weatherViewSignal.map(_.headOption)

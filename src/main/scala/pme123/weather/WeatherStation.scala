@@ -6,10 +6,10 @@ case class WeatherStationDiff(station1: WeatherStation, station2: WeatherStation
   lazy val id = s"${station1.name}-${station2.name}"
 
 case class WeatherStationGroupDiff(
-    id: String,
-    label: String,
-    threshold: Int,
-    stationDiffs: Seq[WeatherStationDiff],
-    windStation: Option[WeatherStation]
+                                    id: String,
+                                    label: String,
+                                    threshold: Int,
+                                    stationDiffs: Seq[WeatherStationDiff],
+                                    windStations: Seq[WeatherStation]
 )
 

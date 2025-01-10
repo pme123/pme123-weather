@@ -7,11 +7,9 @@ import plotly.layout.*
 
 object WindStationGraph:
 
-  def apply(stationGroupDiff: WeatherStationGroupDiffData, selectedOptions: Seq[String]) =
-    val windStation = stationGroupDiff.windStation.getOrElse:
-      throw new Exception("No wind station defined")
-
+  def apply(windStation: WeatherStationData, selectedOptions: Seq[String]) =
     val data         = windStation.data
+    println(s"WindStationGraph: ${windStation.name}")
     val windScatters =
       allOptions
         .filter((name, _, _) => selectedOptions.contains(name))
@@ -57,7 +55,7 @@ object WindStationGraph:
               .withText(direction(d.wind_direction_10m))
               .withFont(Font().withSize(6).withColor(Color.StringColor("grey")))
       )
-    plot.plot("wind-" + stationGroupDiff.id, lay) // attaches to div element with id 'plot'
+    plot.plot("wind-" + windStation.name, lay) // attaches to div element with id 'plot'
   end apply
 
   type ToScatter = Seq[HourlyDataSet] => Seq[Double]
