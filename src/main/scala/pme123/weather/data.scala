@@ -15,6 +15,8 @@ val mosen      = WeatherStation("Mosen (Sempach)", 47.2449, 8.2263)
 // comersee
 val lecco      = WeatherStation("Lecco", 45.8559, 9.397)
 val andeer     = WeatherStation("Andeer", 46.6034, 9.4261)
+val vaduz      = WeatherStation("Vaduz", 47.1415, 9.5215)
+val milan      = WeatherStation("Milan", 45.4643, 9.1895)
 // gardasee
 val brescia    = WeatherStation("Brescia", 45.4322, 10.2677)
 val bolzano    = WeatherStation("Bolzano", 46.4907, 11.3398)
@@ -56,10 +58,25 @@ lazy val stationDiffs                      = Seq(
     4,
     Seq(
       WeatherStationDiff(
+        milan,
+        vaduz,
+        "red"
+      ),
+      WeatherStationDiff(
+        milan,
+        lecco,
+        "orange"
+      ),
+      WeatherStationDiff(
         lecco,
         andeer,
-        "red"
-      )
+        "lightgreen"
+      ),
+      WeatherStationDiff(
+        lecco,
+        vaduz,
+        "lila"
+      ),
     ),
     windStations = Seq(lecco)
   ),

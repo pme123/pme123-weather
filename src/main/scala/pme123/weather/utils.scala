@@ -15,3 +15,5 @@ def formatTime(time: String): String =
   val to = DateTimeFormatter.ofPattern("EEE d. MMM HH:mm")
   val date = LocalDateTime.parse(time, fromFormatter)
   date.format(to)
+ 
+val tickformat = "%a %-d.%-m %-Hh"

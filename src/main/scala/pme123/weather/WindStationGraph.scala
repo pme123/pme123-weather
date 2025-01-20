@@ -5,25 +5,34 @@ import plotly.Plotly.*
 import plotly.element.*
 import plotly.layout.*
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 object WindStationGraph:
 
   def apply(windStation: WeatherStationData, selectedOptions: Seq[String]) =
-    val data         = windStation.data
+    val data       = windStation.data
     println(s"WindStationGraph: ${windStation.name}")
+
     val windScatters =
       allOptions
         .filter((name, _, _) => selectedOptions.contains(name))
         .map: (name, color, toScatter) =>
           Scatter(
             data.map(_.time),
-            toScatter(data)
+            toScatter(data),
           ).withName(name)
-            .withLine(Line().withColor(Color.StringColor(color)))
+            .withLine(
+              Line()
+                .withColor(Color.StringColor(color))
+            )
 
     val plot =
       Scatter(data.map(_.time), data.map(_ => 20))
-      .withName("Threshold for high pressure (1020hPa)")
-      .withLine(Line().withColor(Color.StringColor("lightblue")).withDash(Dash.Dot)) +: windScatters
+        .withName("Threshold for high pressure (1020hPa)")
+        .withLine(
+          Line().withColor(Color.StringColor("lightblue")).withDash(Dash.Dot)
+        ) +: windScatters
 
     def direction(deg: Double) =
       deg match
@@ -43,6 +52,8 @@ object WindStationGraph:
 
     val lay = Layout()
       .withTitle(s"${windStation.name}")
+      .withXaxis(Axis()
+        .withTickformat(tickformat))
       .withAnnotations(
         data.zipWithIndex
           .collect:
@@ -64,11 +75,11 @@ object WindStationGraph:
   lazy val windGustScatter: ToScatter    = _.map(_.wind_gusts_10m * kmhToKn)
   lazy val temperatureScatter: ToScatter = _.map(_.temperature_2m)
 
-  lazy val allOptions = Seq[(String, String, ToScatter)](
+  lazy val allOptions     = Seq[(String, String, ToScatter)](
     ("Wind speed (10m)", "green", windSpeedScatter),
     ("Wind gust (10m)", "blue", windGustScatter),
     ("Temperature (2m)", "orange", temperatureScatter),
-    ("Pressure at Sea Level (hPa - 1000hPa)", "purple", _.map(_.pressure_msl - 1000)),
+    ("Pressure at Sea Level (hPa - 1000hPa)", "purple", _.map(_.pressure_msl - 1000))
   )
   lazy val allNameOptions = allOptions.map(_._1)
 

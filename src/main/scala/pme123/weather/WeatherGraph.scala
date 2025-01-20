@@ -42,7 +42,11 @@ object WeatherGraph:
           threshold(1),
           threshold(-1)
         )
-    val lay  = Layout().withTitle(stationGroupDiff.label)
+    val lay  = Layout()
+      .withTitle(stationGroupDiff.label)
+      .withXaxis(Axis()
+        .withTickformat(tickformat))
+
     plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
   end apply
 
