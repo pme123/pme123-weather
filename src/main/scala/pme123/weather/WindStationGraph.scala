@@ -12,7 +12,7 @@ object WindStationGraph:
 
   def apply(windStation: WeatherStationData, selectedOptions: Seq[String]) =
     val data       = windStation.data
-    println(s"WindStationGraph: ${windStation.name}")
+    WeatherLogger.debug(s"WindStationGraph: ${windStation.name}")
 
     val windScatters =
       allOptions
@@ -45,7 +45,7 @@ object WindStationGraph:
       case d if d > (22.5 + 6 * 45) && d <= (22.5 + 7 * 45) => "NW"
       case d if d > (22.5 + 7 * 45) || d <= 22.5            => "N"
       case d                                                =>
-        println(s"BAD DATA: $d")
+        WeatherLogger.error(s"Invalid wind direction data: $d")
         ""
       end match
     end direction

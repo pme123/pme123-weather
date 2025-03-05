@@ -27,7 +27,7 @@ object WeatherView:
         .map: all =>
           val selectedTab = all._1
           val wsDiffs     = all._2
-          println(s"Selected Tab: ${all._1}")
+          WeatherLogger.debug(s"Selected Tab: ${all._1}")
           wsDiffs
             .find(d => selectedTab.contains(d.id))
             .map: wsDiff =>
@@ -50,7 +50,7 @@ object WeatherView:
                 div(
                   children <-- windStationOptions.signal.map: opts =>
                     wsDiff.windStations.map: st =>
-                      println(s"WindStation: ${st.name}")
+                      WeatherLogger.debug(s"WindStation: ${st.name}")
                       div(
                         idAttr := s"wind-${st.name}",
                         onMountUnmountCallback(

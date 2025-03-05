@@ -12,7 +12,7 @@ object WeatherGraph:
       stationGroupDiff: WeatherStationGroupDiffData,
       selectedOptions: Seq[String]
   ) =
-    println(s"Weathergrapf: ${stationGroupDiff.id}")
+    WeatherLogger.debug(s"WeatherGraph: ${stationGroupDiff.id}")
 
     val resp  = stationGroupDiff.stationDiffs
     val data  = resp.head.station1.data
@@ -67,7 +67,7 @@ object WeatherGraph:
             case prDiff ->
                 std
                 if prDiff > 2 =>
-              println(s"${std.wind_speed_10m}/ ${std.wind_direction_10m} -> ${
+              WeatherLogger.debug(s"${std.wind_speed_10m}/ ${std.wind_direction_10m} -> ${
                   std.wind_speed_10m > 10 &&
                     std.wind_direction_10m > 112 &&
                     std.wind_direction_10m < (360 - 112)
@@ -84,7 +84,7 @@ object WeatherGraph:
           .map:
             case prDiff -> data =>
               val split = data.span(_._2)
-              println(s"prDiff: $prDiff -> ${split._1.size} -> ${split._2.size}")
+              WeatherLogger.debug(s"prDiff: $prDiff -> ${split._1.size} -> ${split._2.size}")
               prDiff -> split._1.size -> split._2.size
         Seq(
           Scatter(

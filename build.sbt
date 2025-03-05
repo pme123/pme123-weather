@@ -28,7 +28,8 @@ lazy val root = (project in file("."))
       "io.circe"                      %%% "circe-parser"       % "0.14.9",
       ("org.plotly-scala"             %%% "plotly-render"      % "0.8.5")
         .cross(CrossVersion.for3Use2_13)
-        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13") // Plotly for charting
+        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13"), // Plotly for charting
+      "com.typesafe.scala-logging"    %%% "scala-logging"      % "3.9.5"
     ),
     jsDependencies ++= Seq(
       plotlyJs

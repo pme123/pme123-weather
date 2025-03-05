@@ -20,7 +20,7 @@ object GraphCheckboxGroup:
                 selected.filterNot(_ == selectedOption)
               else selected :+ selectedOption
             }
-            println(s"selectedOption: $option ${selectedOptionsVar.now().contains(option)}")
+            WeatherLogger.debug(s"Selected option: $option ${selectedOptionsVar.now().contains(option)}")
           }
         )
     )
