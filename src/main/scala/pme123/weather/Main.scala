@@ -23,17 +23,18 @@ object Main:
     div(
       width  := "100%",
       height := "100%",
+      className := "app-container",
       Bar(
         _.design           := BarDesign.Header,
         _.slots.endContent := Link(
           _.href   := "https://github.com/pme123/pme123-weather",
           _.target := LinkTarget._blank,
-          "Github"
+          "GitHub"
         ),
-        Title(_.size := TitleLevel.H4, "pme123 Weather Experiments")
+        Title(_.size := TitleLevel.H4, "Weather Analysis Dashboard")
       ),
       div(
-        overflowY := "auto",
+        className := "main-content",
         WeatherTabs(selectedTabVar),
         WeatherView(selectedTabVar)
       ),
@@ -42,7 +43,7 @@ object Main:
         Link(
           _.href   := openMeteoForcastUrl,
           _.target := LinkTarget._blank,
-          "Using Data from OpenMeteo (REST APIs)"
+          "Data provided by OpenMeteo (REST APIs)"
         )
       )
     )

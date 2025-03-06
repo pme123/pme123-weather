@@ -7,6 +7,8 @@ ThisBuild / scalaVersion := "3.6.2"
 
 lazy val plotlyJs = "org.webjars.bower" % "plotly.js" % "1.54.1"
 
+resolvers += Resolver.sonatypeRepo("snapshots")
+
 lazy val root = (project in file("."))
   .settings(
     name                            := "pme123-weather",
@@ -20,7 +22,7 @@ lazy val root = (project in file("."))
     },
     libraryDependencies ++= Seq(
       "com.raquo"                     %%% "laminar"            % "17.1.0", // Laminar library for Scala.js
-      "be.doeraene"                   %%% "web-components-ui5" % "2.0.0+2-adc9d26d-SNAPSHOT",
+      "be.doeraene"                   %%% "web-components-ui5" % "2.1.0", // Using an older stable version
       "com.softwaremill.sttp.client3" %%% "core"               % "3.9.7",
       "com.softwaremill.sttp.client3" %%% "circe"              % "3.9.7",
       "io.circe"                      %%% "circe-core"         % "0.14.7",
@@ -28,8 +30,7 @@ lazy val root = (project in file("."))
       "io.circe"                      %%% "circe-parser"       % "0.14.9",
       ("org.plotly-scala"             %%% "plotly-render"      % "0.8.5")
         .cross(CrossVersion.for3Use2_13)
-        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13"), // Plotly for charting
-      "com.typesafe.scala-logging"    %%% "scala-logging"      % "3.9.5"
+        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13") // Plotly for charting
     ),
     jsDependencies ++= Seq(
       plotlyJs

@@ -21,7 +21,10 @@ object WeatherGraph:
     def threshold(posNeg: Int) =
       Scatter(times, data.map(_ => posNeg * stationGroupDiff.threshold))
         .withName("Threshold for wind")
-        .withLine(Line().withColor(Color.StringColor("lightblue")).withDash(Dash.Dot))
+        .withLine(Line()
+          .withColor(Color.StringColor("rgba(33, 150, 243, 0.5)"))
+          .withDash(Dash.Dot)
+          .withWidth(1.5))
 
     def diffScatters =
       stationGroupDiff.stationDiffs
@@ -34,7 +37,9 @@ object WeatherGraph:
                 case (d1, d2) =>
                   d1.pressure_msl - d2.pressure_msl
             ).withName(s"${station1.name} - ${station2.name}")
-              .withLine(Line().withColor(Color.StringColor(color)))
+              .withLine(Line()
+                .withColor(Color.StringColor(color))
+                .withWidth(2))
 
     val plot =
       diffScatters ++
@@ -42,12 +47,29 @@ object WeatherGraph:
           threshold(1),
           threshold(-1)
         )
-    val lay  = Layout()
+
+    val lay = Layout()
       .withTitle(stationGroupDiff.label)
       .withXaxis(Axis()
-        .withTickformat(tickformat))
+        .withTickformat(tickformat)
+        .withGridcolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        .withShowgrid(true))
+      .withYaxis(Axis()
+        .withTitle("Pressure Difference (hPa)")
+        .withGridcolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        .withShowgrid(true))
+      .withPaper_bgcolor(Color.StringColor("rgba(0, 0, 0, 0)"))
+      .withPlot_bgcolor(Color.StringColor("rgba(0, 0, 0, 0)"))
+      .withShowlegend(true)
+      .withLegend(Legend()
+        .withX(1.1)
+        .withY(1)
+        .withBgcolor(Color.StringColor("rgba(255, 255, 255, 0.8)"))
+        .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+      )
 
-    plot.plot(stationGroupDiff.id, lay) // attaches to div element with id 'plot'
+
+    plot.plot(stationGroupDiff.id, lay)
   end apply
 
   def historyGraph(stationGroupDiff: WeatherStationGroupDiff, resp: Seq[WeatherStationData]) =

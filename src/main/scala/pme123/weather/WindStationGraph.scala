@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 object WindStationGraph:
 
   def apply(windStation: WeatherStationData, selectedOptions: Seq[String]) =
-    val data       = windStation.data
+    val data = windStation.data
     WeatherLogger.debug(s"WindStationGraph: ${windStation.name}")
 
     val windScatters =
@@ -20,18 +20,22 @@ object WindStationGraph:
         .map: (name, color, toScatter) =>
           Scatter(
             data.map(_.time),
-            toScatter(data),
+            toScatter(data)
           ).withName(name)
             .withLine(
               Line()
                 .withColor(Color.StringColor(color))
+                .withWidth(2)
             )
 
     val plot =
       Scatter(data.map(_.time), data.map(_ => 20))
         .withName("Threshold for high pressure (1020hPa)")
         .withLine(
-          Line().withColor(Color.StringColor("lightblue")).withDash(Dash.Dot)
+          Line()
+            .withColor(Color.StringColor("rgba(33, 150, 243, 0.5)"))
+            .withDash(Dash.Dot)
+            .withWidth(1.5)
         ) +: windScatters
 
     def direction(deg: Double) =
@@ -53,7 +57,22 @@ object WindStationGraph:
     val lay = Layout()
       .withTitle(s"${windStation.name}")
       .withXaxis(Axis()
-        .withTickformat(tickformat))
+        .withTickformat(tickformat)
+        .withGridcolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        .withShowgrid(true))
+      .withYaxis(Axis()
+        .withGridcolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        .withShowgrid(true))
+      .withPaper_bgcolor(Color.StringColor("rgba(0, 0, 0, 0)"))
+      .withPlot_bgcolor(Color.StringColor("rgba(0, 0, 0, 0)"))
+      .withShowlegend(true)
+      .withLegend(Legend()
+        .withX(1.1)
+        .withY(1)
+        .withBgcolor(Color.StringColor("rgba(255, 255, 255, 0.8)"))
+        .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        //   .withBorderwidth(1))
+      )
       .withAnnotations(
         data.zipWithIndex
           .collect:
@@ -64,9 +83,12 @@ object WindStationGraph:
               .withY(-0.5)
               .withX(d.time)
               .withText(direction(d.wind_direction_10m))
-              .withFont(Font().withSize(6).withColor(Color.StringColor("grey")))
+              .withFont(Font()
+                .withSize(6)
+                .withColor(Color.StringColor("rgba(0, 0, 0, 0.6)")))
       )
-    plot.plot("wind-" + windStation.name, lay) // attaches to div element with id 'plot'
+
+    plot.plot("wind-" + windStation.name, lay)
   end apply
 
   type ToScatter = Seq[HourlyDataSet] => Seq[Double]
@@ -76,10 +98,10 @@ object WindStationGraph:
   lazy val temperatureScatter: ToScatter = _.map(_.temperature_2m)
 
   lazy val allOptions     = Seq[(String, String, ToScatter)](
-    ("Wind speed (10m)", "green", windSpeedScatter),
-    ("Wind gust (10m)", "blue", windGustScatter),
-    ("Temperature (2m)", "orange", temperatureScatter),
-    ("Pressure at Sea Level (hPa - 1000hPa)", "purple", _.map(_.pressure_msl - 1000))
+    ("Wind speed (10m)", "#4CAF50", windSpeedScatter),
+    ("Wind gust (10m)", "#2196F3", windGustScatter),
+    ("Temperature (2m)", "#FF9800", temperatureScatter),
+    ("Pressure at Sea Level (hPa - 1000hPa)", "#9C27B0", _.map(_.pressure_msl - 1000))
   )
   lazy val allNameOptions = allOptions.map(_._1)
 

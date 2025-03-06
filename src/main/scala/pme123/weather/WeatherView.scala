@@ -16,7 +16,6 @@ object WeatherView:
   val weatherHDataVar = Var(Seq.empty[WeatherStationData])
 
   def apply(selectedTabVar: Var[String]): HtmlElement =
-
     fetchWeatherData()
 
     val weatherDataSignal: Signal[Seq[WeatherStationGroupDiffData]] =
@@ -34,47 +33,50 @@ object WeatherView:
               val stationOptions = Var(wsDiff.stationDiffs.map(_.id))
               val windStationOptions = Var(WindStationGraph.allNameOptions)
               div(
-                child <-- stationOptions.signal.map: opts =>
-                  div(
-                    idAttr := wsDiff.id,
-                    onMountUnmountCallback(
-                      mount = ctx =>
-                        WeatherGraph(wsDiff, opts),
-                      unmount = _ => ()
-                    )
-                  ),
-                if wsDiff.stationDiffs.size > 1 then
-                  GraphCheckboxGroup(stationOptions)
-                else div(),
-                hr(),
+                className := "weather-view",
                 div(
-                  children <-- windStationOptions.signal.map: opts =>
-                    wsDiff.windStations.map: st =>
-                      WeatherLogger.debug(s"WindStation: ${st.name}")
-                      div(
-                        idAttr := s"wind-${st.name}",
-                        onMountUnmountCallback(
-                          mount = ctx =>
-                              WindStationGraph(st, opts),
-                          unmount = _ => ()
-                        )
+                  className := "graph-container",
+                  child <-- stationOptions.signal.map: opts =>
+                    div(
+                      idAttr := wsDiff.id,
+                      onMountUnmountCallback(
+                        mount = ctx =>
+                          WeatherGraph(wsDiff, opts),
+                        unmount = _ => ()
                       )
+                    ),
+                  if wsDiff.stationDiffs.size > 1 then
+                    GraphCheckboxGroup(stationOptions)
+                  else div()
                 ),
-                GraphCheckboxGroup(windStationOptions)
+                if wsDiff.windStations.nonEmpty then
+                  div(
+                    className := "wind-stations",
+                    children <-- windStationOptions.signal.map: opts =>
+                      wsDiff.windStations.map: st =>
+                        WeatherLogger.debug(s"WindStation: ${st.name}")
+                        div(
+                          className := "graph-container",
+                          idAttr := s"wind-${st.name}",
+                          onMountUnmountCallback(
+                            mount = ctx =>
+                              WindStationGraph(st, opts),
+                            unmount = _ => ()
+                          )
+                        ),
+                    GraphCheckboxGroup(windStationOptions)
+                  )
+                else div()
               )
             .getOrElse(div("No Data"))
 
-    // val selectedWeatherSignal: Signal[Option[ReactiveHtmlElement[HTMLDivElement]]] =
-    //   weatherViewSignal.map(_.headOption)
-
     div(
-      // children <-- selectedWeatherSignal.map(_.toSeq)
+      className := "weather-container",
       child <-- weatherViewSignal
     )
   end apply
 
   private def fetchWeatherData(): Unit =
-    // Fetch weather data on component mount
     def fetch(meteoClient: MeteoClient) =
       Future.sequence(
         allStations
