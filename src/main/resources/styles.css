@@ -67,6 +67,58 @@ body {
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+/* Legend Styles */
+.js-plotly-plot .plotly .legend {
+  background-color: var(--card-background) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 4px !important;
+  padding: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.js-plotly-plot .plotly .legend .legendtext {
+  color: var(--text-color) !important;
+}
+
+.js-plotly-plot .plotly .legend .legendtoggle {
+  cursor: pointer !important;
+}
+
+/* Mobile Legend Styles */
+@media (max-width: 768px) {
+  .js-plotly-plot .plotly .legend {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    max-height: 40px !important;
+    overflow: hidden !important;
+    z-index: 1000 !important;
+  }
+
+  .js-plotly-plot .plotly .legend.expanded {
+    max-height: none !important;
+  }
+
+  .js-plotly-plot .plotly .legend .legendtext {
+    display: none !important;
+  }
+
+  .js-plotly-plot .plotly .legend.expanded .legendtext {
+    display: block !important;
+  }
+
+  .js-plotly-plot .plotly .legend .legendtoggle {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 4px !important;
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border-radius: 4px !important;
+  }
 }
 
 /* Checkbox Group */

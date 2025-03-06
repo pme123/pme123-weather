@@ -66,8 +66,18 @@ object WeatherGraph:
         .withY(1)
         .withBgcolor(Color.StringColor("rgba(255, 255, 255, 0.8)"))
         .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
-      )
-
+        .withOrientation(Orientation.Vertical)
+        .withXanchor(Anchor.Left)
+        .withYanchor(Anchor.Top)
+        .withY(1.0)
+        .withX(1.1)
+        //.withTraceorder(TraceOrder.)
+       // .withGroupclick(LegendGroupClick.Toggle)
+       // .withItemclick(LegendItemClick.Toggle)
+       // .withItemdoubleclick(LegendItemDoubleClick.Toggle)
+        .withFont(Font()
+          .withSize(12)
+          .withColor(Color.StringColor("rgba(0, 0, 0, 0.8)"))))
 
     plot.plot(stationGroupDiff.id, lay)
   end apply
