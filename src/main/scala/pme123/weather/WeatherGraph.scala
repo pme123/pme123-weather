@@ -28,7 +28,6 @@ object WeatherGraph:
 
     def diffScatters =
       stationGroupDiff.stationDiffs
-        .filter(d => selectedOptions.contains(d.id))
         .map:
           case WeatherStationDiffData(station1, station2, color) =>
             Scatter(

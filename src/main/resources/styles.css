@@ -121,22 +121,6 @@ body {
   }
 }
 
-/* Checkbox Group */
-.stations-checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 16px;
-  background-color: var(--card-background);
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.ui5-checkbox {
-  margin-right: 8px;
-}
-
 /* Footer */
 .footer {
   padding: 16px;
@@ -159,11 +143,6 @@ body {
 @media (max-width: 768px) {
   .main-content {
     padding: 10px;
-  }
-  
-  .stations-checkbox-group {
-    flex-direction: column;
-    gap: 8px;
   }
   
   .graph-container {

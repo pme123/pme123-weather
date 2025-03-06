@@ -44,10 +44,7 @@ object WeatherView:
                           WeatherGraph(wsDiff, opts),
                         unmount = _ => ()
                       )
-                    ),
-                  if wsDiff.stationDiffs.size > 1 then
-                    GraphCheckboxGroup(stationOptions)
-                  else div()
+                    )
                 ),
                 if wsDiff.windStations.nonEmpty then
                   div(
@@ -63,8 +60,7 @@ object WeatherView:
                               WindStationGraph(st, opts),
                             unmount = _ => ()
                           )
-                        ),
-                    GraphCheckboxGroup(windStationOptions)
+                        )
                   )
                 else div()
               )

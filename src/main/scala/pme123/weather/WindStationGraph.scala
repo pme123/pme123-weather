@@ -16,7 +16,6 @@ object WindStationGraph:
 
     val windScatters =
       allOptions
-        .filter((name, _, _) => selectedOptions.contains(name))
         .map: (name, color, toScatter) =>
           Scatter(
             data.map(_.time),
