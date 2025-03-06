@@ -88,36 +88,67 @@ body {
 }
 
 /* Mobile Legend Styles */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .js-plotly-plot .plotly .legend {
     position: absolute !important;
-    top: 10px !important;
-    right: 10px !important;
-    max-height: 40px !important;
-    overflow: hidden !important;
+    max-height: 40vh !important;
+    overflow-y: auto !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
     z-index: 1000 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
-  .js-plotly-plot .plotly .legend.expanded {
-    max-height: none !important;
+  .js-plotly-plot .plotly .legendtext {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    padding: 4px 0 !important;
   }
 
-  .js-plotly-plot .plotly .legend .legendtext {
-    display: none !important;
-  }
-
-  .js-plotly-plot .plotly .legend.expanded .legendtext {
-    display: block !important;
-  }
-
-  .js-plotly-plot .plotly .legend .legendtoggle {
-    display: block !important;
-    width: 100% !important;
-    text-align: center !important;
-    padding: 4px !important;
-    background-color: var(--primary-color) !important;
-    color: white !important;
+  .js-plotly-plot .plotly .legendtoggle {
+    padding: 8px !important;
+    margin: 2px 0 !important;
     border-radius: 4px !important;
+    touch-action: manipulation !important;
+  }
+
+  .js-plotly-plot .plotly .legendtoggle:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .js-plotly-plot .plotly .legendtoggle:active {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Improve touch targets */
+  .js-plotly-plot .plotly .legendtoggle rect {
+    width: 24px !important;
+    height: 24px !important;
+    rx: 4px !important;
+    ry: 4px !important;
+  }
+
+  /* Add a subtle scrollbar for better UX */
+  .js-plotly-plot .plotly .legend::-webkit-scrollbar {
+    width: 6px !important;
+  }
+
+  .js-plotly-plot .plotly .legend::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 3px !important;
+  }
+
+  .js-plotly-plot .plotly .legend::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 3px !important;
+  }
+
+  .js-plotly-plot .plotly .legend::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3) !important;
   }
 }
 
