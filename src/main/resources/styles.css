@@ -10,9 +10,10 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', Verdana, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
+  display: block;
 }
 
 #app {
@@ -60,14 +61,25 @@ body {
   color: white;
 }
 
+/* Weather View */
+.weather-view {
+  margin-top: 20px;
+}
+
 /* Graph Containers */
 .graph-container {
   background-color: var(--card-background);
   border-radius: 8px;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   position: relative;
+}
+
+.graph-container:not(:last-child) {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 /* Legend Styles */
@@ -103,29 +115,29 @@ body {
     -webkit-overflow-scrolling: touch !important;
   }
 
-  .js-plotly-plot .plotly .legendtext {
+  .js-plotly-plot .plotly .legend .legendtext {
     font-size: 14px !important;
     line-height: 1.4 !important;
     padding: 4px 0 !important;
   }
 
-  .js-plotly-plot .plotly .legendtoggle {
+  .js-plotly-plot .plotly .legend .legendtoggle {
     padding: 8px !important;
     margin: 2px 0 !important;
     border-radius: 4px !important;
     touch-action: manipulation !important;
   }
 
-  .js-plotly-plot .plotly .legendtoggle:hover {
+  .js-plotly-plot .plotly .legend .legendtoggle:hover {
     background-color: rgba(0, 0, 0, 0.05) !important;
   }
 
-  .js-plotly-plot .plotly .legendtoggle:active {
+  .js-plotly-plot .plotly .legend .legendtoggle:active {
     background-color: rgba(0, 0, 0, 0.1) !important;
   }
 
   /* Improve touch targets */
-  .js-plotly-plot .plotly .legendtoggle rect {
+  .js-plotly-plot .plotly .legend .legendtoggle rect {
     width: 24px !important;
     height: 24px !important;
     rx: 4px !important;
@@ -158,7 +170,7 @@ body {
   text-align: center;
   background-color: var(--card-background);
   border-top: 1px solid var(--border-color);
-  margin-top: auto;
+  margin-top: 0;
 }
 
 .footer a {
@@ -168,6 +180,11 @@ body {
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+/* UI5 Link */
+ui5-link {
+  font-size: 10px;
 }
 
 /* Responsive Design */
