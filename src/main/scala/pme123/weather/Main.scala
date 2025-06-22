@@ -41,7 +41,7 @@ object Main:
       div(
         className := "footer",
         Link(
-          _.href   := openMeteoForcastUrl,
+          _.href   := openMeteoApiUI,
           _.target := LinkTarget._blank,
           "Data provided by OpenMeteo (REST APIs)"
         )
