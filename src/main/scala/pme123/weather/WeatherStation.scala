@@ -10,6 +10,7 @@ case class WeatherStationGroupDiff(
                                     label: String,
                                     threshold: Int,
                                     stationDiffs: Seq[WeatherStationDiff],
-                                    windStations: Seq[WeatherStation]
+                                    windStations: Seq[WeatherStation],
+                                    findings: Option[String] = None
 )
 

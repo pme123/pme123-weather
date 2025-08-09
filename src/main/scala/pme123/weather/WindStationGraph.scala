@@ -103,8 +103,8 @@ object WindStationGraph:
   lazy val temperatureScatter: ToScatter = _.map(_.temperature_2m)
 
   lazy val allOptions     = Seq[(String, String, ToScatter)](
-    ("Wind speed (10m)", "#4CAF50", windSpeedScatter),
-    ("Wind gust (10m)", "#2196F3", windGustScatter),
+    ("Wind speed (kn 10m)", "#4CAF50", windSpeedScatter),
+    ("Wind gust (kn 10m)", "#2196F3", windGustScatter),
     ("Temperature (2m)", "#FF9800", temperatureScatter),
     ("Pressure at Sea Level (hPa - 1000hPa)", "#9C27B0", _.map(_.pressure_msl - 1000))
   )
