@@ -27,6 +27,7 @@
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-generic_sjs1_3/0.14.9/circe-generic_sjs1_3-0.14.9.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-parser_sjs1_3/0.14.9/circe-parser_sjs1_3-0.14.9.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/plotly-scala/plotly-render_sjs1_2.13/0.8.5/plotly-render_sjs1_2.13-0.8.5.jar",
+            "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalameta/munit_sjs1_3/1.0.0/munit_sjs1_3-1.0.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15/scala-library-2.13.15.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-javalib/1.17.0/scalajs-javalib-1.17.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-scalalib_2.13/2.13.14%2B1.16.0/scalajs-scalalib_2.13-2.13.14%2B1.16.0.jar",
@@ -43,6 +44,8 @@
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-scalajs_sjs1_3/0.14.9/circe-scalajs_sjs1_3-0.14.9.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/plotly-scala/plotly-core_sjs1_2.13/0.8.5/plotly-core_sjs1_2.13-0.8.5.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/github/alexarchambault/argonaut-shapeless_6.3_sjs1_2.13/1.3.1/argonaut-shapeless_6.3_sjs1_2.13-1.3.1.jar",
+            "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalameta/munit-diff_sjs1_3/1.0.0/munit-diff_sjs1_3-1.0.0.jar",
+            "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-junit-test-runtime_2.13/1.16.0/scalajs-junit-test-runtime_2.13-1.16.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-dom_sjs1_3/2.8.0/scalajs-dom_sjs1_3-2.8.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/app/tulz/tuplez-full-light_sjs1_3/0.4.0/tuplez-full-light_sjs1_3-0.4.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/io/github/cquiroz/scala-java-time_sjs1_3/2.5.0/scala-java-time_sjs1_3-2.5.0.jar",
@@ -184,6 +187,11 @@
                 {
                     "names": [
                         "hedgehog.sbt.Framework"
+                    ]
+                },
+                {
+                    "names": [
+                        "munit.Framework"
                     ]
                 }
             ],
@@ -844,6 +852,23 @@
                     ]
                 },
                 {
+                    "organization": "org.scalameta",
+                    "name": "munit_sjs1_3",
+                    "version": "1.0.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "munit_sjs1_3",
+                            "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalameta/munit_sjs1_3/1.0.0/munit_sjs1_3-1.0.0.jar"
+                        },
+                        {
+                            "name": "munit_sjs1_3",
+                            "classifier": "sources",
+                            "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalameta/munit_sjs1_3/1.0.0/munit_sjs1_3-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
                     "organization": "org.scala-js",
                     "name": "scalajs-test-interface_2.13",
                     "version": "1.17.0",
@@ -857,6 +882,40 @@
                             "name": "scalajs-test-interface_2.13",
                             "classifier": "sources",
                             "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-test-interface_2.13/1.17.0/scalajs-test-interface_2.13-1.17.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scalameta",
+                    "name": "munit-diff_sjs1_3",
+                    "version": "1.0.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "munit-diff_sjs1_3",
+                            "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalameta/munit-diff_sjs1_3/1.0.0/munit-diff_sjs1_3-1.0.0.jar"
+                        },
+                        {
+                            "name": "munit-diff_sjs1_3",
+                            "classifier": "sources",
+                            "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scalameta/munit-diff_sjs1_3/1.0.0/munit-diff_sjs1_3-1.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-js",
+                    "name": "scalajs-junit-test-runtime_2.13",
+                    "version": "1.16.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scalajs-junit-test-runtime_2.13",
+                            "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-junit-test-runtime_2.13/1.16.0/scalajs-junit-test-runtime_2.13-1.16.0.jar"
+                        },
+                        {
+                            "name": "scalajs-junit-test-runtime_2.13",
+                            "classifier": "sources",
+                            "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-junit-test-runtime_2.13/1.16.0/scalajs-junit-test-runtime_2.13-1.16.0-sources.jar"
                         }
                     ]
                 }

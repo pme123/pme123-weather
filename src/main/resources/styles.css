@@ -53,6 +53,16 @@ body {
   box-sizing: border-box;
 }
 
+/* Test Controls */
+.test-controls {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
 /* Tab Container */
 .ui5-tabcontainer {
   background-color: var(--card-background);

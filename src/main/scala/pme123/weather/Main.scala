@@ -9,7 +9,8 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 import scala.scalajs.js.annotation.JSExportTopLevel
-import openmeteo.openMeteoApiUI
+import pme123.weather.openmeteo.openMeteoApiUI
+import pme123.weather.meteoschweiz.meteoSwissApiUI
 
 object Main:
 
@@ -45,15 +46,42 @@ object Main:
       ),
       div(
         className := "main-content",
+        div(
+          className := "test-controls",
+          Button(
+            _.design := ButtonDesign.Emphasized,
+            _.events.onClick --> { _ =>
+              println("🧪 Running MeteoSwiss Client Tests...")
+              pme123.weather.meteoschweiz.MeteoSwissClientTest.runAllTests()
+            },
+            "🇨🇭 Test MeteoSwiss Client (Mock)"
+          ),
+          " ",
+          Button(
+            _.design := ButtonDesign.Default,
+            _.events.onClick --> { _ =>
+              println("🌐 Testing Real MeteoSwiss API...")
+              pme123.weather.meteoschweiz.MeteoSwissClientTest.testRealAPI()
+            },
+            "🌐 Test Real API"
+          )
+        ),
         WeatherTabs(selectedTabVar),
         WeatherView(selectedTabVar)
       ),
       div(
         className := "footer",
+        "🇨🇭 Testing with ",
+        Link(
+          _.href   := meteoSwissApiUI,
+          _.target := LinkTarget._blank,
+          "MeteoSwiss ICON-CH2 API"
+        ),
+        " | Fallback: ",
         Link(
           _.href   := openMeteoApiUI,
           _.target := LinkTarget._blank,
-          "Data provided by OpenMeteo (REST APIs)"
+          "OpenMeteo"
         )
       )
     )

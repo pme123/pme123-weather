@@ -10,7 +10,8 @@ import org.scalajs.dom.HTMLDivElement
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.scalajs.js.Object.keys
-import openmeteo.OpenMeteoClient
+import pme123.weather.openmeteo.OpenMeteoClient
+import pme123.weather.meteoschweiz.{MeteoSwissClient, MeteoSwissClientTest}
 
 object WeatherView:
   val weatherDataVar  = Var(Seq.empty[WeatherStationData])
@@ -74,6 +75,10 @@ object WeatherView:
   end apply
 
   private def fetchWeatherData(): Unit =
+    // Run MeteoSwiss tests in the console (commented out due to timezone issues)
+    // println("🧪 Running MeteoSwiss Client Tests...")
+    // MeteoSwissClientTest.runAllTests()
+
     def fetch(meteoClient: MeteoClient) =
       Future.sequence(
         allStations
@@ -84,8 +89,13 @@ object WeatherView:
                 .map: data =>
                   WeatherStationData(station, data),
       )
-    fetch(OpenMeteoClient).map:
+    // Enable MeteoSwiss for real API testing
+    MeteoSwissClient.setTestMode(false) // Disable test mode for real API calls
+    fetch(MeteoSwissClient).map:
       weatherDataVar.set
+    // Fallback to OpenMeteo if needed
+  //  fetch(OpenMeteoClient).map:
+  //    weatherDataVar.set
   //  fetch(HOpenMeteoClient).map:
   //    weatherHDataVar.set
 
