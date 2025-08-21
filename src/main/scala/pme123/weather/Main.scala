@@ -1,3 +1,4 @@
+
 package pme123.weather
 
 // src/main/scala/Main.scala
@@ -26,10 +27,18 @@ object Main:
       className := "app-container",
       Bar(
         _.design           := BarDesign.Header,
-        _.slots.endContent := Link(
-          _.href   := "https://github.com/pme123/pme123-weather",
-          _.target := LinkTarget._blank,
-          "GitHub"
+        _.slots.endContent := div(
+          Link(
+            _.href   := "https://pme123.github.io/pme123-windspotter",
+            _.target := LinkTarget._blank,
+            "Windspotter"
+          ),
+          " | ",
+          Link(
+            _.href   := "https://github.com/pme123/pme123-weather",
+            _.target := LinkTarget._blank,
+            "GitHub"
+          )
         ),
         Title(_.size := TitleLevel.H4, "Weather Analysis Dashboard")
       ),

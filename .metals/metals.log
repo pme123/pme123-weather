@@ -97,3 +97,9 @@ Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with cod
 
 Aug 21, 2025 1:59:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2025.08.21 14:03:01 INFO  compiling root (16 scala sources)
+2025.08.21 14:03:07 INFO  time: compiled root in 5.95s
+2025.08.21 14:07:35 INFO  compiling root (1 scala source)
+2025.08.21 14:07:36 INFO  time: compiled root in 1.17s
+2025.08.21 14:08:08 INFO  compiling root (1 scala source)
+2025.08.21 14:08:08 INFO  time: compiled root in 0.62s

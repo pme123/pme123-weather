@@ -33,6 +33,16 @@ body {
   color: white !important;
 }
 
+.ui5-bar ui5-link {
+  color: white !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+}
+
+.ui5-bar ui5-link:hover {
+  text-decoration: underline !important;
+}
+
 /* Main Content */
 .main-content {
   flex: 1;
@@ -184,7 +194,7 @@ body {
 
 /* UI5 Link */
 ui5-link {
-  font-size: 10px;
+  font-size: 14px;
 }
 
 /* Responsive Design */
