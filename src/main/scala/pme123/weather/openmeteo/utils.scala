@@ -1,4 +1,4 @@
-package pme123.weather
+package pme123.weather.openmeteo
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

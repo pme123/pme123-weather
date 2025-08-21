@@ -1,16 +1,17 @@
 package pme123.weather
+package openmeteo
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import io.circe
 import io.circe.generic.auto.*
 import sttp.client3.*
 import sttp.client3.circe.*
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+object HOpenMeteoClient extends MeteoClient:
 
-
-object OpenMeteoClient extends MeteoClient:
-  
   def fetchWeatherData(latitude: Double, longitude: Double): Future[Vector[HourlyDataSet]] =
     for
       response <- fetchfromServer(latitude, longitude)
@@ -28,11 +29,11 @@ object OpenMeteoClient extends MeteoClient:
 
   def fetchfromServer(
       latitude: Double,
-      longitude: Double,
+      longitude: Double
   ): Future[WeatherResponse] =
     val backend = FetchBackend()
     val url =
-      uri"$openMeteoForcastUrl?timezone=Europe/Berlin&latitude=$latitude&longitude=$longitude&hourly=temperature_2m,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
+      uri"$openMeteoArchiveUrl?timezone=Europe/Berlin&start_date=2024-01-15&end_date=2024-09-25&latitude=$latitude&longitude=$longitude&hourly=temperature_2m,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
 
     val request = basicRequest.get(url).response(asJson[WeatherResponse])
 
@@ -42,6 +43,4 @@ object OpenMeteoClient extends MeteoClient:
 
   end fetchfromServer
 
-
-    
-end OpenMeteoClient
+end HOpenMeteoClient

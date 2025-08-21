@@ -10,6 +10,7 @@ import org.scalajs.dom.HTMLDivElement
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.scalajs.js.Object.keys
+import openmeteo.OpenMeteoClient
 
 object WeatherView:
   val weatherDataVar  = Var(Seq.empty[WeatherStationData])

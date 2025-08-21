@@ -55,4 +55,4 @@ build/
 /ogd-smn_meta_stations.csv
 /test.json
 .bloop/
-.metals/metals.log
+.metals/

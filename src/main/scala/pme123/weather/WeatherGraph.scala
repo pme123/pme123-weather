@@ -5,6 +5,7 @@ import plotly.*
 import plotly.Plotly.*
 import plotly.element.*
 import plotly.layout.*
+import openmeteo.tickformat
 
 object WeatherGraph:
 

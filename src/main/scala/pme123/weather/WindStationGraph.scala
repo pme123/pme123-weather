@@ -7,6 +7,7 @@ import plotly.layout.*
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import openmeteo.tickformat
 
 object WindStationGraph:
 

@@ -9,6 +9,7 @@ import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 
 import scala.scalajs.js.annotation.JSExportTopLevel
+import openmeteo.openMeteoApiUI
 
 object Main:
 

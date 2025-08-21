@@ -103,3 +103,119 @@ INFO: Unsupported notification method: $/setTrace
 2025.08.21 14:07:36 INFO  time: compiled root in 1.17s
 2025.08.21 14:08:08 INFO  compiling root (1 scala source)
 2025.08.21 14:08:08 INFO  time: compiled root in 0.62s
+2025.08.21 14:27:50 INFO  compiling root (1 scala source)
+2025.08.21 14:27:51 INFO  time: compiled root in 1.27s
+2025.08.21 14:28:00 INFO  compiling root (2 scala sources)
+2025.08.21 14:28:00 INFO  time: compiled root in 0.66s
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  be.doeraene.webcomponents.ui5.Title$RawImport$ needs to be imported from module '@ui5/webcomponents/... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_be.doeraene.webcompo..._14-28-09-432.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from constructor be.doeraene.webcomponents.ui5.Title$.<init>()void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from construc..._14-28-09-441.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from private pme123.weather.Main$.page()com.raquo.laminar.nodes.ReactiveHtmlElement (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-444.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.Main$.main$$anonfun$2()com.raquo.laminar.nodes.ReactiveEle... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-447.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from pme123.weather.Main$.main([java.lang.String)void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-449.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  exported to JavaScript with @JSExport (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_exported to JavaScri..._14-28-09-451.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  involving instantiated classes: (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_involving instantiat..._14-28-09-455.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  pme123.weather.Main$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Main$_14-28-09-458.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  be.doeraene.webcomponents.ui5.Bar$RawImport$ needs to be imported from module '@ui5/webcomponents/di... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_be.doeraene.webcompo..._14-28-09-461.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from constructor be.doeraene.webcomponents.ui5.Bar$.<init>()void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from construc..._14-28-09-464.md")
+2025.08.21 14:28:09 INFO  called from private pme123.weather.Main$.page()com.raquo.laminar.nodes.ReactiveHtmlElement (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-444.md")
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.Main$.main$$anonfun$2()com.raquo.laminar.nodes.ReactiveEle... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-447.md")
+2025.08.21 14:28:09 INFO  called from pme123.weather.Main$.main([java.lang.String)void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-449.md")
+2025.08.21 14:28:09 INFO  exported to JavaScript with @JSExport (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_exported to JavaScri..._14-28-09-451.md")
+2025.08.21 14:28:09 INFO  involving instantiated classes: (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_involving instantiat..._14-28-09-455.md")
+2025.08.21 14:28:09 INFO  pme123.weather.Main$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Main$_14-28-09-458.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  be.doeraene.webcomponents.ui5.Tab$RawImport$ needs to be imported from module '@ui5/webcomponents/di... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_be.doeraene.webcompo..._14-28-09-471.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from constructor be.doeraene.webcomponents.ui5.Tab$.<init>()void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from construc..._14-28-09-474.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from be.doeraene.webcomponents.ui5.TabContainer$.tab()be.doeraene.webcomponents.ui5.Tab$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from be.doera..._14-28-09-476.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.WeatherTabs$.apply$$anonfun$2(pme123.weather.WeatherStatio... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-478.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from pme123.weather.WeatherTabs$.apply(com.raquo.airstream.state.Var)com.raquo.laminar.nodes.... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-480.md")
+2025.08.21 14:28:09 INFO  called from private pme123.weather.Main$.page()com.raquo.laminar.nodes.ReactiveHtmlElement (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-444.md")
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.Main$.main$$anonfun$2()com.raquo.laminar.nodes.ReactiveEle... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-447.md")
+2025.08.21 14:28:09 INFO  called from pme123.weather.Main$.main([java.lang.String)void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-449.md")
+2025.08.21 14:28:09 INFO  exported to JavaScript with @JSExport (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_exported to JavaScri..._14-28-09-451.md")
+2025.08.21 14:28:09 INFO  involving instantiated classes: (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_involving instantiat..._14-28-09-455.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  be.doeraene.webcomponents.ui5.TabContainer$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_be.doeraene.webcompo..._14-28-09-485.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  pme123.weather.WeatherTabs$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Weath..._14-28-09-487.md")
+2025.08.21 14:28:09 INFO  pme123.weather.Main$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Main$_14-28-09-458.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  be.doeraene.webcomponents.ui5.TabContainer$RawImport$ needs to be imported from module '@ui5/webcomp... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_be.doeraene.webcompo..._14-28-09-491.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from constructor be.doeraene.webcomponents.ui5.TabContainer$.<init>()void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from construc..._14-28-09-492.md")
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.WeatherTabs$.apply$$anonfun$2(pme123.weather.WeatherStatio... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-478.md")
+2025.08.21 14:28:09 INFO  called from pme123.weather.WeatherTabs$.apply(com.raquo.airstream.state.Var)com.raquo.laminar.nodes.... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-480.md")
+2025.08.21 14:28:09 INFO  called from private pme123.weather.Main$.page()com.raquo.laminar.nodes.ReactiveHtmlElement (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-444.md")
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.Main$.main$$anonfun$2()com.raquo.laminar.nodes.ReactiveEle... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-447.md")
+2025.08.21 14:28:09 INFO  called from pme123.weather.Main$.main([java.lang.String)void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-449.md")
+2025.08.21 14:28:09 INFO  exported to JavaScript with @JSExport (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_exported to JavaScri..._14-28-09-451.md")
+2025.08.21 14:28:09 INFO  involving instantiated classes: (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_involving instantiat..._14-28-09-455.md")
+2025.08.21 14:28:09 INFO  pme123.weather.WeatherTabs$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Weath..._14-28-09-487.md")
+2025.08.21 14:28:09 INFO  pme123.weather.Main$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Main$_14-28-09-458.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  be.doeraene.webcomponents.ui5.Link$RawImport$ needs to be imported from module '@ui5/webcomponents/d... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_be.doeraene.webcompo..._14-28-09-502.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from constructor be.doeraene.webcomponents.ui5.Link$.<init>()void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from construc..._14-28-09-505.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.Main$.page$$anonfun$2(be.doeraene.webcomponents.ui5.Bar$)c... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-507.md")
+2025.08.21 14:28:09 INFO  called from private pme123.weather.Main$.page()com.raquo.laminar.nodes.ReactiveHtmlElement (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-444.md")
+2025.08.21 14:28:09 INFO  called from private static pme123.weather.Main$.main$$anonfun$2()com.raquo.laminar.nodes.ReactiveEle... (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from private ..._14-28-09-447.md")
+2025.08.21 14:28:09 INFO  called from pme123.weather.Main$.main([java.lang.String)void (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_called from pme123.w..._14-28-09-449.md")
+2025.08.21 14:28:09 INFO  exported to JavaScript with @JSExport (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_exported to JavaScri..._14-28-09-451.md")
+2025.08.21 14:28:09 INFO  involving instantiated classes: (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_involving instantiat..._14-28-09-455.md")
+2025.08.21 14:28:09 INFO  pme123.weather.Main$ (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_pme123.weather.Main$_14-28-09-458.md")
+2025.08.21 14:28:09 INFO  Created report: Optional.empty
+2025.08.21 14:28:09 INFO  JavaScript linking failed with 'There were linking errors' (full report at: "/Users/taamepar/dev/Github/pme123/pme123-weather/.metals/.reports/bloop/2025-08-21/r_JavaScript linking f..._14-28-09-513.md")
+2025.08.21 14:28:35 INFO  compiling root (4 scala sources)
+2025.08.21 14:28:36 INFO  time: compiled root in 1.06s
+2025.08.21 14:28:36 INFO  compiling root (4 scala sources)
+2025.08.21 14:28:36 INFO  time: compiled root in 0.74s
+2025.08.21 14:29:08 INFO  compiling root (16 scala sources)
+2025.08.21 14:29:08 INFO  time: compiled root in 0.99s
+2025.08.21 14:29:09 INFO  compiling root (16 scala sources)
+2025.08.21 14:29:09 INFO  time: compiled root in 0.85s
+2025.08.21 14:29:19 INFO  compiling root (16 scala sources)
+2025.08.21 14:29:19 WARN  Invalid text document uri received from build server: file:///Users/taamepar/dev/Github/pme123/pme123-weather/src/main/scala/pme123/weather/openmeteo/MeteoClient.scala
+2025.08.21 14:29:19 INFO  time: compiled root in 0.82s
+2025.08.21 14:29:19 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:21 INFO  time: compiled root in 0.83s
+Aug 21, 2025 2:29:24 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 199
+2025.08.21 14:29:29 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:29 INFO  time: compiled root in 0.83s
+2025.08.21 14:29:31 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:31 INFO  time: compiled root in 0.73s
+2025.08.21 14:29:33 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:33 INFO  time: compiled root in 0.71s
+2025.08.21 14:29:34 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:34 INFO  time: compiled root in 0.81s
+2025.08.21 14:29:37 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:37 INFO  time: compiled root in 0.72s
+2025.08.21 14:29:45 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:45 INFO  time: compiled root in 0.77s
+2025.08.21 14:29:47 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:47 INFO  time: compiled root in 0.72s
+2025.08.21 14:29:56 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:56 INFO  time: compiled root in 0.65s
+2025.08.21 14:29:58 INFO  compiling root (7 scala sources)
+2025.08.21 14:29:58 INFO  time: compiled root in 0.27s
+2025.08.21 14:30:11 INFO  compiling root (7 scala sources)
+2025.08.21 14:30:11 INFO  time: compiled root in 0.33s
+2025.08.21 14:30:20 INFO  compiling root (6 scala sources)
+2025.08.21 14:30:20 INFO  time: compiled root in 0.83s
+2025.08.21 14:30:20 INFO  compiling root (4 scala sources)
+2025.08.21 14:30:21 INFO  time: compiled root in 0.56s
