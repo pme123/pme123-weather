@@ -1,0 +1,99 @@
+2025.08.21 13:06:24 INFO  Started: Metals version 1.6.2 in folders '/Users/taamepar/dev/Github/pme123/pme123-weather' for client Visual Studio Code 1.103.1.
+Aug 21, 2025 1:06:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2025.08.21 13:06:29 INFO  running '/Users/taamepar/Library/Application Support/Coursier/bin/sbt -Dbloop.export-jar-classifiers=sources bloopInstall'
+2025.08.21 13:06:30 WARN  no build target for: /Users/taamepar/dev/Github/pme123/pme123-weather/project/metals.sbt
+2025.08.21 13:06:30 WARN  no build target for: /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/metals.sbt
+2025.08.21 13:06:30 INFO  no build target found for /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/metals.sbt. Using presentation compiler with project's scala-library version: 3.3.6
+2025.08.21 13:06:30 INFO  [info] welcome to sbt 1.10.7 (Eclipse Adoptium Java 23.0.2)
+2025.08.21 13:06:31 INFO  no build target found for /Users/taamepar/dev/Github/pme123/pme123-weather/project/metals.sbt. Using presentation compiler with project's scala-library version: 3.3.6
+2025.08.21 13:06:30 INFO  [info] loading global plugins from /Users/taamepar/.sbt/1.0/plugins
+2025.08.21 13:06:33 INFO  [info] loading settings for project pme123-weather-build-build-build from metals.sbt...
+2025.08.21 13:06:33 INFO  [info] loading project definition from /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/project
+2025.08.21 13:06:33 INFO  [info] loading settings for project pme123-weather-build-build from metals.sbt...
+2025.08.21 13:06:33 INFO  [info] loading project definition from /Users/taamepar/dev/Github/pme123/pme123-weather/project/project
+2025.08.21 13:06:33 INFO  [success] Generated .bloop/pme123-weather-build-build.json
+2025.08.21 13:06:33 INFO  [success] Total time: 1 s, completed 21 Aug 2025, 13:06:34
+2025.08.21 13:06:34 INFO  [info] loading settings for project pme123-weather-build from metals.sbt, plugins.sbt...
+2025.08.21 13:06:34 INFO  [info] loading project definition from /Users/taamepar/dev/Github/pme123/pme123-weather/project
+2025.08.21 13:06:35 INFO  [success] Generated .bloop/pme123-weather-build.json
+2025.08.21 13:06:35 INFO  [success] Total time: 1 s, completed 21 Aug 2025, 13:06:36
+2025.08.21 13:06:36 ERROR /Users/taamepar/dev/Github/pme123/pme123-weather/build.sbt:10: warning: method sonatypeRepo in class ResolverFunctions is deprecated (since 1.7.0): Use sonatypeOssRepos instead e.g. `resolvers ++= Resolver.sonatypeOssRepos("snapshots")`
+2025.08.21 13:06:36 ERROR resolvers += Resolver.sonatypeRepo("snapshots")
+2025.08.21 13:06:36 ERROR                       ^
+2025.08.21 13:06:35 INFO  [info] loading settings for project root from build.sbt...
+2025.08.21 13:06:35 INFO  [info] set current project to pme123-weather (in build file:/Users/taamepar/dev/Github/pme123/pme123-weather/)
+2025.08.21 13:06:35 INFO  [success] Generated .bloop/root-test.json
+2025.08.21 13:06:35 INFO  [success] Generated .bloop/root.json
+2025.08.21 13:06:36 INFO  [success] Total time: 0 s, completed 21 Aug 2025, 13:06:36
+2025.08.21 13:06:37 INFO  time: ran 'sbt bloopInstall' in 7.04s
+2025.08.21 13:06:37 INFO  Attempting to connect to the build server...
+2025.08.21 13:06:37 INFO  Found a Bloop server running
+2025.08.21 13:06:37 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.21 13:06:37 INFO  Attempting to connect to the build server...
+2025.08.21 13:06:37 INFO  Found a Bloop server running
+2025.08.21 13:06:37 INFO  Attempting to connect to the build server...
+2025.08.21 13:06:37 INFO  Found a Bloop server running
+2025.08.21 13:06:37 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.21 13:06:37 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.21 13:06:37 INFO  time: Connected to build server in 0.41s
+2025.08.21 13:06:37 INFO  Connected to Build server: Bloop v2.0.13
+2025.08.21 13:06:42 INFO  time: indexed workspace in 5.42s
+2025.08.21 13:06:44 INFO  Generated JavaScript file '/Users/taamepar/dev/Github/pme123/pme123-weather/.bloop/root/root-test-js'
+2025.08.21 13:06:44 INFO  Scala test classes not supported by server
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:118)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at bloop.engine.tasks.toolchains.ScalaJsToolchain.discoverTestFrameworks(ScalaJsToolchain.scala:108)
+	at bloop.engine.tasks.TestTask$.$anonfun$discoverTestFrameworks$5(TestTask.scala:234)
+	at bloop.task.Task.$anonfun$runAsync$7(Task.scala:265)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:57)
+	at monix.eval.Task$Map.apply(Task.scala:4604)
+	at monix.eval.Task$Map.apply(Task.scala:4600)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:170)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.run(TaskCreate.scala:252)
+	at monix.execution.internal.Trampoline.monix$execution$internal$Trampoline$$immediateLoop(Trampoline.scala:66)
+	at monix.execution.internal.Trampoline.startLoop(Trampoline.scala:32)
+	at monix.execution.schedulers.TrampolineExecutionContext$JVMOptimalTrampoline.startLoop(TrampolineExecutionContext.scala:132)
+	at monix.execution.internal.Trampoline.execute(Trampoline.scala:40)
+	at monix.execution.schedulers.TrampolineExecutionContext.execute(TrampolineExecutionContext.scala:57)
+	at monix.execution.schedulers.BatchingScheduler.execute(BatchingScheduler.scala:50)
+	at monix.execution.schedulers.BatchingScheduler.execute$(BatchingScheduler.scala:47)
+	at monix.execution.schedulers.AsyncScheduler.execute(AsyncScheduler.scala:31)
+	at monix.execution.schedulers.StartAsyncBatchRunnable.run(StartAsyncBatchRunnable.scala:42)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1726)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1717)
+	at java.base/java.util.concurrent.ForkJoinTask$InterruptibleTask.exec(ForkJoinTask.java:1641)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1460)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2036)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:189)
+Caused by: org.scalajs.testing.common.RPCCore$ClosedException: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	at org.scalajs.testing.common.RPCCore.helpClose(RPCCore.scala:223)
+	at org.scalajs.testing.common.RPCCore.close(RPCCore.scala:215)
+	at org.scalajs.testing.adapter.JSEnvRPC.close(JSEnvRPC.scala:69)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1(JSEnvRPC.scala:60)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1$adapted(JSEnvRPC.scala:60)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:74)
+	... 7 more
+Caused by: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	... 10 more
+Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with code 1
+	at org.scalajs.jsenv.ExternalJSRun$$anon$1.run(ExternalJSRun.scala:200)
+
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:204)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:41)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
+Aug 21, 2025 1:59:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace

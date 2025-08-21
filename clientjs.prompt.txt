@@ -1,0 +1,263 @@
+You are an experienced Scala.js developer. Create a new Scala.js project with modern architecture based on the following specifications:
+
+## TECHNOLOGY STACK
+- Scala.js  with Scala 
+- Laminar  for reactive UI
+- UI5 Web Components  (be.doeraene.webcomponents.ui5)
+- Vite  as build tool and development server
+- SBT as Scala build tool
+
+Use the newest versions of these libraries.
+
+## PROJECT STRUCTURE
+Create the following directory structure:
+```
+project-name/
+├── build.sbt
+├── package.json
+├── vite.config.js
+├── index.html
+├── README.md
+├── .gitignore
+├── project/
+│   ├── build.properties
+│   └── plugins.sbt
+├── src/main/
+│   ├── scala/[package-name]/
+│   │   ├── Main.scala
+│   │   └── HelloWorldView.scala
+│   └── resources/
+│       └── styles.css
+└── public/
+```
+
+## CONFIGURATION FILES
+
+### build.sbt
+```scala
+import org.scalajs.linker.interface.ModuleSplitStyle
+
+ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / scalaVersion := "3.6.2"
+
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+lazy val root = (project in file("."))
+  .settings(
+    name                            := "project-name",
+    sourcesInBase                   := false,
+    scalaJSUseMainModuleInitializer := true,
+    scalaJSLinkerConfig ~= {
+      _.withModuleKind(ModuleKind.ESModule)
+        .withModuleSplitStyle(
+          ModuleSplitStyle.SmallModulesFor(List("project-name"))
+        )
+    },
+    libraryDependencies ++= Seq(
+      "com.raquo"   %%% "laminar"            % "17.2.0",
+      "be.doeraene" %%% "web-components-ui5" % "2.1.0"
+    )
+  ).enablePlugins(ScalaJSPlugin)
+```
+
+### package.json
+```json
+{
+  "name": "project-name",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@scala-js/vite-plugin-scalajs": "^1.0.0",
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@ui5/webcomponents": "^2.1.0",
+    "@ui5/webcomponents-compat": "2.1.0",
+    "@ui5/webcomponents-fiori": "2.1.0",
+    "@ui5/webcomponents-icons": "2.1.0"
+  }
+}
+```
+
+### project/plugins.sbt
+```scala
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.17.0")
+```
+
+### project/build.properties
+```
+sbt.version=1.9.6
+```
+
+### vite.config.js
+```javascript
+import { defineConfig } from "vite";
+import scalaJSPlugin from "@scala-js/vite-plugin-scalajs";
+
+export default defineConfig({
+  plugins: [scalaJSPlugin()],
+});
+```
+
+## HTML TEMPLATE (index.html)
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta property="og:title" content="Project Title" />
+    <meta property="og:description" content="Project Description" />
+    <meta property="og:type" content="website" />
+    <title>Project Name</title>
+    <style data-ui5-font-face="">
+      @font-face {
+        font-family: "72";
+        font-style: normal;
+        font-weight: 400;
+        src: local("72-Regular");
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
+```
+
+## SCALA CODE
+
+### Main.scala
+```scala
+package [package-name]
+
+import be.doeraene.webcomponents.ui5.*
+import be.doeraene.webcomponents.ui5.configkeys.*
+import com.raquo.laminar.api.L.{*, given}
+import org.scalajs.dom
+
+import scala.scalajs.js.annotation.JSExportTopLevel
+
+object Main:
+
+  @JSExportTopLevel("main")
+  def main(args: Array[String] = Array.empty): Unit =
+    lazy val appContainer = dom.document.querySelector("#app")
+    renderOnDomContentLoaded(appContainer, page)
+  end main
+
+  private lazy val page =
+    div(
+      width := "100%",
+      height := "100%",
+      className := "app-container",
+      Bar(
+        _.design := BarDesign.Header,
+        _.slots.endContent := Link(
+          _.href := "https://github.com/username/project-name",
+          _.target := LinkTarget._blank,
+          "GitHub"
+        ),
+        Title(_.size := TitleLevel.H4, "Project Title")
+      ),
+      div(
+        className := "main-content",
+        HelloWorldView()
+      ),
+      div(
+        className := "footer",
+        p("Built with Scala.js + Laminar + UI5 Web Components")
+      )
+    )
+end Main
+```
+
+### HelloWorldView.scala
+```scala
+package [package-name]
+
+import be.doeraene.webcomponents.ui5.*
+import com.raquo.laminar.api.L.{*, given}
+
+object HelloWorldView {
+
+  def apply(): HtmlElement = {
+    div(
+      className := "hello-world-container",
+      renderExample()
+    )
+  }
+
+  def renderExample(): HtmlElement = {
+    val nameVar = Var(initial = "World")
+    
+    div(
+      Card(
+        _.slots.header := CardHeader(
+          _.titleText := "Hello World Demo",
+          _.subtitleText := "Interactive Laminar Example"
+        ),
+        div(
+          className := "card-content",
+          Label(
+            _.forId := "name-input",
+            "Your name:"
+          ),
+          Input(
+            _.id := "name-input",
+            _.placeholder := "Enter your name here",
+            _.events.onInput.mapToValue --> nameVar
+          ),
+          div(
+            className := "greeting",
+            Title(
+              _.size := TitleLevel.H3,
+              "Hello, ",
+              text <-- nameVar.signal.map(_.toUpperCase),
+              "! 👋"
+            )
+          )
+        )
+      )
+    )
+  }
+}
+```
+
+## CSS STYLING (src/main/resources/styles.css)
+Create modern CSS styles with CSS Custom Properties for:
+- Responsive design
+- UI5 component styling
+- Card-based layout
+- Mobile-optimized display
+
+## README.md TEMPLATE
+Create a complete README.md with:
+- Project description
+- Installation instructions
+- Development workflow
+- Build instructions
+- Technology stack overview
+
+## DEVELOPMENT WORKFLOW
+1. `npm install` - Install JavaScript dependencies
+2. `sbt ~fastLinkJS` - Start Scala.js compiler in watch mode
+3. `npm run dev` - Start Vite development server
+4. Open browser: `http://localhost:5173`
+
+## REQUIREMENTS
+- Use modern Scala 3 syntax
+- Implement reactive UI patterns with Laminar
+- Use UI5 Web Components for professional UI
+- Ensure the project is immediately runnable
+- Add a functional HelloWorld page
+- Replace all placeholders ([package-name], project-name, etc.) with concrete values
+
+Create all necessary files and ensure the project can be started immediately with the specified commands after creation.
