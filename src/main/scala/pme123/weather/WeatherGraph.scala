@@ -31,12 +31,16 @@ object WeatherGraph:
       stationGroupDiff.stationDiffs
         .map:
           case WeatherStationDiffData(station1, station2, color) =>
+            val traceName = s"${station1.name} - ${station2.name}"
+            println(s"📊 Creating trace: $traceName")
+            WeatherLogger.info(s"Creating trace: $traceName")
             Scatter(
               station1.data.map(_.time),
               station1.data.zip(station2.data).map:
                 case (d1, d2) =>
                   d1.pressure_msl - d2.pressure_msl
-            ).withName(s"${station1.name} - ${station2.name}")
+            ).withName(traceName)
+              .withShowlegend(true)
               .withLine(Line()
                 .withColor(Color.StringColor(color))
                 .withWidth(2))
@@ -62,18 +66,18 @@ object WeatherGraph:
       .withPlot_bgcolor(Color.StringColor("rgba(0, 0, 0, 0)"))
       .withShowlegend(true)
       .withAutosize(true)
-      .withMargin(Margin().withL(50).withR(30).withT(50).withB(80))
+      .withMargin(Margin().withL(50).withR(30).withT(50).withB(100))
       .withLegend(Legend()
         .withX(0.5)
-        .withY(-0.2)
+        .withY(-0.15)
         .withBgcolor(Color.StringColor("rgba(255, 255, 255, 0.95)"))
-        .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.2)"))
         .withOrientation(Orientation.Horizontal)
         .withXanchor(Anchor.Center)
         .withYanchor(Anchor.Top)
         .withFont(Font()
-          .withSize(14)
-          .withColor(Color.StringColor("rgba(0, 0, 0, 0.8)"))))
+          .withSize(13)
+          .withColor(Color.StringColor("rgba(0, 0, 0, 1.0)"))))
 
     plot.plot(stationGroupDiff.id, lay)
   end apply

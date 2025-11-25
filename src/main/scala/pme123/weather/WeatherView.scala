@@ -89,12 +89,12 @@ object WeatherView:
                 .map: data =>
                   WeatherStationData(station, data),
       )
-    // Enable MeteoSwiss for real API testing
-    MeteoSwissClient.setTestMode(false) // Disable test mode for real API calls
-    fetch(MeteoSwissClient).map:
+    // Use OpenMeteo for smooth plots while developing MeteoSwiss
+    fetch(OpenMeteoClient).map:
       weatherDataVar.set
-    // Fallback to OpenMeteo if needed
-  //  fetch(OpenMeteoClient).map:
+    // MeteoSwiss testing via button only for now
+  //  MeteoSwissClient.setTestMode(false)
+  //  fetch(MeteoSwissClient).map:
   //    weatherDataVar.set
   //  fetch(HOpenMeteoClient).map:
   //    weatherHDataVar.set

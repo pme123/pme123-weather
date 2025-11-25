@@ -7,7 +7,6 @@ ThisBuild / scalaVersion := "3.6.2"
 
 lazy val plotlyJs = "org.webjars.bower" % "plotly.js" % "1.54.1"
 
-resolvers += Resolver.sonatypeRepo("snapshots")
 
 lazy val root = (project in file("."))
   .settings(
@@ -30,12 +29,6 @@ lazy val root = (project in file("."))
       "io.circe"                      %%% "circe-parser"       % "0.14.9",
       ("org.plotly-scala"             %%% "plotly-render"      % "0.8.5")
         .cross(CrossVersion.for3Use2_13)
-        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13") // Plotly for charting
-    ),
-    jsDependencies ++= Seq(
-      plotlyJs
-        .intransitive()
-        ./("plotly.min.js")
-        .commonJSName("Plotly")
+        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13")
     )
   ).enablePlugins(JSDependenciesPlugin, ScalaJSPlugin)

@@ -20,8 +20,9 @@ object WindStationGraph:
         .map: (name, color, toScatter) =>
           Scatter(
             data.map(_.time),
-            toScatter(data)
+            toScatter(data),
           ).withName(name)
+            .withShowlegend(true)
             .withLine(
               Line()
                 .withColor(Color.StringColor(color))
@@ -54,8 +55,11 @@ object WindStationGraph:
       end match
     end direction
 
+    println(s"🌬️ Creating wind station plot for: ${windStation.name}")
+    WeatherLogger.info(s"Creating wind station plot for: ${windStation.name}")
+
     val lay = Layout()
-      .withTitle(s"${windStation.name}")
+      .withTitle(s"🌬️ ${windStation.name}")
       .withXaxis(Axis()
         .withTickformat(tickformat)
         .withGridcolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
@@ -67,18 +71,18 @@ object WindStationGraph:
       .withPlot_bgcolor(Color.StringColor("rgba(0, 0, 0, 0)"))
       .withShowlegend(true)
       .withAutosize(true)
-      .withMargin(Margin().withL(50).withR(30).withT(50).withB(100))
+      .withMargin(Margin().withL(50).withR(30).withT(50).withB(120))
       .withLegend(Legend()
         .withX(0.5)
-        .withY(-0.3)
+        .withY(-0.2)
         .withBgcolor(Color.StringColor("rgba(255, 255, 255, 0.95)"))
-        .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.1)"))
+        .withBordercolor(Color.StringColor("rgba(0, 0, 0, 0.2)"))
         .withOrientation(Orientation.Horizontal)
         .withXanchor(Anchor.Center)
         .withYanchor(Anchor.Top)
         .withFont(Font()
-          .withSize(14)
-          .withColor(Color.StringColor("rgba(0, 0, 0, 0.8)"))))
+          .withSize(13)
+          .withColor(Color.StringColor("rgba(0, 0, 0, 1.0)"))))
       .withAnnotations(
         data.zipWithIndex
           .collect:

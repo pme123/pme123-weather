@@ -43,10 +43,21 @@ So be aware that loading the page can take some time.
 - Run `npm run dev` to start the webserver (Vite).
 - Open `http://localhost:5173/` in your browser.
 
-## Production
+### Production Build
 
-- Run `./helper.scala` (make sure you have the rights > `chmod +x helper.scala`).
-- Commit and push the changes > this will trigger the GitHub Action to deploy the page.
+1. Create an optimized production build:
+   ```bash
+   git commit -m "My commit message"
+   ```
+
+2. Deploy to GitHub Pages (automated):
+   ```bash
+   git push
+   ```
+
+   This triggers the GitHub Actions workflow to:
+    - creates a production build
+    - deploys to GitHub Pages
 
 ## License
 

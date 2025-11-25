@@ -1406,3 +1406,337 @@ Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with cod
 2025.08.21 20:00:56 INFO  time: compiled root in 0.63s
 Aug 21, 2025 8:09:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2025.08.25 06:07:32 INFO  Started: Metals version 1.6.2 in folders '/Users/taamepar/dev/Github/pme123/pme123-weather' for client Visual Studio Code 1.103.2.
+2025.08.25 06:07:33 INFO  no build target found for /Users/taamepar/dev/Github/pme123/pme123-weather/build.sbt. Using presentation compiler with project's scala-library version: 3.3.6
+2025.08.25 06:07:33 INFO  Attempting to connect to the build server...
+2025.08.25 06:07:33 INFO  No running Bloop server found, starting one.
+2025.08.25 06:07:35 INFO  Starting compilation server
+2025.08.25 06:07:37 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.25 06:07:38 INFO  Attempting to connect to the build server...
+2025.08.25 06:07:38 INFO  Found a Bloop server running
+2025.08.25 06:07:38 INFO  Attempting to connect to the build server...
+2025.08.25 06:07:38 INFO  Found a Bloop server running
+2025.08.25 06:07:37 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.25 06:07:38 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.25 06:07:38 INFO  time: Connected to build server in 4.42s
+2025.08.25 06:07:37 INFO  Connected to Build server: Bloop v2.0.13
+2025.08.25 06:07:44 INFO  time: indexed workspace in 6.64s
+2025.08.25 06:07:46 INFO  Generated JavaScript file '/Users/taamepar/dev/Github/pme123/pme123-weather/.bloop/root/root-test-js'
+2025.08.25 06:07:46 INFO  Scala test classes not supported by server
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:118)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at bloop.engine.tasks.toolchains.ScalaJsToolchain.discoverTestFrameworks(ScalaJsToolchain.scala:108)
+	at bloop.engine.tasks.TestTask$.$anonfun$discoverTestFrameworks$5(TestTask.scala:234)
+	at bloop.task.Task.$anonfun$runAsync$7(Task.scala:265)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:57)
+	at monix.eval.Task$Map.apply(Task.scala:4604)
+	at monix.eval.Task$Map.apply(Task.scala:4600)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:170)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.run(TaskCreate.scala:252)
+	at monix.execution.internal.Trampoline.monix$execution$internal$Trampoline$$immediateLoop(Trampoline.scala:66)
+	at monix.execution.internal.Trampoline.startLoop(Trampoline.scala:32)
+	at monix.execution.schedulers.TrampolineExecutionContext$JVMOptimalTrampoline.startLoop(TrampolineExecutionContext.scala:132)
+	at monix.execution.internal.Trampoline.execute(Trampoline.scala:40)
+	at monix.execution.schedulers.TrampolineExecutionContext.execute(TrampolineExecutionContext.scala:57)
+	at monix.execution.schedulers.BatchingScheduler.execute(BatchingScheduler.scala:50)
+	at monix.execution.schedulers.BatchingScheduler.execute$(BatchingScheduler.scala:47)
+	at monix.execution.schedulers.AsyncScheduler.execute(AsyncScheduler.scala:31)
+	at monix.execution.schedulers.StartAsyncBatchRunnable.run(StartAsyncBatchRunnable.scala:42)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1726)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1717)
+	at java.base/java.util.concurrent.ForkJoinTask$InterruptibleTask.exec(ForkJoinTask.java:1641)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1460)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2036)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:189)
+Caused by: org.scalajs.testing.common.RPCCore$ClosedException: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	at org.scalajs.testing.common.RPCCore.helpClose(RPCCore.scala:223)
+	at org.scalajs.testing.common.RPCCore.close(RPCCore.scala:215)
+	at org.scalajs.testing.adapter.JSEnvRPC.close(JSEnvRPC.scala:69)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1(JSEnvRPC.scala:60)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1$adapted(JSEnvRPC.scala:60)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:74)
+	... 7 more
+Caused by: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	... 10 more
+Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with code 1
+	at org.scalajs.jsenv.ExternalJSRun$$anon$1.run(ExternalJSRun.scala:200)
+
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:204)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:41)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
+2025.08.25 06:07:47 INFO  time: code lens generation in 1.84s
+2025.08.25 06:07:47 INFO  time: code lens generation in 1.84s
+2025.08.27 07:48:56 INFO  Shutting down server
+2025.08.27 07:48:56 INFO  shutting down Metals
+2025.08.27 07:48:57 INFO  Shut down connection with build server.
+2025.08.27 07:48:57 INFO  Shut down connection with build server.
+2025.08.27 07:48:57 INFO  Shut down connection with build server.
+2025.08.27 07:48:56 INFO  Exiting server
+2025.08.27 07:50:35 INFO  Started: Metals version 1.6.2 in folders '/Users/taamepar/dev/Github/pme123/pme123-weather' for client Visual Studio Code 1.103.2.
+2025.08.27 07:50:37 INFO  no build target found for /Users/taamepar/dev/Github/pme123/pme123-weather/build.sbt. Using presentation compiler with project's scala-library version: 3.3.6
+2025.08.27 07:50:37 INFO  Attempting to connect to the build server...
+2025.08.27 07:50:37 INFO  No running Bloop server found, starting one.
+2025.08.27 07:50:41 INFO  Starting compilation server
+2025.08.27 07:50:43 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.27 07:50:44 INFO  Attempting to connect to the build server...
+2025.08.27 07:50:44 INFO  Found a Bloop server running
+2025.08.27 07:50:44 INFO  Attempting to connect to the build server...
+2025.08.27 07:50:44 INFO  Found a Bloop server running
+2025.08.27 07:50:44 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.27 07:50:44 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.08.27 07:50:44 INFO  time: Connected to build server in 7.28s
+2025.08.27 07:50:44 INFO  Connected to Build server: Bloop v2.0.13
+2025.08.27 07:50:51 INFO  time: indexed workspace in 6.59s
+2025.08.27 07:50:53 INFO  Generated JavaScript file '/Users/taamepar/dev/Github/pme123/pme123-weather/.bloop/root/root-test-js'
+2025.08.27 07:50:53 INFO  Scala test classes not supported by server
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:118)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at bloop.engine.tasks.toolchains.ScalaJsToolchain.discoverTestFrameworks(ScalaJsToolchain.scala:108)
+	at bloop.engine.tasks.TestTask$.$anonfun$discoverTestFrameworks$5(TestTask.scala:234)
+	at bloop.task.Task.$anonfun$runAsync$7(Task.scala:265)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:57)
+	at monix.eval.Task$Map.apply(Task.scala:4604)
+	at monix.eval.Task$Map.apply(Task.scala:4600)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:170)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.run(TaskCreate.scala:252)
+	at monix.execution.internal.Trampoline.monix$execution$internal$Trampoline$$immediateLoop(Trampoline.scala:66)
+	at monix.execution.internal.Trampoline.startLoop(Trampoline.scala:32)
+	at monix.execution.schedulers.TrampolineExecutionContext$JVMOptimalTrampoline.startLoop(TrampolineExecutionContext.scala:132)
+	at monix.execution.internal.Trampoline.execute(Trampoline.scala:40)
+	at monix.execution.schedulers.TrampolineExecutionContext.execute(TrampolineExecutionContext.scala:57)
+	at monix.execution.schedulers.BatchingScheduler.execute(BatchingScheduler.scala:50)
+	at monix.execution.schedulers.BatchingScheduler.execute$(BatchingScheduler.scala:47)
+	at monix.execution.schedulers.AsyncScheduler.execute(AsyncScheduler.scala:31)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.startExecution(TaskCreate.scala:236)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.tryOnSuccess(TaskCreate.scala:202)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.onSuccess(TaskCreate.scala:195)
+	at bloop.task.Task$.result$2(Task.scala:465)
+	at bloop.task.Task$.$anonfun$parSequenceUnordered$3(Task.scala:475)
+	at bloop.task.Task$.$anonfun$parSequenceUnordered$3$adapted(Task.scala:473)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:74)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1726)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1717)
+	at java.base/java.util.concurrent.ForkJoinTask$InterruptibleTask.exec(ForkJoinTask.java:1641)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1460)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2036)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:189)
+Caused by: org.scalajs.testing.common.RPCCore$ClosedException: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	at org.scalajs.testing.common.RPCCore.helpClose(RPCCore.scala:223)
+	at org.scalajs.testing.common.RPCCore.close(RPCCore.scala:215)
+	at org.scalajs.testing.adapter.JSEnvRPC.close(JSEnvRPC.scala:69)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1(JSEnvRPC.scala:60)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1$adapted(JSEnvRPC.scala:60)
+	... 8 more
+Caused by: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	... 10 more
+Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with code 1
+	at org.scalajs.jsenv.ExternalJSRun$$anon$1.run(ExternalJSRun.scala:200)
+
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:204)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:41)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
+2025.08.27 07:50:53 INFO  time: code lens generation in 1.77s
+2025.09.17 16:45:20 INFO  Shutting down server
+2025.09.17 16:45:20 INFO  shutting down Metals
+2025.09.17 16:45:20 INFO  Shut down connection with build server.
+2025.09.17 16:45:20 INFO  Shut down connection with build server.
+2025.09.17 16:45:20 INFO  Shut down connection with build server.
+2025.09.17 16:45:20 INFO  Exiting server
+2025.09.17 16:48:44 INFO  Started: Metals version 1.6.2 in folders '/Users/taamepar/dev/Github/pme123/pme123-weather' for client Visual Studio Code 1.104.0.
+2025.09.17 16:48:48 INFO  Attempting to connect to the build server...
+2025.09.17 16:48:48 INFO  No running Bloop server found, starting one.
+2025.09.17 16:48:49 INFO  Starting compilation server
+2025.09.17 16:48:50 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.09.17 16:48:51 INFO  Attempting to connect to the build server...
+2025.09.17 16:48:51 INFO  Found a Bloop server running
+2025.09.17 16:48:51 INFO  Attempting to connect to the build server...
+2025.09.17 16:48:51 INFO  Found a Bloop server running
+2025.09.17 16:48:52 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.09.17 16:48:52 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.09.17 16:48:52 INFO  time: Connected to build server in 4.08s
+2025.09.17 16:48:52 INFO  Connected to Build server: Bloop v2.0.13
+2025.09.17 16:48:52 INFO  time: Imported build in 0.15s
+2025.09.17 16:49:03 INFO  time: indexed workspace in 11s
+2025.09.17 16:49:05 INFO  Generated JavaScript file '/Users/taamepar/dev/Github/pme123/pme123-weather/.bloop/root/root-test-js'
+2025.09.17 16:49:05 INFO  Scala test classes not supported by server
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:118)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at bloop.engine.tasks.toolchains.ScalaJsToolchain.discoverTestFrameworks(ScalaJsToolchain.scala:108)
+	at bloop.engine.tasks.TestTask$.$anonfun$discoverTestFrameworks$5(TestTask.scala:234)
+	at bloop.task.Task.$anonfun$runAsync$7(Task.scala:265)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:57)
+	at monix.eval.Task$Map.apply(Task.scala:4604)
+	at monix.eval.Task$Map.apply(Task.scala:4600)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:170)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.run(TaskCreate.scala:252)
+	at monix.execution.internal.Trampoline.monix$execution$internal$Trampoline$$immediateLoop(Trampoline.scala:66)
+	at monix.execution.internal.Trampoline.startLoop(Trampoline.scala:32)
+	at monix.execution.schedulers.TrampolineExecutionContext$JVMOptimalTrampoline.startLoop(TrampolineExecutionContext.scala:132)
+	at monix.execution.internal.Trampoline.execute(Trampoline.scala:40)
+	at monix.execution.schedulers.TrampolineExecutionContext.execute(TrampolineExecutionContext.scala:57)
+	at monix.execution.schedulers.BatchingScheduler.execute(BatchingScheduler.scala:50)
+	at monix.execution.schedulers.BatchingScheduler.execute$(BatchingScheduler.scala:47)
+	at monix.execution.schedulers.AsyncScheduler.execute(AsyncScheduler.scala:31)
+	at monix.execution.schedulers.StartAsyncBatchRunnable.run(StartAsyncBatchRunnable.scala:42)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1726)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1717)
+	at java.base/java.util.concurrent.ForkJoinTask$InterruptibleTask.exec(ForkJoinTask.java:1641)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1460)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2036)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:189)
+Caused by: org.scalajs.testing.common.RPCCore$ClosedException: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	at org.scalajs.testing.common.RPCCore.helpClose(RPCCore.scala:223)
+	at org.scalajs.testing.common.RPCCore.close(RPCCore.scala:215)
+	at org.scalajs.testing.adapter.JSEnvRPC.close(JSEnvRPC.scala:69)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1(JSEnvRPC.scala:60)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1$adapted(JSEnvRPC.scala:60)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:74)
+	... 7 more
+Caused by: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	... 10 more
+Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with code 1
+	at org.scalajs.jsenv.ExternalJSRun$$anon$1.run(ExternalJSRun.scala:200)
+
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:204)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:41)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
+2025.09.17 16:49:41 INFO  Shutting down server
+2025.09.17 16:49:41 INFO  shutting down Metals
+2025.09.17 16:49:41 INFO  Shut down connection with build server.
+2025.09.17 16:49:41 INFO  Shut down connection with build server.
+2025.09.17 16:49:41 INFO  Shut down connection with build server.
+2025.09.17 16:49:41 INFO  Exiting server
+2025.09.17 17:00:15 INFO  Started: Metals version 1.6.2 in folders '/Users/taamepar/dev/Github/pme123/pme123-weather' for client Visual Studio Code 1.104.0.
+2025.09.17 17:00:16 INFO  no build target found for /Users/taamepar/dev/Github/pme123/pme123-weather/build.sbt. Using presentation compiler with project's scala-library version: 3.3.6
+2025.09.17 17:00:16 INFO  Attempting to connect to the build server...
+2025.09.17 17:00:16 INFO  No running Bloop server found, starting one.
+2025.09.17 17:00:19 INFO  Starting compilation server
+2025.09.17 17:00:20 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.09.17 17:00:21 INFO  Attempting to connect to the build server...
+2025.09.17 17:00:21 INFO  Found a Bloop server running
+2025.09.17 17:00:21 INFO  Attempting to connect to the build server...
+2025.09.17 17:00:21 INFO  Found a Bloop server running
+2025.09.17 17:00:21 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.09.17 17:00:21 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/taamepar/dev/Github/pme123/pme123-weather/project/.metals/bsp.trace.json or /Users/taamepar/Library/Caches/org.scalameta.metals/bsp.trace.json
+2025.09.17 17:00:21 INFO  time: Connected to build server in 5.5s
+2025.09.17 17:00:21 INFO  Connected to Build server: Bloop v2.0.13
+2025.09.17 17:00:22 INFO  time: Imported build in 0.11s
+2025.09.17 17:00:27 INFO  time: indexed workspace in 5.48s
+2025.09.17 17:00:29 INFO  Generated JavaScript file '/Users/taamepar/dev/Github/pme123/pme123-weather/.bloop/root/root-test-js'
+2025.09.17 17:00:29 INFO  Scala test classes not supported by server
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:118)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at bloop.engine.tasks.toolchains.ScalaJsToolchain.discoverTestFrameworks(ScalaJsToolchain.scala:108)
+	at bloop.engine.tasks.TestTask$.$anonfun$discoverTestFrameworks$5(TestTask.scala:234)
+	at bloop.task.Task.$anonfun$runAsync$7(Task.scala:265)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:57)
+	at monix.eval.Task$Map.apply(Task.scala:4604)
+	at monix.eval.Task$Map.apply(Task.scala:4600)
+	at monix.eval.internal.TaskRunLoop$.startFull(TaskRunLoop.scala:170)
+	at monix.eval.internal.TaskRestartCallback.syncOnSuccess(TaskRestartCallback.scala:101)
+	at monix.eval.internal.TaskRestartCallback.onSuccess(TaskRestartCallback.scala:74)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.run(TaskCreate.scala:252)
+	at monix.execution.internal.Trampoline.monix$execution$internal$Trampoline$$immediateLoop(Trampoline.scala:66)
+	at monix.execution.internal.Trampoline.startLoop(Trampoline.scala:32)
+	at monix.execution.schedulers.TrampolineExecutionContext$JVMOptimalTrampoline.startLoop(TrampolineExecutionContext.scala:132)
+	at monix.execution.internal.Trampoline.execute(Trampoline.scala:40)
+	at monix.execution.schedulers.TrampolineExecutionContext.execute(TrampolineExecutionContext.scala:57)
+	at monix.execution.schedulers.BatchingScheduler.execute(BatchingScheduler.scala:50)
+	at monix.execution.schedulers.BatchingScheduler.execute$(BatchingScheduler.scala:47)
+	at monix.execution.schedulers.AsyncScheduler.execute(AsyncScheduler.scala:31)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.startExecution(TaskCreate.scala:236)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.tryOnSuccess(TaskCreate.scala:202)
+	at monix.eval.internal.TaskCreate$CallbackForCreate.onSuccess(TaskCreate.scala:195)
+	at bloop.task.Task$.result$2(Task.scala:465)
+	at bloop.task.Task$.$anonfun$parSequenceUnordered$3(Task.scala:475)
+	at bloop.task.Task$.$anonfun$parSequenceUnordered$3$adapted(Task.scala:473)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:74)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1726)
+	at java.base/java.util.concurrent.ForkJoinTask$RunnableExecuteAction.compute(ForkJoinTask.java:1717)
+	at java.base/java.util.concurrent.ForkJoinTask$InterruptibleTask.exec(ForkJoinTask.java:1641)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:507)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1460)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2036)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:189)
+Caused by: org.scalajs.testing.common.RPCCore$ClosedException: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	at org.scalajs.testing.common.RPCCore.helpClose(RPCCore.scala:223)
+	at org.scalajs.testing.common.RPCCore.close(RPCCore.scala:215)
+	at org.scalajs.testing.adapter.JSEnvRPC.close(JSEnvRPC.scala:69)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1(JSEnvRPC.scala:60)
+	at org.scalajs.testing.adapter.JSEnvRPC.$anonfun$new$1$adapted(JSEnvRPC.scala:60)
+	... 8 more
+Caused by: org.scalajs.testing.adapter.JSEnvRPC$RunTerminatedException
+	... 10 more
+Caused by: org.scalajs.jsenv.ExternalJSRun$NonZeroExitException: exited with code 1
+	at org.scalajs.jsenv.ExternalJSRun$$anon$1.run(ExternalJSRun.scala:200)
+
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:220)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:204)
+	at scala.meta.internal.metals.RequestMonitorImpl$$anon$1.consume(ServerLivenessMonitor.scala:41)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:185)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:114)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.lang.Thread.run(Thread.java:1575)
+
+2025.09.17 17:00:30 INFO  time: code lens generation in 1.81s
+2025.09.17 17:00:30 INFO  time: code lens generation in 1.81s
+Sept 23, 2025 7:40:07 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Sept 23, 2025 7:42:06 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Sept 23, 2025 7:42:07 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Sept 23, 2025 7:42:07 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Sept 23, 2025 7:42:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2025.09.23 19:42:27 INFO  Shutting down server
+2025.09.23 19:42:27 INFO  shutting down Metals
+2025.09.23 19:42:27 INFO  Shut down connection with build server.
+2025.09.23 19:42:27 INFO  Shut down connection with build server.
+2025.09.23 19:42:27 INFO  Shut down connection with build server.
+2025.09.23 19:42:27 INFO  Exiting server

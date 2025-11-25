@@ -45,7 +45,7 @@ object Main:
         Title(_.size := TitleLevel.H4, "Weather Analysis Dashboard")
       ),
       div(
-        className := "main-content",
+        className := "main-content",/*
         div(
           className := "test-controls",
           Button(
@@ -65,24 +65,25 @@ object Main:
             },
             "🌐 Test Real API"
           )
-        ),
+        ), */
         WeatherTabs(selectedTabVar),
         WeatherView(selectedTabVar)
       ),
       div(
         className := "footer",
-        "🇨🇭 Testing with ",
-        Link(
-          _.href   := meteoSwissApiUI,
-          _.target := LinkTarget._blank,
-          "MeteoSwiss ICON-CH2 API"
-        ),
-        " | Fallback: ",
+        "Data provided by ",
         Link(
           _.href   := openMeteoApiUI,
           _.target := LinkTarget._blank,
           "OpenMeteo"
-        )
+        ), /*
+        " | 🇨🇭 ",
+        Link(
+          _.href   := meteoSwissApiUI,
+          _.target := LinkTarget._blank,
+          "MeteoSwiss ICON-CH2"
+        ),
+        " (In Development)"*/
       )
     )
 end Main
