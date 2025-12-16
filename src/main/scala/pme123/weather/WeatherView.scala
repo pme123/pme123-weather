@@ -32,7 +32,7 @@ object WeatherView:
           wsDiffs
             .find(d => selectedTab.contains(d.id))
             .map: wsDiff =>
-              val stationOptions = Var(wsDiff.stationDiffs.map(_.id))
+              val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
               val windStationOptions = Var(WindStationGraph.allNameOptions)
               div(
                 className := "weather-view",
@@ -55,12 +55,15 @@ object WeatherView:
                       wsDiff.windStations.map: st =>
                         WeatherLogger.debug(s"WindStation: ${st.name}")
                         div(
-                          className := "graph-container",
-                          idAttr := s"wind-${st.name}",
-                          onMountUnmountCallback(
-                            mount = ctx =>
-                              WindStationGraph(st, opts),
-                            unmount = _ => ()
+                          h3(st.name),
+                          div(
+                            className := "graph-container",
+                            idAttr    := s"wind-${st.name}",
+                            onMountUnmountCallback(
+                              mount = ctx =>
+                                WindStationGraph(st, opts),
+                              unmount = _ => ()
+                            )
                           )
                         )
                   )

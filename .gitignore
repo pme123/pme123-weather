@@ -45,6 +45,8 @@ build/
 
 ### Scala ###
 .bsp/
+/.metals/
+/.bloop/
 /.idea/*
 /.scala-build/*
 /.scala-build/
