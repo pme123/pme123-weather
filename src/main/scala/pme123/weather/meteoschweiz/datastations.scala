@@ -124,7 +124,7 @@ val meteoSwissStations: Set[MeteoSwissStation] = Set(
   MeteoSwissStation("SIA", "Segl-Maria", 46.432778, 9.762222),
   MeteoSwissStation("SIM", "Simplon-Dorf", 46.195, 8.053889),
   MeteoSwissStation("SIO", "Sion", 46.218889, 7.330278),
-  MeteoSwissStation("SMA", "Zürich / Fluntern", 47.377778, 8.565833),
+  MeteoSwissStation("SMA", "Zürich", 47.377778, 8.565833), // Fluntern
   MeteoSwissStation("SMM", "Sta. Maria, Val Müstair", 46.603056, 10.425833),
   MeteoSwissStation("SPF", "Schüpfheim", 46.947222, 8.011667),
   MeteoSwissStation("STC", "St. Chrischona", 47.5719, 7.6864),

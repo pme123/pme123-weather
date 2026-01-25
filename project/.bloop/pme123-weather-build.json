@@ -22,8 +22,6 @@
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/sbt-scalajs_2.12_1.0/1.17.0/sbt-scalajs_2.12_1.0-1.17.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/sbt-jsdependencies_2.12_1.0/1.0.2/sbt-jsdependencies-1.0.2.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-scalajs-bundler_2.12_1.0/0.21.1/sbt-scalajs-bundler-0.21.1.jar",
-            "/Users/taamepar/Library/Application Support/JetBrains/IdeaIC2025.2/plugins/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.3/2025.3.1/sbt-structure-extractor_2.12_1.3-2025.3.1.jar",
-            "/Users/taamepar/Library/Application Support/JetBrains/IdeaIC2025.2/plugins/Scala/repo/org/jetbrains/scala/sbt-idea-shell_2.12_1.0/2025.2.0/sbt-idea-shell_2.12_1.0-2025.2.0.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/main_2.12/1.10.7/main_2.12-1.10.7.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.12/1.10.3/io_2.12-1.10.3.jar",
             "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/2.3.2/bloop-config_2.12-2.3.2.jar",
@@ -175,8 +173,8 @@
                 "import _root_.sbt._",
                 "import _root_.sbt.Keys._",
                 "import _root_.sbt.nio.Keys._",
-                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.sbt.plugins.JUnitXmlReportPlugin.autoImport._, _root_.sbt.plugins.MiniDependencyTreePlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._, _root_.scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._, _root_.org.jetbrains.sbt.GenerateAllManagedSourcesPlugin.autoImport._, _root_.org.jetbrains.sbt.IdeaShellPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._",
-                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.SemanticdbPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.sbt.plugins.MiniDependencyTreePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.org.scalajs.sbtplugin.ScalaJSJUnitPlugin, _root_.org.scalajs.sbtplugin.ScalaJSPlugin, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin, _root_.scalajsbundler.sbtplugin.ScalaJSBundlerPlugin, _root_.org.jetbrains.sbt.GenerateAllManagedSourcesPlugin, _root_.org.jetbrains.sbt.StructurePlugin, _root_.org.jetbrains.sbt.IdeaShellPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin"
+                "import _root_.sbt.ScriptedPlugin.autoImport._, _root_.sbt.plugins.JUnitXmlReportPlugin.autoImport._, _root_.sbt.plugins.MiniDependencyTreePlugin.autoImport._, _root_.bloop.integrations.sbt.BloopPlugin.autoImport._, _root_.org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._, _root_.scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._",
+                "import _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.ScriptedPlugin, _root_.sbt.plugins.SbtPlugin, _root_.sbt.plugins.SemanticdbPlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.sbt.plugins.Giter8TemplatePlugin, _root_.sbt.plugins.MiniDependencyTreePlugin, _root_.bloop.integrations.sbt.BloopPlugin, _root_.org.scalajs.sbtplugin.ScalaJSJUnitPlugin, _root_.org.scalajs.sbtplugin.ScalaJSPlugin, _root_.org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin, _root_.scalajsbundler.sbtplugin.ScalaJSBundlerPlugin, _root_.org.portablescala.sbtplatformdeps.PlatformDepsPlugin"
             ]
         },
         "test": {
@@ -241,7 +239,7 @@
         "platform": {
             "name": "jvm",
             "config": {
-                "home": "/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home",
+                "home": "/Users/taamepar/Library/Caches/Coursier/arc/https/github.com/adoptium/temurin23-binaries/releases/download/jdk-23.0.2%252B7/OpenJDK23U-jdk_aarch64_mac_hotspot_23.0.2_7.tar.gz/jdk-23.0.2+7/Contents/Home",
                 "options": [
                     "-Duser.dir=/Users/taamepar/dev/Github/pme123/pme123-weather/project"
                 ]
@@ -250,7 +248,7 @@
                 
             ],
             "runtimeConfig": {
-                "home": "/opt/homebrew/Cellar/openjdk/23.0.2/libexec/openjdk.jdk/Contents/Home",
+                "home": "/Users/taamepar/Library/Caches/Coursier/arc/https/github.com/adoptium/temurin23-binaries/releases/download/jdk-23.0.2%252B7/OpenJDK23U-jdk_aarch64_mac_hotspot_23.0.2_7.tar.gz/jdk-23.0.2+7/Contents/Home",
                 "options": [
                     "-Duser.dir=/Users/taamepar/dev/Github/pme123/pme123-weather/project"
                 ]
@@ -261,8 +259,6 @@
                 "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/sbt-scalajs_2.12_1.0/1.17.0/sbt-scalajs_2.12_1.0-1.17.0.jar",
                 "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/sbt-jsdependencies_2.12_1.0/1.0.2/sbt-jsdependencies-1.0.2.jar",
                 "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-scalajs-bundler_2.12_1.0/0.21.1/sbt-scalajs-bundler-0.21.1.jar",
-                "/Users/taamepar/Library/Application Support/JetBrains/IdeaIC2025.2/plugins/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.3/2025.3.1/sbt-structure-extractor_2.12_1.3-2025.3.1.jar",
-                "/Users/taamepar/Library/Application Support/JetBrains/IdeaIC2025.2/plugins/Scala/repo/org/jetbrains/scala/sbt-idea-shell_2.12_1.0/2025.2.0/sbt-idea-shell_2.12_1.0-2025.2.0.jar",
                 "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/bloop-config_2.12/2.3.2/bloop-config_2.12-2.3.2.jar",
                 "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-linker-interface_2.12/1.17.0/scalajs-linker-interface_2.12-1.17.0.jar",
                 "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/org/scala-js/scalajs-sbt-test-adapter_2.12/1.17.0/scalajs-sbt-test-adapter_2.12-1.17.0.jar",
@@ -362,30 +358,6 @@
                             "name": "sbt-scalajs-bundler",
                             "classifier": "sources",
                             "path": "/Users/taamepar/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/ch/epfl/scala/sbt-scalajs-bundler_2.12_1.0/0.21.1/sbt-scalajs-bundler-0.21.1-sources.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.jetbrains.scala",
-                    "name": "sbt-structure-extractor",
-                    "version": "2025.3.1",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "sbt-structure-extractor",
-                            "path": "/Users/taamepar/Library/Application Support/JetBrains/IdeaIC2025.2/plugins/Scala/repo/org/jetbrains/scala/sbt-structure-extractor_2.12_1.3/2025.3.1/sbt-structure-extractor_2.12_1.3-2025.3.1.jar"
-                        }
-                    ]
-                },
-                {
-                    "organization": "org.jetbrains.scala",
-                    "name": "sbt-idea-shell",
-                    "version": "2025.2.0",
-                    "configurations": "default",
-                    "artifacts": [
-                        {
-                            "name": "sbt-idea-shell",
-                            "path": "/Users/taamepar/Library/Application Support/JetBrains/IdeaIC2025.2/plugins/Scala/repo/org/jetbrains/scala/sbt-idea-shell_2.12_1.0/2025.2.0/sbt-idea-shell_2.12_1.0-2025.2.0.jar"
                         }
                     ]
                 },

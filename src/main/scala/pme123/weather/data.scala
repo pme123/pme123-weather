@@ -162,27 +162,13 @@ lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
   Seq(
     historyDiff,
     WeatherStationDiff(
-      lugano,
-      andermatt,
-      "orange"
-    ),
-    WeatherStationDiff(
-      lugano,
-      altdorf,
-      "lightgreen"
-    ),
-    WeatherStationDiff(
-      andermatt,
-      zurich,
-      "blue"
-    ),
-    WeatherStationDiff(
       altdorf,
       zurich,
-      "lila"
+      "green"
     )
   ),
-  windStations = Seq(altdorf, lugano, zurich)
+  windStations = Seq(altdorf, lugano, zurich),
+  info = Some(info.urnersee)
 )
 
 lazy val mittellandseen: WeatherStationGroupDiff = WeatherStationGroupDiff(

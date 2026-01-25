@@ -67,6 +67,17 @@ object WeatherView:
                           )
                         )
                   )
+                else div(),
+                if wsDiff.info.isDefined then
+                  div(
+                    h3(s"Infos ${wsDiff.id}"),
+                    div(
+                      className := "graph-container",
+                      idAttr    := s"info-${wsDiff.id}",
+                      div(
+                      wsDiff.info.get)
+                    )
+                  )
                 else div()
               )
             .getOrElse(div("No Data"))

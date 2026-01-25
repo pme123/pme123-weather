@@ -1,5 +1,10 @@
 package pme123.weather
 
+import com.raquo.laminar.nodes.ReactiveHtmlElement
+import com.raquo.laminar.tags.HtmlTag
+import org.scalajs.dom
+import org.scalajs.dom.HTMLDivElement
+
 case class WeatherStationDiffData(
     station1: WeatherStationData,
     station2: WeatherStationData,
@@ -13,7 +18,8 @@ case class WeatherStationGroupDiffData(
     label: String,
     threshold: Int,
     stationDiffs: Seq[WeatherStationDiffData],
-    windStations: Seq[WeatherStationData]
+    windStations: Seq[WeatherStationData],
+    info: Option[ReactiveHtmlElement[HTMLDivElement]]
 )
 
 case class WeatherStationData(
@@ -46,6 +52,6 @@ def createWeatherData (data: Seq[WeatherStationData]) =
           windStations =
             wsGroupDiff.windStations.flatMap: ws =>
               data.filter(d => ws == d.station)
-                .map(d => WeatherStationData(d.station, d.data))
-
+                .map(d => WeatherStationData(d.station, d.data)),
+          info = wsGroupDiff.info
         )
