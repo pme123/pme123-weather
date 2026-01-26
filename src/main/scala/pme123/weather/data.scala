@@ -7,6 +7,9 @@ val lugano     = station("LUG")
 val zurich     = station("SMA") // Zürich / Fluntern
 val andermatt  = station("AND")
 val altdorf    = station("ALT")
+val lucerne     = station("LUZ")
+val guetsch      = station("GUE")
+
 //val altdorf = WeatherStation("Isleten", 46.9204, 8.5928)
 // mittelland
 val genf       = station("GVE") // Genève-Cointrin
@@ -167,7 +170,7 @@ lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
       "green"
     )
   ),
-  windStations = Seq(altdorf, lugano, zurich),
+  windStations = Seq(altdorf, lugano, zurich, lucerne, guetsch),
   info = Some(info.urnersee)
 )
 

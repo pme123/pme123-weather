@@ -72,6 +72,7 @@ val meteoSwissStations: Set[MeteoSwissStation] = Set(
   MeteoSwissStation("GRO", "Grono", 46.254722, 9.164722),
   MeteoSwissStation("GSB", "Col du Grand St-Bernard", 45.868889, 7.170556),
   MeteoSwissStation("GUB", "Gübris", 47.3992, 9.5806),
+  MeteoSwissStation("GUE", "Gütsch", 46.6544, 8.6211),
   MeteoSwissStation("GUT", "Güttingen", 47.602222, 9.279167),
   MeteoSwissStation("GVE", "Genève-Cointrin", 46.247222, 6.127778),
   MeteoSwissStation("HAI", "Salen-Reutenen", 47.651111, 9.025),
