@@ -39,7 +39,21 @@ object WeatherView:
                 // Forecast panel at the top
                 if wsDiff.forecast.isDefined then
                   div(
-                    h3(s"Forecast ${wsDiff.id}"),
+                    div(
+                      display := "flex",
+                      alignItems := "center",
+                      gap := "8px",
+                      marginBottom := "8px",
+                      h3(
+                        margin := "0",
+                        s"Forecast ${wsDiff.id}"
+                      ),
+                      // Add info icon only for Urnersee
+                      if wsDiff.id == "Urnersee" then
+                        WindSpeedExplanationDialog()
+                      else
+                        emptyNode
+                    ),
                     div(
                       className := "graph-container",
                       idAttr    := s"forecast-${wsDiff.id}",
