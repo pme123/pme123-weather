@@ -19,7 +19,8 @@ case class WeatherStationGroupDiffData(
     threshold: Int,
     stationDiffs: Seq[WeatherStationDiffData],
     windStations: Seq[WeatherStationData],
-    info: Option[ReactiveHtmlElement[HTMLDivElement]]
+    info: Option[ReactiveHtmlElement[HTMLDivElement]],
+    forecast: Option[Seq[UrnerseeForecast]] = None
 )
 
 case class WeatherStationData(
@@ -30,11 +31,25 @@ case class WeatherStationData(
 end WeatherStationData
 
 def createWeatherData (data: Seq[WeatherStationData]) =
+  WeatherLogger.debug(s"createWeatherData called with ${data.size} stations")
   if data.isEmpty then
+    WeatherLogger.debug("Data is empty, returning empty sequence")
     Seq.empty
   else
+    WeatherLogger.debug(s"Processing ${data.size} weather stations: ${data.map(_.station.name).mkString(", ")}")
     stationDiffs
       .map: wsGroupDiff =>
+        // Calculate forecast if calculator is provided
+        val forecast = wsGroupDiff.forecastCalculator.map: calculator =>
+          val stationDataMap = data.map(ws => ws.station.name -> ws.data).toMap
+          WeatherLogger.debug(s"Calculating forecast for ${wsGroupDiff.id}, stations: ${stationDataMap.keys.mkString(", ")}")
+          WeatherLogger.debug(s"Station data sizes: ${stationDataMap.map { case (k, v) => s"$k: ${v.size}" }.mkString(", ")}")
+          val result = calculator(stationDataMap)
+          WeatherLogger.debug(s"Forecast calculated for ${wsGroupDiff.id}: ${result.size} days")
+          result
+
+        WeatherLogger.debug(s"Forecast for ${wsGroupDiff.id}: ${forecast.map(_.size).getOrElse(0)} days")
+
         WeatherStationGroupDiffData(
           wsGroupDiff.id,
           wsGroupDiff.label,
@@ -53,5 +68,6 @@ def createWeatherData (data: Seq[WeatherStationData]) =
             wsGroupDiff.windStations.flatMap: ws =>
               data.filter(d => ws == d.station)
                 .map(d => WeatherStationData(d.station, d.data)),
-          info = wsGroupDiff.info
+          info = wsGroupDiff.info,
+          forecast = forecast
         )

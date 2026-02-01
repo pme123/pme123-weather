@@ -179,6 +179,15 @@ body {
     border-radius: 3px !important;
   }
 
+  /* Force left text alignment in tooltips */
+  .js-plotly-plot .plotly .hoverlayer .hovertext {
+    text-align: left !important;
+  }
+
+  .js-plotly-plot .plotly .hoverlayer .hovertext text {
+    text-anchor: start !important;
+  }
+
   .js-plotly-plot .plotly .legend::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.3) !important;
   }

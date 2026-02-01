@@ -36,6 +36,23 @@ object WeatherView:
               val windStationOptions = Var(WindStationGraph.allNameOptions)
               div(
                 className := "weather-view",
+                // Forecast panel at the top
+                if wsDiff.forecast.isDefined then
+                  div(
+                    h3(s"Forecast ${wsDiff.id}"),
+                    div(
+                      className := "graph-container",
+                      idAttr    := s"forecast-${wsDiff.id}",
+                      onMountUnmountCallback(
+                        mount = ctx =>
+                          WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
+                          ForecastGraph(wsDiff.id, wsDiff.forecast.get),
+                        unmount = _ => ()
+                      )
+                    )
+                  )
+                else div(),
+                // Main pressure difference graph
                 div(
                   className := "graph-container",
                   child <-- stationOptions.signal.map: opts =>
@@ -48,6 +65,7 @@ object WeatherView:
                       )
                     )
                 ),
+                // Wind stations
                 if wsDiff.windStations.nonEmpty then
                   div(
                     className := "wind-stations",
@@ -68,6 +86,7 @@ object WeatherView:
                         )
                   )
                 else div(),
+                // Info panel
                 if wsDiff.info.isDefined then
                   div(
                     h3(s"Infos ${wsDiff.id}"),

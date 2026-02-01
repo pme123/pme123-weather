@@ -171,7 +171,16 @@ lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
     )
   ),
   windStations = Seq(altdorf, lugano, zurich, lucerne, guetsch),
-  info = Some(info.urnersee)
+  info = Some(info.urnersee),
+  forecastCalculator = Some(stationDataMap =>
+    UrnerseeForecastCalculator.calculateForecast(
+      altdorfData = stationDataMap.getOrElse("Altdorf", Seq.empty),
+      luganoData = stationDataMap.getOrElse("Lugano", Seq.empty),
+      zurichData = stationDataMap.getOrElse("Zürich", Seq.empty),
+      lucerneData = stationDataMap.getOrElse("Luzern", Seq.empty),
+      guetschData = stationDataMap.getOrElse("Gütsch", Seq.empty)
+    )
+  )
 )
 
 lazy val mittellandseen: WeatherStationGroupDiff = WeatherStationGroupDiff(

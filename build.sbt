@@ -26,6 +26,8 @@ lazy val root = (project in file("."))
       "io.circe"                      %%% "circe-parser"       % "0.14.9",
       ("org.plotly-scala"             %%% "plotly-render"      % "0.8.5")
         .cross(CrossVersion.for3Use2_13)
-        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13")
-    )
+        .exclude("org.scala-js", "scalajs-dom_sjs1_2.13"),
+      "org.scalameta"                 %%% "munit"              % "1.0.0" % Test
+    ),
+    testFrameworks += new TestFramework("munit.Framework")
   ).enablePlugins(JSDependenciesPlugin, ScalaJSPlugin)
