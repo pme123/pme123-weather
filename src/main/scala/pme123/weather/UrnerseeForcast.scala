@@ -4,10 +4,12 @@ import scala.math.{abs, max}
 
 /** Wind type for Urnersee forecast */
 enum WindType:
-  case Thermik      // Thermal wind
-  case Föhnbise     // North wind (Föhn bise)
-  case Föhn         // South Föhn
-  case Nothing      // No significant wind
+  case Thermik           // Thermal wind
+  case FöhnbiseSchwach   // Weak Föhnbise (+2 to +4 hPa)
+  case FöhnbiseGut       // Good Föhnbise (+4 to +6 hPa)
+  case FöhnbiseStark     // Strong Föhnbise (+6 to +8 hPa, breakthrough imminent)
+  case Föhn              // South Föhn
+  case Nothing           // No significant wind
 
 /** Forecast data for a specific hour */
 case class UrnerseeForecast(
@@ -161,7 +163,9 @@ object UrnerseeForecastCalculator:
   private def generateHourlyInfo(analysis: HourlyAnalysis): String =
     val windTypeInfo = analysis.windType match {
       case WindType.Föhn => "Föhn"
-      case WindType.Föhnbise => "Föhnbise"
+      case WindType.FöhnbiseSchwach => "Föhnbise (schwach)"
+      case WindType.FöhnbiseGut => "Föhnbise (gut)"
+      case WindType.FöhnbiseStark => "Föhnbise (stark)"
       case WindType.Thermik => "Thermik"
       case WindType.Nothing => "Schwacher Wind"
     }
@@ -170,9 +174,11 @@ object UrnerseeForecastCalculator:
     val foehnStatus = if (analysis.luganoZurichDiff > 8.0 || analysis.altdorfZurichDiff > 0) {
       "✓ Föhn aktiv"
     } else if (analysis.luganoZurichDiff >= 6.0 && analysis.altdorfZurichDiff < 0) {
-      "⚠️ Durchbruch möglich"
+      "⚠️ Föhnbise stark - Durchbruch steht bevor!"
+    } else if (analysis.luganoZurichDiff >= 4.0 && analysis.altdorfZurichDiff < 0) {
+      "⚠️ Föhnbise gut - Durchbruch wahrscheinlich"
     } else if (analysis.luganoZurichDiff >= 2.0 && analysis.altdorfZurichDiff < 0) {
-      "Föhnbise (Vakuum)"
+      "Föhnbise schwach - Föhn in der Höhe"
     } else {
       "Keine Föhnbedingungen"
     }
@@ -209,7 +215,9 @@ object UrnerseeForecastCalculator:
    *
    * Based on the theory from urnersee.scala:
    * - Föhn: Lugano-Zurich > +8 hPa OR (Lugano-Zurich >= +4 hPa AND Altdorf-Zurich becomes positive)
-   * - Föhnbise: Lugano-Zurich +2 to +8 hPa AND Altdorf-Zurich negative
+   * - Föhnbise Stark: Lugano-Zurich +6 to +8 hPa AND Altdorf-Zurich negative (breakthrough imminent)
+   * - Föhnbise Gut: Lugano-Zurich +4 to +6 hPa AND Altdorf-Zurich negative (high probability)
+   * - Föhnbise Schwach: Lugano-Zurich +2 to +4 hPa AND Altdorf-Zurich negative (moderate probability)
    * - Thermik: Low pressure diff AND significant temp gradient (Altdorf-Lucerne > 5°C)
    * - Nothing: Low pressure diff AND low temp gradient
    *
@@ -230,10 +238,20 @@ object UrnerseeForecastCalculator:
       val force = estimateFoehnForce(luganoZurichDiff, guetschWind)
       (WindType.Föhn, force)
     }
-    // Check for Föhnbise conditions (north wind with Föhn aloft)
-    else if (luganoZurichDiff >= 2.0 && luganoZurichDiff <= 8.0 && altdorfZurichDiff < 0) {
-      val force = estimateFoehnbiseForce(abs(altdorfZurichDiff), altdorfWind)
-      (WindType.Föhnbise, force)
+    // Check for strong Föhnbise conditions (+6 to +8 hPa - breakthrough imminent)
+    else if (luganoZurichDiff >= 6.0 && luganoZurichDiff <= 8.0 && altdorfZurichDiff < 0) {
+      val force = estimateFoehnbiseForce(abs(altdorfZurichDiff), altdorfWind, luganoZurichDiff)
+      (WindType.FöhnbiseStark, force)
+    }
+    // Check for good Föhnbise conditions (+4 to +6 hPa - high probability)
+    else if (luganoZurichDiff >= 4.0 && luganoZurichDiff < 6.0 && altdorfZurichDiff < 0) {
+      val force = estimateFoehnbiseForce(abs(altdorfZurichDiff), altdorfWind, luganoZurichDiff)
+      (WindType.FöhnbiseGut, force)
+    }
+    // Check for weak Föhnbise conditions (+2 to +4 hPa - moderate probability)
+    else if (luganoZurichDiff >= 2.0 && luganoZurichDiff < 4.0 && altdorfZurichDiff < 0) {
+      val force = estimateFoehnbiseForce(abs(altdorfZurichDiff), altdorfWind, luganoZurichDiff)
+      (WindType.FöhnbiseSchwach, force)
     }
     // Check for Thermik conditions (thermal wind)
     else if (altdorfLucerneTempDiff >= 5.0 && altdorfGuetschTempDiff >= 10.0) {
@@ -256,11 +274,26 @@ object UrnerseeForecastCalculator:
     val windComponent = guetschWind * 1.94384 * 0.7 // 70% of mountain wind reaches valley
     max(15.0, pressureComponent + windComponent) // Minimum 15 knots for Föhn
 
-  /** Estimate Föhnbise force based on vacuum effect */
-  private def estimateFoehnbiseForce(altdorfZurichDiffAbs: Double, altdorfWind: Double): Double =
+  /** Estimate Föhnbise force based on vacuum effect and pressure gradient strength */
+  private def estimateFoehnbiseForce(
+      altdorfZurichDiffAbs: Double,
+      altdorfWind: Double,
+      luganoZurichDiff: Double
+  ): Double =
     val vacuumComponent = altdorfZurichDiffAbs * 2.5 // Stronger vacuum = stronger bise
     val measuredWind = altdorfWind * 1.94384
-    max(8.0, max(vacuumComponent, measuredWind)) // Minimum 8 knots for Föhnbise
+
+    // Scale force based on pressure gradient strength
+    val baseForce = max(vacuumComponent, measuredWind)
+    val scaledForce = if (luganoZurichDiff >= 6.0) {
+      baseForce * 1.3 // Strong Föhnbise - 30% stronger
+    } else if (luganoZurichDiff >= 4.0) {
+      baseForce * 1.1 // Good Föhnbise - 10% stronger
+    } else {
+      baseForce * 0.9 // Weak Föhnbise - 10% weaker
+    }
+
+    max(8.0, scaledForce) // Minimum 8 knots for Föhnbise
 
   /** Estimate Thermik force based on temperature gradient */
   private def estimateThermikForce(tempDiff: Double, altdorfWind: Double): Double =

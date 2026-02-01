@@ -65,10 +65,12 @@ object ForecastGraph:
     
     // Color mapping for wind types
     def getColor(windType: WindType): String = windType match {
-      case WindType.Föhn => "rgba(244, 67, 54, 0.8)"      // Red
-      case WindType.Föhnbise => "rgba(33, 150, 243, 0.8)" // Blue
-      case WindType.Thermik => "rgba(76, 175, 80, 0.8)"   // Green
-      case WindType.Nothing => "rgba(158, 158, 158, 0.6)" // Gray
+      case WindType.Föhn => "rgba(211, 47, 47, 0.85)"          // Dark Red (strong Föhn)
+      case WindType.FöhnbiseStark => "rgba(25, 118, 210, 0.85)"   // Dark Blue (breakthrough imminent)
+      case WindType.FöhnbiseGut => "rgba(66, 165, 245, 0.8)"      // Medium Blue (high probability)
+      case WindType.FöhnbiseSchwach => "rgba(144, 202, 249, 0.75)" // Light Blue (moderate)
+      case WindType.Thermik => "rgba(76, 175, 80, 0.8)"        // Green
+      case WindType.Nothing => "rgba(158, 158, 158, 0.6)"      // Gray
     }
     
     // Create bar chart with color-coded wind types

@@ -21,11 +21,11 @@ class UrnerseeForecastTest extends munit.FunSuite:
     assert(forecast.head.forceKnots > 0, "Föhn force should be positive")
   }
 
-  test("Föhn detection with Altdorf-Zurich positive") {
+  test("Föhn detection with Altdorf-Zurich positive (requires >= +4 hPa)") {
     val foehnData = createTestData(
       time = "2026-01-26T14:00",
       luganoPress = 1015.0,
-      zurichPress = 1010.0,  // Diff = +5 hPa (< +8)
+      zurichPress = 1010.0,  // Diff = +5 hPa (>= +4)
       altdorfPress = 1011.0  // Diff = +1 hPa (positive)
     )
     val forecast = UrnerseeForecastCalculator.calculateForecast(
@@ -33,15 +33,30 @@ class UrnerseeForecastTest extends munit.FunSuite:
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assertEquals(forecast.head.windType, WindType.Föhn, "Should detect Föhn with Altdorf-Zurich positive")
+    assertEquals(forecast.head.windType, WindType.Föhn, "Should detect Föhn with Altdorf-Zurich positive and Lugano-Zurich >= +4 hPa")
     assert(forecast.head.forceKnots > 0, "Föhn force should be positive")
   }
 
-  test("Föhnbise detection with vacuum effect") {
+  test("No Föhn below +4 hPa even with positive Altdorf-Zurich") {
+    val foehnbiseData = createTestData(
+      time = "2026-01-26T14:00",
+      luganoPress = 1013.0,
+      zurichPress = 1010.0,  // Diff = +3 hPa (< +4)
+      altdorfPress = 1011.0  // Diff = +1 hPa (positive)
+    )
+    val forecast = UrnerseeForecastCalculator.calculateForecast(
+      foehnbiseData._1, foehnbiseData._2, foehnbiseData._3, foehnbiseData._4, foehnbiseData._5
+    )
+
+    assert(forecast.nonEmpty, "Forecast should not be empty")
+    assert(forecast.head.windType != WindType.Föhn, "Should NOT detect Föhn below +4 hPa Lugano-Zurich")
+  }
+
+  test("Weak Föhnbise detection (+2 to +4 hPa)") {
     val foehnbiseData = createTestData(
       time = "2026-01-26T10:00",
-      luganoPress = 1015.0,
-      zurichPress = 1010.0,  // Diff = +5 hPa (between +2 and +8)
+      luganoPress = 1013.0,
+      zurichPress = 1010.0,  // Diff = +3 hPa (+2 to +4)
       altdorfPress = 1008.0  // Diff = -2 hPa (negative - vacuum effect)
     )
     val forecast = UrnerseeForecastCalculator.calculateForecast(
@@ -49,24 +64,41 @@ class UrnerseeForecastTest extends munit.FunSuite:
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assertEquals(forecast.head.windType, WindType.Föhnbise, "Should detect Föhnbise with vacuum effect")
+    assertEquals(forecast.head.windType, WindType.FöhnbiseSchwach, "Should detect weak Föhnbise")
     assert(forecast.head.forceKnots > 0, "Föhnbise force should be positive")
   }
 
-  test("Föhn breakthrough warning for Lugano-Zurich > +6 hPa") {
+  test("Good Föhnbise detection (+4 to +6 hPa)") {
     val foehnbiseData = createTestData(
       time = "2026-01-26T10:00",
-      luganoPress = 1017.0,
-      zurichPress = 1010.0,  // Diff = +7 hPa (> +6, should warn)
-      altdorfPress = 1008.0
+      luganoPress = 1015.0,
+      zurichPress = 1010.0,  // Diff = +5 hPa (+4 to +6)
+      altdorfPress = 1008.0  // Diff = -2 hPa (negative - vacuum effect)
     )
     val forecast = UrnerseeForecastCalculator.calculateForecast(
       foehnbiseData._1, foehnbiseData._2, foehnbiseData._3, foehnbiseData._4, foehnbiseData._5
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assert(forecast.head.info.contains("Durchbruch möglich"),
-      "Should show Föhn breakthrough warning for Lugano-Zurich > +6 hPa")
+    assertEquals(forecast.head.windType, WindType.FöhnbiseGut, "Should detect good Föhnbise")
+    assert(forecast.head.forceKnots > 0, "Föhnbise force should be positive")
+  }
+
+  test("Strong Föhnbise detection (+6 to +8 hPa - breakthrough imminent)") {
+    val foehnbiseData = createTestData(
+      time = "2026-01-26T10:00",
+      luganoPress = 1017.0,
+      zurichPress = 1010.0,  // Diff = +7 hPa (+6 to +8)
+      altdorfPress = 1008.0  // Diff = -2 hPa (negative - vacuum effect)
+    )
+    val forecast = UrnerseeForecastCalculator.calculateForecast(
+      foehnbiseData._1, foehnbiseData._2, foehnbiseData._3, foehnbiseData._4, foehnbiseData._5
+    )
+
+    assert(forecast.nonEmpty, "Forecast should not be empty")
+    assertEquals(forecast.head.windType, WindType.FöhnbiseStark, "Should detect strong Föhnbise")
+    assert(forecast.head.info.contains("Durchbruch steht bevor"),
+      "Should show Föhn breakthrough imminent warning for strong Föhnbise")
   }
 
   test("Strong Thermik detection") {
