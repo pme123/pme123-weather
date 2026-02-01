@@ -17,7 +17,7 @@ class UrnerseeForecastTest extends munit.FunSuite:
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assertEquals(forecast.head.windType, WindType.Föhn, "Should detect Föhn with Lugano-Zurich > +8 hPa")
+    assertEquals(forecast.head.windType, WindType.FöhnGut, "Should detect Föhn with Lugano-Zurich > +8 hPa")
     assert(forecast.head.forceKnots > 0, "Föhn force should be positive")
   }
 
@@ -33,7 +33,7 @@ class UrnerseeForecastTest extends munit.FunSuite:
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assertEquals(forecast.head.windType, WindType.Föhn, "Should detect Föhn with Altdorf-Zurich positive and Lugano-Zurich >= +4 hPa")
+    assertEquals(forecast.head.windType, WindType.FöhnGut, "Should detect Föhn with Altdorf-Zurich positive and Lugano-Zurich >= +4 hPa")
     assert(forecast.head.forceKnots > 0, "Föhn force should be positive")
   }
 
@@ -49,7 +49,12 @@ class UrnerseeForecastTest extends munit.FunSuite:
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assert(forecast.head.windType != WindType.Föhn, "Should NOT detect Föhn below +4 hPa Lugano-Zurich")
+    assert(
+      forecast.head.windType != WindType.FöhnGut &&
+      forecast.head.windType != WindType.FöhnStark &&
+      forecast.head.windType != WindType.FöhnSehrStark,
+      "Should NOT detect any Föhn category below +4 hPa Lugano-Zurich"
+    )
   }
 
   test("Weak Föhnbise detection (+2 to +4 hPa)") {
@@ -101,9 +106,25 @@ class UrnerseeForecastTest extends munit.FunSuite:
       "Should show Föhn breakthrough imminent warning for strong Föhnbise")
   }
 
-  test("Strong Thermik detection") {
+  test("Very good Thermik detection (summer afternoon)") {
     val thermikData = createTestData(
-      time = "2026-01-26T14:00",
+      time = "2026-07-15T14:00",  // Summer afternoon - best conditions
+      altdorfTemp = 25.0,
+      lucerneTemp = 18.0,  // Diff = +7°C (≥ 5°C)
+      guetschTemp = 12.0   // Diff = +13°C (≥ 10°C)
+    )
+    val forecast = UrnerseeForecastCalculator.calculateForecast(
+      thermikData._1, thermikData._2, thermikData._3, thermikData._4, thermikData._5
+    )
+
+    assert(forecast.nonEmpty, "Forecast should not be empty")
+    assertEquals(forecast.head.windType, WindType.ThermikSehrGut, "Should detect very good Thermik in summer afternoon")
+    assert(forecast.head.forceKnots >= 13.0, "Very good Thermik force should be >= 13 knots")
+  }
+
+  test("Good Thermik detection (spring midday)") {
+    val thermikData = createTestData(
+      time = "2026-05-10T12:00",  // Spring midday - good conditions
       altdorfTemp = 20.0,
       lucerneTemp = 14.0,  // Diff = +6°C (≥ 5°C)
       guetschTemp = 8.0    // Diff = +12°C (≥ 10°C)
@@ -113,23 +134,26 @@ class UrnerseeForecastTest extends munit.FunSuite:
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assertEquals(forecast.head.windType, WindType.Thermik, "Should detect strong Thermik")
-    assert(forecast.head.forceKnots > 0, "Thermik force should be positive")
+    assert(
+      forecast.head.windType == WindType.ThermikGut || forecast.head.windType == WindType.ThermikSehrGut,
+      "Should detect good or very good Thermik in spring midday"
+    )
+    assert(forecast.head.forceKnots >= 9.0, "Good Thermik force should be >= 9 knots")
   }
 
-  test("Moderate Thermik detection") {
+  test("Weak Thermik detection (winter morning)") {
     val thermikData = createTestData(
-      time = "2026-01-26T16:00",
-      altdorfTemp = 18.0,
-      lucerneTemp = 14.5,  // Diff = +3.5°C (≥ 3°C)
-      guetschTemp = 12.0   // Diff = +6°C (≥ 5°C)
+      time = "2026-01-26T08:00",  // Winter morning - weak conditions
+      altdorfTemp = 15.0,
+      lucerneTemp = 11.0,  // Diff = +4°C (≥ 3°C)
+      guetschTemp = 9.0    // Diff = +6°C (≥ 5°C)
     )
     val forecast = UrnerseeForecastCalculator.calculateForecast(
       thermikData._1, thermikData._2, thermikData._3, thermikData._4, thermikData._5
     )
 
     assert(forecast.nonEmpty, "Forecast should not be empty")
-    assertEquals(forecast.head.windType, WindType.Thermik, "Should detect moderate Thermik")
+    assertEquals(forecast.head.windType, WindType.ThermikSchwach, "Should detect weak Thermik in winter morning")
     assert(forecast.head.forceKnots > 0, "Thermik force should be positive")
   }
 

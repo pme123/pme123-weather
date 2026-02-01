@@ -4,11 +4,15 @@ import scala.math.{abs, max}
 
 /** Wind type for Urnersee forecast */
 enum WindType:
-  case Thermik           // Thermal wind
+  case ThermikSchwach    // Weak thermal wind
+  case ThermikGut        // Good thermal wind
+  case ThermikSehrGut    // Very good thermal wind
   case FöhnbiseSchwach   // Weak Föhnbise (+2 to +4 hPa)
   case FöhnbiseGut       // Good Föhnbise (+4 to +6 hPa)
   case FöhnbiseStark     // Strong Föhnbise (+6 to +8 hPa, breakthrough imminent)
-  case Föhn              // South Föhn
+  case FöhnGut           // Good South Föhn
+  case FöhnStark         // Strong South Föhn
+  case FöhnSehrStark     // Very strong South Föhn (storm)
   case Nothing           // No significant wind
 
 /** Forecast data for a specific hour */
@@ -125,7 +129,8 @@ object UrnerseeForecastCalculator:
       altdorfLucerneTempDiff,
       altdorfGuetschTempDiff,
       altdorf.wind_speed_10m,
-      guetsch.wind_speed_10m
+      guetsch.wind_speed_10m,
+      time
     )
 
     HourlyAnalysis(
@@ -162,11 +167,15 @@ object UrnerseeForecastCalculator:
    */
   private def generateHourlyInfo(analysis: HourlyAnalysis): String =
     val windTypeInfo = analysis.windType match {
-      case WindType.Föhn => "Föhn"
+      case WindType.FöhnSehrStark => "Föhn (sehr stark)"
+      case WindType.FöhnStark => "Föhn (stark)"
+      case WindType.FöhnGut => "Föhn (gut)"
       case WindType.FöhnbiseSchwach => "Föhnbise (schwach)"
       case WindType.FöhnbiseGut => "Föhnbise (gut)"
       case WindType.FöhnbiseStark => "Föhnbise (stark)"
-      case WindType.Thermik => "Thermik"
+      case WindType.ThermikSchwach => "Thermik (schwach)"
+      case WindType.ThermikGut => "Thermik (gut)"
+      case WindType.ThermikSehrGut => "Thermik (sehr gut)"
       case WindType.Nothing => "Schwacher Wind"
     }
 
@@ -229,14 +238,22 @@ object UrnerseeForecastCalculator:
       altdorfLucerneTempDiff: Double,
       altdorfGuetschTempDiff: Double,
       altdorfWind: Double,
-      guetschWind: Double
+      guetschWind: Double,
+      time: String
   ): (WindType, Double) =
 
     // Check for Föhn conditions (strong south wind)
     // Theory: No Föhn below +4 hPa Lugano-Zurich difference
     if (luganoZurichDiff > 8.0 || (luganoZurichDiff >= 4.0 && altdorfZurichDiff > 0)) {
       val force = estimateFoehnForce(luganoZurichDiff, guetschWind)
-      (WindType.Föhn, force)
+      // Categorize Föhn based on force
+      // FöhnGut: 15-20 knots (moderate Föhn)
+      // FöhnStark: 20-25 knots (strong Föhn)
+      // FöhnSehrStark: >= 25 knots (very strong Föhn/storm)
+      val windType = if (force >= 25.0) WindType.FöhnSehrStark
+                     else if (force >= 20.0) WindType.FöhnStark
+                     else WindType.FöhnGut
+      (windType, force)
     }
     // Check for strong Föhnbise conditions (+6 to +8 hPa - breakthrough imminent)
     else if (luganoZurichDiff >= 6.0 && luganoZurichDiff <= 8.0 && altdorfZurichDiff < 0) {
@@ -255,13 +272,22 @@ object UrnerseeForecastCalculator:
     }
     // Check for Thermik conditions (thermal wind)
     else if (altdorfLucerneTempDiff >= 5.0 && altdorfGuetschTempDiff >= 10.0) {
-      val force = estimateThermikForce(altdorfLucerneTempDiff, altdorfWind)
-      (WindType.Thermik, force)
+      val baseForce = estimateThermikForce(altdorfLucerneTempDiff, altdorfWind)
+      val adjustedForce = applyThermikTimeFactors(baseForce, time)
+      // Categorize based on adjusted force
+      val windType = if (adjustedForce >= 13.0) WindType.ThermikSehrGut
+                     else if (adjustedForce >= 9.0) WindType.ThermikGut
+                     else WindType.ThermikSchwach
+      (windType, adjustedForce)
     }
     // Moderate thermal conditions
     else if (altdorfLucerneTempDiff >= 3.0 && altdorfGuetschTempDiff >= 5.0) {
-      val force = estimateThermikForce(altdorfLucerneTempDiff, altdorfWind) * 0.6
-      (WindType.Thermik, force)
+      val baseForce = estimateThermikForce(altdorfLucerneTempDiff, altdorfWind) * 0.6
+      val adjustedForce = applyThermikTimeFactors(baseForce, time)
+      // Categorize based on adjusted force
+      val windType = if (adjustedForce >= 10.0) WindType.ThermikGut
+                     else WindType.ThermikSchwach
+      (windType, adjustedForce)
     }
     // No significant wind
     else {
@@ -300,6 +326,41 @@ object UrnerseeForecastCalculator:
     val thermalComponent = (tempDiff - 5.0) * 2.0 + 10.0 // Base 10 knots at 5°C diff
     val measuredWind = altdorfWind * 1.94384
     max(thermalComponent, measuredWind)
+
+  /**
+   * Apply time-based factors to thermik force
+   * Considers both time of day and season
+   */
+  private def applyThermikTimeFactors(baseForce: Double, time: String): Double =
+    // Parse time (format: "yyyy-MM-ddTHH:mm")
+    val hour = time.substring(11, 13).toInt
+    val month = time.substring(5, 7).toInt
+
+    // Time of day factor (8-18h range)
+    val timeOfDayFactor = hour match {
+      case 8 | 9   => 0.5  // Early morning - thermik building up
+      case 10 | 11 => 0.75 // Late morning - thermik strengthening
+      case 12 | 13 => 1.0  // Midday - peak thermik
+      case 14 | 15 => 0.95 // Early afternoon - still strong
+      case 16 | 17 => 0.7  // Late afternoon - weakening
+      case 18      => 0.4  // Evening - thermik dying down
+      case _       => 0.3  // Outside normal range
+    }
+
+    // Seasonal factor
+    val seasonalFactor = month match {
+      case 12 | 1 | 2  => 0.5  // Winter - weak thermik, short days
+      case 3 | 4       => 0.75 // Spring - building thermik
+      case 5           => 0.9  // Late spring - strong thermik
+      case 6 | 7 | 8   => 1.0  // Summer - strongest thermik, long days
+      case 9           => 0.85 // Early autumn - still good
+      case 10          => 0.7  // Autumn - decreasing thermik
+      case 11          => 0.6  // Late autumn - weak thermik
+      case _           => 0.7  // Default
+    }
+
+    // Apply both factors
+    baseForce * timeOfDayFactor * seasonalFactor
 
 end UrnerseeForecastCalculator
 
