@@ -1,8 +1,6 @@
 package pme123.weather
 
 import scala.math.{abs, max}
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 /** Wind type for Urnersee forecast */
 enum WindType:
@@ -196,12 +194,12 @@ object UrnerseeForecastCalculator:
 
     // Kompakte Darstellung
     val sections = Seq(
-      s"<b>$windTypeInfo - ${analysis.forceKnots.toInt} kn</b>",
-      f"<b>Druckgradient:</b> Lug-Zrh ${analysis.luganoZurichDiff}%.1f / Alt-Zrh ${analysis.altdorfZurichDiff}%.1f hPa",
-      s"<b>Föhn/Bise:</b> $foehnStatus",
-      f"<b>Thermik Sog:</b> Alt-Luz ${analysis.altdorfLucerneTempDiff}%.1f°C $thermikStatus",
-      f"<b>Tagesamplitude:</b> ${analysis.dayAmplitude}%.1f°C $amplitudeStatus",
-      f"<b>Schichtung:</b> Alt ${analysis.altdorfTemp}%.1f°C / Gütsch ${analysis.guetschTemp}%.1f°C (Δ${analysis.altdorfGuetschTempDiff}%.1f°C) $schichtungStatus"
+      s"<b>Föhn:</b> $foehnStatus",
+      f"<b>- Druckgradient:</b> Lug-Zrh ${analysis.luganoZurichDiff}%.1f / Alt-Zrh ${analysis.altdorfZurichDiff}%.1f hPa",
+      f"<b>Thermik</b>",
+      f"<b>- Sog:</b> Alt ${analysis.altdorfTemp}%.1f°C / Luzern ${analysis.lucerneTemp}%.1f°C (Δ${analysis.altdorfLucerneTempDiff}%.1f°C) <b>$thermikStatus</b>",
+      f"<b>- Tagesamplitude:</b> ${analysis.dayAmplitude}%.1f°C <b>$amplitudeStatus</b>",
+      f"<b>- Schichtung:</b> Alt ${analysis.altdorfTemp}%.1f°C / Gütsch ${analysis.guetschTemp}%.1f°C (Δ${analysis.altdorfGuetschTempDiff}%.1f°C) <b>$schichtungStatus</b>"
     )
 
     sections.mkString("<br>")
@@ -210,10 +208,12 @@ object UrnerseeForecastCalculator:
    * Determine wind conditions based on pressure and temperature differences
    *
    * Based on the theory from urnersee.scala:
-   * - Föhn: Lugano-Zurich > +8 hPa OR Altdorf-Zurich becomes positive
+   * - Föhn: Lugano-Zurich > +8 hPa OR (Lugano-Zurich >= +4 hPa AND Altdorf-Zurich becomes positive)
    * - Föhnbise: Lugano-Zurich +2 to +8 hPa AND Altdorf-Zurich negative
    * - Thermik: Low pressure diff AND significant temp gradient (Altdorf-Lucerne > 5°C)
    * - Nothing: Low pressure diff AND low temp gradient
+   *
+   * Important: According to theory, there is no Föhn below +4 hPa Lugano-Zurich difference
    */
   private def determineWindConditions(
       luganoZurichDiff: Double,
@@ -225,7 +225,8 @@ object UrnerseeForecastCalculator:
   ): (WindType, Double) =
 
     // Check for Föhn conditions (strong south wind)
-    if (luganoZurichDiff > 8.0 || altdorfZurichDiff > 0) {
+    // Theory: No Föhn below +4 hPa Lugano-Zurich difference
+    if (luganoZurichDiff > 8.0 || (luganoZurichDiff >= 4.0 && altdorfZurichDiff > 0)) {
       val force = estimateFoehnForce(luganoZurichDiff, guetschWind)
       (WindType.Föhn, force)
     }
