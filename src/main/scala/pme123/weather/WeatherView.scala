@@ -9,6 +9,7 @@ import org.scalajs.dom.HTMLDivElement
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 import scala.scalajs.js.Object.keys
 import pme123.weather.openmeteo.OpenMeteoClient
 import pme123.weather.meteoschweiz.{MeteoSwissClient, MeteoSwissClientTest}
@@ -16,6 +17,7 @@ import pme123.weather.meteoschweiz.{MeteoSwissClient, MeteoSwissClientTest}
 object WeatherView:
   val weatherDataVar  = Var(Seq.empty[WeatherStationData])
   val weatherHDataVar = Var(Seq.empty[WeatherStationData])
+  val isLoadingVar    = Var(true)
 
   def apply(selectedTabVar: Var[String]): HtmlElement =
     fetchWeatherData()
@@ -24,96 +26,101 @@ object WeatherView:
       weatherDataVar.signal.map(createWeatherData)
 
     val weatherViewSignal: Signal[ReactiveHtmlElement[HTMLDivElement]] =
-      selectedTabVar.signal.combineWith(weatherDataSignal)
+      isLoadingVar.signal
+        .combineWith(selectedTabVar.signal)
+        .combineWith(weatherDataSignal)
         .map: all =>
-          val selectedTab = all._1
-          val wsDiffs     = all._2
-          WeatherLogger.debug(s"Selected Tab: ${all._1}")
-          wsDiffs
-            .find(d => selectedTab.contains(d.id))
-            .map: wsDiff =>
-              val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
-              val windStationOptions = Var(WindStationGraph.allNameOptions)
-              div(
-                className := "weather-view",
-                // Forecast panel at the top
-                if wsDiff.forecast.isDefined then
+          val isLoading   = all._1
+          val selectedTab = all._2
+          val wsDiffs     = all._3
+          if isLoading then
+            loadingSpinner
+          else
+            WeatherLogger.debug(s"Selected Tab: $selectedTab")
+            wsDiffs
+              .find(d => selectedTab.contains(d.id))
+                .map: wsDiff =>
+                  val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
+                  val windStationOptions = Var(WindStationGraph.allNameOptions)
                   div(
-                    div(
-                      display := "flex",
-                      alignItems := "center",
-                      gap := "8px",
-                      marginBottom := "8px",
-                      h3(
-                        margin := "0",
-                        s"Forecast ${wsDiff.id}"
-                      ),
-                      // Add info icon only for Urnersee
-                      if wsDiff.id == "Urnersee" then
-                        WindSpeedExplanationDialog()
-                      else
-                        emptyNode
-                    ),
-                    div(
-                      className := "graph-container",
-                      idAttr    := s"forecast-${wsDiff.id}",
-                      onMountUnmountCallback(
-                        mount = ctx =>
-                          WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
-                          ForecastGraph(wsDiff.id, wsDiff.forecast.get),
-                        unmount = _ => ()
-                      )
-                    )
-                  )
-                else div(),
-                // Main pressure difference graph
-                div(
-                  className := "graph-container",
-                  child <-- stationOptions.signal.map: opts =>
-                    div(
-                      idAttr := wsDiff.id,
-                      onMountUnmountCallback(
-                        mount = ctx =>
-                          WeatherGraph(wsDiff, opts),
-                        unmount = _ => ()
-                      )
-                    )
-                ),
-                // Wind stations
-                if wsDiff.windStations.nonEmpty then
-                  div(
-                    className := "wind-stations",
-                    children <-- windStationOptions.signal.map: opts =>
-                      wsDiff.windStations.map: st =>
-                        WeatherLogger.debug(s"WindStation: ${st.name}")
+                    className := "weather-view",
+                    // Forecast panel at the top
+                    if wsDiff.forecast.isDefined then
+                      div(
                         div(
-                          h3(st.name),
-                          div(
-                            className := "graph-container",
-                            idAttr    := s"wind-${st.name}",
-                            onMountUnmountCallback(
-                              mount = ctx =>
-                                WindStationGraph(st, opts),
-                              unmount = _ => ()
-                            )
+                          display := "flex",
+                          alignItems := "center",
+                          gap := "8px",
+                          marginBottom := "8px",
+                          h3(
+                            margin := "0",
+                            s"Forecast ${wsDiff.id}"
+                          ),
+                          // Add info icon only for Urnersee
+                          if wsDiff.id == "Urnersee" then
+                            WindSpeedExplanationDialog()
+                          else
+                            emptyNode
+                        ),
+                        div(
+                          className := "graph-container",
+                          idAttr    := s"forecast-${wsDiff.id}",
+                          onMountUnmountCallback(
+                            mount = ctx =>
+                              WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
+                              ForecastGraph(wsDiff.id, wsDiff.forecast.get),
+                            unmount = _ => ()
                           )
                         )
-                  )
-                else div(),
-                // Info panel
-                if wsDiff.info.isDefined then
-                  div(
-                    h3(s"Infos ${wsDiff.id}"),
+                      )
+                    else div(),
+                    // Main pressure difference graph
                     div(
                       className := "graph-container",
-                      idAttr    := s"info-${wsDiff.id}",
+                      child <-- stationOptions.signal.map: opts =>
+                        div(
+                          idAttr := wsDiff.id,
+                          onMountUnmountCallback(
+                            mount = ctx =>
+                              WeatherGraph(wsDiff, opts),
+                            unmount = _ => ()
+                          )
+                        )
+                    ),
+                    // Wind stations
+                    if wsDiff.windStations.nonEmpty then
                       div(
-                      wsDiff.info.get)
-                    )
+                        className := "wind-stations",
+                        children <-- windStationOptions.signal.map: opts =>
+                          wsDiff.windStations.map: st =>
+                            WeatherLogger.debug(s"WindStation: ${st.name}")
+                            div(
+                              h3(st.name),
+                              div(
+                                className := "graph-container",
+                                idAttr    := s"wind-${st.name}",
+                                onMountUnmountCallback(
+                                  mount = ctx =>
+                                    WindStationGraph(st, opts),
+                                  unmount = _ => ()
+                                )
+                              )
+                            )
+                      )
+                    else div(),
+                    // Info panel
+                    if wsDiff.info.isDefined then
+                      div(
+                        h3(s"Infos ${wsDiff.id}"),
+                        div(
+                          className := "graph-container",
+                          idAttr    := s"info-${wsDiff.id}",
+                          div(wsDiff.info.get)
+                        )
+                      )
+                    else div()
                   )
-                else div()
-              )
-            .getOrElse(div("No Data"))
+                .getOrElse(div("No Data"))
 
     div(
       className := "weather-container",
@@ -137,8 +144,13 @@ object WeatherView:
                   WeatherStationData(station, data),
       )
     // Use OpenMeteo for smooth plots while developing MeteoSwiss
-    fetch(OpenMeteoClient).map:
-      weatherDataVar.set
+    fetch(OpenMeteoClient).onComplete:
+      case Success(data) =>
+        weatherDataVar.set(data)
+        isLoadingVar.set(false)
+      case Failure(ex) =>
+        WeatherLogger.error(s"Failed to fetch weather data: ${ex.getMessage}", ex)
+        isLoadingVar.set(false)
     // MeteoSwiss testing via button only for now
   //  MeteoSwissClient.setTestMode(false)
   //  fetch(MeteoSwissClient).map:
@@ -147,6 +159,14 @@ object WeatherView:
   //    weatherHDataVar.set
 
   end fetchWeatherData
+
+  private def loadingSpinner: ReactiveHtmlElement[HTMLDivElement] =
+    div(
+      className := "loading-container",
+      div(className := "loading-spinner"),
+      div(className := "loading-text", "Loading weather data…")
+    )
+
 end WeatherView
 
 object WeatherTabs:
