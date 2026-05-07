@@ -133,7 +133,7 @@ object WeatherView:
     // println("🧪 Running MeteoSwiss Client Tests...")
     // MeteoSwissClientTest.runAllTests()
 
-    def fetch(meteoClient: MeteoClient) =
+    def fetch(meteoClient: MeteoClient): Future[Seq[WeatherStationData]] =
       Future.sequence(
         allStations
           .map:
@@ -141,11 +141,16 @@ object WeatherView:
               meteoClient
                 .fetchWeatherData(latitude, longitude)
                 .map: data =>
-                  WeatherStationData(station, data),
-      )
+                  Some(WeatherStationData(station, data))
+                .recover:
+                  case ex =>
+                    WeatherLogger.warn(s"Failed to fetch ${station.name}: ${ex.getMessage}")
+                    None
+      ).map(_.flatten)
     // Use OpenMeteo for smooth plots while developing MeteoSwiss
     fetch(OpenMeteoClient).onComplete:
       case Success(data) =>
+        WeatherLogger.info(s"Loaded ${data.size} of ${allStations.size} stations")
         weatherDataVar.set(data)
         isLoadingVar.set(false)
       case Failure(ex) =>
