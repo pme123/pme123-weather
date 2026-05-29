@@ -96,9 +96,12 @@ def urnersee: ReactiveHtmlElement[HTMLDivElement] = div(
     ),
 
     div(
-      className := "info-msg info-msg-warn",
-      b("Praxis-Tipp: "),
-      "Je stärker die Föhnbise (tieferer Altdorf-Druck), desto explosiver ist meist der spätere Durchbruch. Die Bise wirkt wie eine gespannte Feder!"
+      className := "info-sub",
+      div(
+        className := "info-msg info-msg-warn",
+        b("Praxis-Tipp: "),
+        "Je stärker die Föhnbise (tieferer Altdorf-Druck), desto explosiver ist meist der spätere Durchbruch. Die Bise wirkt wie eine gespannte Feder!"
+      )
     )
   ),
 
