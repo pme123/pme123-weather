@@ -47,24 +47,17 @@ object WeatherView:
                     // Forecast panel at the top
                     if wsDiff.forecast.isDefined then
                       div(
+                        className := "graph-container",
                         div(
-                          display := "flex",
-                          alignItems := "center",
-                          gap := "8px",
-                          marginBottom := "8px",
-                          h3(
-                            margin := "0",
-                            s"Forecast ${wsDiff.id}"
-                          ),
-                          // Add info icon only for Urnersee
+                          className := "card-header",
+                          div(className := "card-title", s"Forecast ${wsDiff.id}"),
                           if wsDiff.id == "Urnersee" then
                             WindSpeedExplanationDialog()
                           else
                             emptyNode
                         ),
                         div(
-                          className := "graph-container",
-                          idAttr    := s"forecast-${wsDiff.id}",
+                          idAttr := s"forecast-${wsDiff.id}",
                           onMountUnmountCallback(
                             mount = ctx =>
                               WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
@@ -77,6 +70,7 @@ object WeatherView:
                     // Main pressure difference graph
                     div(
                       className := "graph-container",
+                      div(className := "card-title", wsDiff.label),
                       child <-- stationOptions.signal.map: opts =>
                         div(
                           idAttr := wsDiff.id,
@@ -95,9 +89,9 @@ object WeatherView:
                           wsDiff.windStations.map: st =>
                             WeatherLogger.debug(s"WindStation: ${st.name}")
                             div(
-                              h3(st.name),
+                              className := "graph-container",
+                              div(className := "card-title", st.name),
                               div(
-                                className := "graph-container",
                                 idAttr    := s"wind-${st.name}",
                                 onMountUnmountCallback(
                                   mount = ctx =>
@@ -111,12 +105,9 @@ object WeatherView:
                     // Info panel
                     if wsDiff.info.isDefined then
                       div(
-                        h3(s"Infos ${wsDiff.id}"),
-                        div(
-                          className := "graph-container",
-                          idAttr    := s"info-${wsDiff.id}",
-                          div(wsDiff.info.get)
-                        )
+                        className := "graph-container",
+                        div(className := "card-title", s"Infos ${wsDiff.id}"),
+                        wsDiff.info.get
                       )
                     else div()
                   )
@@ -177,19 +168,17 @@ end WeatherView
 object WeatherTabs:
 
   def apply(selectedTabVar: Var[String]) =
-    TabContainer(
-      _.collapsed := true,
-      width := "100%",
+    div(
+      className := "tabs",
       stationDiffs.map(stDiff =>
-        TabContainer.tab(
-          _.id       := stDiff.id + "-tab",
-          _.text     := stDiff.id,
-          _.selected := (stDiff.id == "Urnersee")
+        button(
+          className <-- selectedTabVar.signal.map(sel =>
+            if sel == stDiff.id then "tab active" else "tab"
+          ),
+          onClick --> { _ => selectedTabVar.set(stDiff.id) },
+          span(className := "tab-dot ok"),
+          span(className := "tab-name", stDiff.id)
         )
-      ),
-      _.events.onTabSelect
-        .map(_.detail.tab.id) --> Observer(x =>
-        selectedTabVar.set(x.toString.replace("-tab", ""))
       )
     )
 end WeatherTabs
