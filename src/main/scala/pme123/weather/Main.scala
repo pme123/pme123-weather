@@ -54,6 +54,14 @@ object Main:
           ),
           span(className := "header-sep", " | "),
           a(
+            href      := "https://pme123.github.io/pme123-windalert/",
+            target    := "_blank",
+            rel       := "noopener",
+            className := "header-link",
+            "Wind Alert"
+          ),
+          span(className := "header-sep", " | "),
+          a(
             href      := "https://github.com/pme123/pme123-weather",
             target    := "_blank",
             rel       := "noopener",
@@ -72,22 +80,43 @@ object Main:
         div(
           className := "z9-footer-inner",
           div(className := "z9-copyright", "© 2026 z9nai GmbH // Alle Rechte vorbehalten"),
-          span(
-            className := "footer-data",
-            "Data: ",
+          div(
+            className := "footer-right",
             a(
               href      := openMeteoApiUI,
               target    := "_blank",
               rel       := "noopener",
               className := "footer-link",
-              "OpenMeteo"
+              "Open-Meteo"
+            ),
+            span(className := "footer-sep-mono", "//"),
+            DatenschutzDialog(),
+            span(className := "footer-sep-mono", "//"),
+            a(
+              href      := "mailto:hallo@z9nai.ch",
+              className := "z9-mail-icon",
+              title     := "hallo@z9nai.ch",
+              svg.svg(
+                svg.viewBox    := "0 0 24 24",
+                svg.fill       := "none",
+                svg.stroke     := "currentColor",
+                svg.strokeWidth    := "2",
+                svg.strokeLineCap  := "round",
+                svg.strokeLineJoin := "round",
+                svg.width  := "16",
+                svg.height := "16",
+                svg.rect(
+                  svg.width  := "20",
+                  svg.height := "16",
+                  svg.x  := "2",
+                  svg.y  := "4",
+                  svg.rx := "2"
+                ),
+                svg.path(
+                  svg.d := "m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                )
+              )
             )
-          ),
-          a(
-            href      := "mailto:info@z9nai.ch",
-            className := "z9-mail-icon",
-            title     := "info@z9nai.ch",
-            "✉"
           )
         )
       )

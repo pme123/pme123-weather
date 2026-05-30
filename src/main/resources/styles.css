@@ -400,29 +400,94 @@ details.info-group > summary.info-group-title:hover { background: var(--surface2
   letter-spacing: 0.1em;
 }
 
-.footer-data {
-  font-size: 0.8rem;
-  color: var(--muted);
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .footer-link {
-  color: var(--accent);
+  color: rgba(255,255,255,0.2);
   text-decoration: none;
-  font-size: 0.8rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.15s;
 }
+.footer-link:hover { color: rgba(255,255,255,0.5); }
 
-.footer-link:hover { text-decoration: underline; }
+.footer-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: rgba(255,255,255,0.2);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.footer-btn:hover { color: rgba(255,255,255,0.5); }
+
+.footer-sep-mono {
+  color: rgba(255,255,255,0.1);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+}
 
 .z9-mail-icon {
   color: rgba(255,255,255,0.2);
   transition: color 0.2s;
   text-decoration: none;
-  font-size: 1rem;
   display: flex;
   align-items: center;
 }
-
 .z9-mail-icon:hover { color: rgba(255,255,255,0.6); }
+
+/* ── Datenschutz Modal ── */
+.datenschutz-modal {
+  max-width: 600px;
+}
+
+.ds-company {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ds-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 14px 0 4px;
+}
+
+.ds-p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.ds-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+.ds-link:hover { text-decoration: underline; }
+
+.ds-imprint {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+  font-family: 'Courier New', Courier, monospace;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  line-height: 1.7;
+}
 
 /* ── Info Icon & Modal ── */
 .info-icon {
