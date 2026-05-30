@@ -403,7 +403,13 @@ details.info-group > summary.info-group-title:hover { background: var(--surface2
 .footer-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  line-height: 1;
+}
+
+.footer-right > * {
+  display: flex;
+  align-items: center;
 }
 
 .footer-link {
@@ -428,13 +434,19 @@ details.info-group > summary.info-group-title:hover { background: var(--surface2
   letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: color 0.15s;
+  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 .footer-btn:hover { color: rgba(255,255,255,0.5); }
 
 .footer-sep-mono {
   color: rgba(255,255,255,0.1);
   font-family: 'Courier New', Courier, monospace;
-  font-size: 0.75rem;
+  font-size: 10px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 .z9-mail-icon {

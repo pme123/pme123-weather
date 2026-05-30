@@ -147,9 +147,17 @@ object ForecastGraph:
     
     allTraces.plot(s"forecast-$groupId", layout)
 
-    // Force left alignment of tooltip text using Plotly.js relayout
+    // Style the hover tooltip
     val divId = s"forecast-$groupId"
-    val update = js.Dynamic.literal("hoverlabel.align" -> "left")
+    val update = js.Dynamic.literal(
+      "hoverlabel.align"       -> "left",
+      "hoverlabel.bgcolor"     -> "rgba(15, 23, 42, 0.92)",
+      "hoverlabel.bordercolor" -> "rgba(99, 102, 241, 0.6)",
+      "hoverlabel.font.color"  -> "rgba(241, 245, 249, 1.0)",
+      "hoverlabel.font.size"   -> 13,
+      "hoverlabel.font.family" -> "Inter, system-ui, sans-serif",
+      "hoverlabel.namelength"  -> -1
+    )
     PlotlyJS.relayout(divId, update.asInstanceOf[js.Object])
 
   end apply
