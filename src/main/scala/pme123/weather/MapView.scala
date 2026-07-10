@@ -15,11 +15,12 @@ import scala.scalajs.js.annotation.JSGlobal
 @js.native
 @JSGlobal("L")
 object Leaflet extends js.Object:
-  def map(id: String, options: js.Object): js.Dynamic                  = js.native
-  def tileLayer(urlTemplate: String, options: js.Object): js.Dynamic   = js.native
-  def marker(latlng: js.Array[Double], options: js.Object): js.Dynamic = js.native
-  def divIcon(options: js.Object): js.Dynamic                          = js.native
-  def layerGroup(): js.Dynamic                                        = js.native
+  def map(id: String, options: js.Object): js.Dynamic                              = js.native
+  def tileLayer(urlTemplate: String, options: js.Object): js.Dynamic               = js.native
+  def marker(latlng: js.Array[Double], options: js.Object): js.Dynamic             = js.native
+  def polyline(latlngs: js.Array[js.Array[Double]], options: js.Object): js.Dynamic = js.native
+  def divIcon(options: js.Object): js.Dynamic                                      = js.native
+  def layerGroup(): js.Dynamic                                                    = js.native
 
 object MapView:
 
@@ -232,6 +233,8 @@ object MapView:
       )
       .addTo(lMap)
 
+    drawDiffLines(lMap)
+
     val mLayer = Leaflet.layerGroup()
     mLayer.addTo(lMap)
 
@@ -272,6 +275,43 @@ object MapView:
 
         mLayer.addLayer(marker)
   end renderMarkers
+
+  // Thin lines between each pressure-diff pair, colored the same as their line in
+  // the pressure-difference charts (WeatherStationDiff.color). Markers live in Leaflet's
+  // markerPane (above the overlayPane lines are drawn in), so station tooltips always
+  // win over line tooltips wherever a marker sits on top of a line.
+  private def drawDiffLines(lMap: js.Dynamic): Unit =
+    stationDiffs
+      .flatMap(group => group.stationDiffs.map(group.id -> _))
+      .foreach: (groupId, diff) =>
+        val latlngs = js.Array(
+          js.Array(diff.station1.latitude, diff.station1.longitude),
+          js.Array(diff.station2.latitude, diff.station2.longitude)
+        )
+
+        Leaflet
+          .polyline(
+            latlngs,
+            js.Dynamic
+              .literal(color = diff.color, weight = 1.5, opacity = 0.7, interactive = false)
+              .asInstanceOf[js.Object]
+          )
+          .addTo(lMap)
+
+        // Invisible, much wider line on top - just to make hovering easy - carrying the tooltip.
+        Leaflet
+          .polyline(
+            latlngs,
+            js.Dynamic
+              .literal(color = diff.color, weight = 14, opacity = 0)
+              .asInstanceOf[js.Object]
+          )
+          .bindTooltip(
+            s"${diff.station1.name} ↔ ${diff.station2.name} ($groupId)",
+            js.Dynamic.literal(sticky = true).asInstanceOf[js.Object]
+          )
+          .addTo(lMap)
+  end drawDiffLines
 
   private def destroyMap(): Unit =
     leafletMap.foreach(_.remove())
