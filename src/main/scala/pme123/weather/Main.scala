@@ -15,7 +15,7 @@ object Main:
     renderOnDomContentLoaded(appContainer, page)
   end main
 
-  private lazy val selectedTabVar: Var[String] = Var("Urnersee")
+  private lazy val selectedTabVar: Var[String] = Var(MapView.tabId)
 
   private lazy val page =
     div(

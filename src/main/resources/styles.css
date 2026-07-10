@@ -175,6 +175,8 @@ body {
 
 .tab-dot.ok { background: var(--green); }
 
+.tab-map { display: flex; align-items: center; gap: 6px; }
+
 .tab-name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -212,6 +214,117 @@ body {
   margin-bottom: 16px;
   position: relative;
   min-height: 100px;
+}
+
+/* ── Stations Map ── */
+.stations-map-el {
+  height: 75vh;
+  min-height: 560px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.leaflet-container {
+  background: var(--surface2);
+  font-family: inherit;
+}
+
+.map-container .card-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.map-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.unit-btns { display: flex; gap: 3px; }
+
+.unit-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.unit-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.map-day-legend {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.map-day-item { white-space: nowrap; }
+
+.map-day-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.15s;
+}
+
+.map-day-btn:hover { color: var(--accent); }
+
+.map-time-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.map-time-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 175px;
+  white-space: nowrap;
+}
+
+.map-time-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface2);
+  outline: none;
+}
+
+.map-time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
+
+.map-time-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg);
 }
 
 .card-title {

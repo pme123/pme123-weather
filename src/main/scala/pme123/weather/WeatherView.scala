@@ -37,81 +37,84 @@ object WeatherView:
             loadingSpinner
           else
             WeatherLogger.debug(s"Selected Tab: $selectedTab")
-            wsDiffs
-              .find(d => selectedTab.contains(d.id))
-                .map: wsDiff =>
-                  val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
-                  val windStationOptions = Var(WindStationGraph.allNameOptions)
-                  div(
-                    className := "weather-view",
-                    // Forecast panel at the top
-                    if wsDiff.forecast.isDefined then
+            if selectedTab == MapView.tabId then
+              MapView(selectedTabVar)
+            else
+              wsDiffs
+                .find(d => selectedTab.contains(d.id))
+                  .map: wsDiff =>
+                    val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
+                    val windStationOptions = Var(WindStationGraph.allNameOptions)
+                    div(
+                      className := "weather-view",
+                      // Forecast panel at the top
+                      if wsDiff.forecast.isDefined then
+                        div(
+                          className := "graph-container",
+                          div(
+                            className := "card-header",
+                            div(className := "card-title", s"Forecast ${wsDiff.id}"),
+                            if wsDiff.id == "Urnersee" then
+                              WindSpeedExplanationDialog()
+                            else
+                              emptyNode
+                          ),
+                          div(
+                            idAttr := s"forecast-${wsDiff.id}",
+                            onMountUnmountCallback(
+                              mount = ctx =>
+                                WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
+                                ForecastGraph(wsDiff.id, wsDiff.forecast.get),
+                              unmount = _ => ()
+                            )
+                          )
+                        )
+                      else div(),
+                      // Main pressure difference graph
                       div(
                         className := "graph-container",
-                        div(
-                          className := "card-header",
-                          div(className := "card-title", s"Forecast ${wsDiff.id}"),
-                          if wsDiff.id == "Urnersee" then
-                            WindSpeedExplanationDialog()
-                          else
-                            emptyNode
-                        ),
-                        div(
-                          idAttr := s"forecast-${wsDiff.id}",
-                          onMountUnmountCallback(
-                            mount = ctx =>
-                              WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
-                              ForecastGraph(wsDiff.id, wsDiff.forecast.get),
-                            unmount = _ => ()
+                        div(className := "card-title", wsDiff.label),
+                        child <-- stationOptions.signal.map: opts =>
+                          div(
+                            idAttr := wsDiff.id,
+                            onMountUnmountCallback(
+                              mount = ctx =>
+                                WeatherGraph(wsDiff, opts),
+                              unmount = _ => ()
+                            )
                           )
-                        )
-                      )
-                    else div(),
-                    // Main pressure difference graph
-                    div(
-                      className := "graph-container",
-                      div(className := "card-title", wsDiff.label),
-                      child <-- stationOptions.signal.map: opts =>
+                      ),
+                      // Wind stations
+                      if wsDiff.windStations.nonEmpty then
                         div(
-                          idAttr := wsDiff.id,
-                          onMountUnmountCallback(
-                            mount = ctx =>
-                              WeatherGraph(wsDiff, opts),
-                            unmount = _ => ()
-                          )
-                        )
-                    ),
-                    // Wind stations
-                    if wsDiff.windStations.nonEmpty then
-                      div(
-                        className := "wind-stations",
-                        children <-- windStationOptions.signal.map: opts =>
-                          wsDiff.windStations.map: st =>
-                            WeatherLogger.debug(s"WindStation: ${st.name}")
-                            div(
-                              className := "graph-container",
-                              div(className := "card-title", st.name),
+                          className := "wind-stations",
+                          children <-- windStationOptions.signal.map: opts =>
+                            wsDiff.windStations.map: st =>
+                              WeatherLogger.debug(s"WindStation: ${st.name}")
                               div(
-                                idAttr    := s"wind-${st.name}",
-                                onMountUnmountCallback(
-                                  mount = ctx =>
-                                    WindStationGraph(st, opts),
-                                  unmount = _ => ()
+                                className := "graph-container",
+                                div(className := "card-title", st.name),
+                                div(
+                                  idAttr    := s"wind-${st.name}",
+                                  onMountUnmountCallback(
+                                    mount = ctx =>
+                                      WindStationGraph(st, opts),
+                                    unmount = _ => ()
+                                  )
                                 )
                               )
-                            )
-                      )
-                    else div(),
-                    // Info panel
-                    if wsDiff.info.isDefined then
-                      div(
-                        className := "graph-container",
-                        div(className := "card-title", s"Infos ${wsDiff.id}"),
-                        wsDiff.info.get
-                      )
-                    else div()
-                  )
-                .getOrElse(div("No Data"))
+                        )
+                      else div(),
+                      // Info panel
+                      if wsDiff.info.isDefined then
+                        div(
+                          className := "graph-container",
+                          div(className := "card-title", s"Infos ${wsDiff.id}"),
+                          wsDiff.info.get
+                        )
+                      else div()
+                    )
+                  .getOrElse(div("No Data"))
 
     div(
       className := "weather-container",
@@ -170,6 +173,26 @@ object WeatherTabs:
   def apply(selectedTabVar: Var[String]) =
     div(
       className := "tabs",
+      button(
+        className <-- selectedTabVar.signal.map(sel =>
+          if sel == MapView.tabId then "tab tab-map active" else "tab tab-map"
+        ),
+        onClick --> { _ => selectedTabVar.set(MapView.tabId) },
+        svg.svg(
+          svg.viewBox := "0 0 24 24",
+          svg.width   := "14",
+          svg.height  := "14",
+          svg.fill    := "none",
+          svg.stroke  := "currentColor",
+          svg.strokeWidth    := "2",
+          svg.strokeLineCap  := "round",
+          svg.strokeLineJoin := "round",
+          svg.polygon(svg.points := "3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"),
+          svg.line(svg.x1 := "9", svg.y1 := "3", svg.x2 := "9", svg.y2 := "18"),
+          svg.line(svg.x1 := "15", svg.y1 := "6", svg.x2 := "15", svg.y2 := "21")
+        ),
+        span(className := "tab-name", MapView.tabId)
+      ),
       stationDiffs.map(stDiff =>
         button(
           className <-- selectedTabVar.signal.map(sel =>
