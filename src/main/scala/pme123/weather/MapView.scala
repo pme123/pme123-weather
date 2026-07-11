@@ -203,7 +203,7 @@ object MapView:
         className := "stations-map-el",
         onMountUnmountCallback(
           mount = ctx =>
-            initMap()
+            initMap(selectedTabVar)
             idxVar.signal
               .combineWith(unitVar.signal)
               .combineWith(metricVar.signal)
@@ -215,7 +215,7 @@ object MapView:
     )
   end apply
 
-  private def initMap(): Unit =
+  private def initMap(selectedTabVar: Var[String]): Unit =
     val lMap = Leaflet.map("stations-map", js.Dynamic.literal(zoomControl = true).asInstanceOf[js.Object])
 
     Leaflet
@@ -227,7 +227,7 @@ object MapView:
       )
       .addTo(lMap)
 
-    drawDiffLines(lMap)
+    drawDiffLines(lMap, selectedTabVar)
 
     val mLayer = Leaflet.layerGroup()
     mLayer.addTo(lMap)
@@ -288,8 +288,9 @@ object MapView:
   // Thin lines between each pressure-diff pair, colored the same as their line in
   // the pressure-difference charts (WeatherStationDiff.color). Markers live in Leaflet's
   // markerPane (above the overlayPane lines are drawn in), so station tooltips always
-  // win over line tooltips wherever a marker sits on top of a line.
-  private def drawDiffLines(lMap: js.Dynamic): Unit =
+  // win over line tooltips wherever a marker sits on top of a line. Clicking a line jumps
+  // to its group's tab, same as clicking one of its stations does.
+  private def drawDiffLines(lMap: js.Dynamic, selectedTabVar: Var[String]): Unit =
     stationDiffs
       .flatMap(group => group.stationDiffs.map(group.id -> _))
       .foreach: (groupId, diff) =>
@@ -307,18 +308,20 @@ object MapView:
           )
           .addTo(lMap)
 
-        // Invisible, much wider line on top - just to make hovering easy - carrying the tooltip.
+        // Invisible, much wider line on top - just to make hovering/clicking easy - carrying
+        // the tooltip and the click-to-tab behavior.
         Leaflet
           .polyline(
             latlngs,
             js.Dynamic
-              .literal(color = diff.color, weight = 14, opacity = 0)
+              .literal(color = diff.color, weight = 14, opacity = 0, cursor = "pointer")
               .asInstanceOf[js.Object]
           )
           .bindTooltip(
             s"${diff.station1.name} ↔ ${diff.station2.name} ($groupId)",
             js.Dynamic.literal(sticky = true).asInstanceOf[js.Object]
           )
+          .on("click", () => selectedTabVar.set(groupId))
           .addTo(lMap)
   end drawDiffLines
 
