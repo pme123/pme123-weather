@@ -110,7 +110,8 @@ object MapView:
         .asInstanceOf[js.Object]
     )
 
-  private def greyDotIcon(): js.Dynamic =
+  // Not private - reused by ConfigEditorDialog for its "pick a known station" mini map.
+  def greyDotIcon(): js.Dynamic =
     val html = """<div style="border-radius:50%;width:10px;height:10px;background:#94a3b8;border:1.5px solid #cbd5e1;"></div>"""
     Leaflet.divIcon(
       js.Dynamic
@@ -217,13 +218,6 @@ object MapView:
   private def initMap(): Unit =
     val lMap = Leaflet.map("stations-map", js.Dynamic.literal(zoomControl = true).asInstanceOf[js.Object])
 
-    val lats = allStations.map(_.latitude)
-    val lons = allStations.map(_.longitude)
-    lMap.fitBounds(
-      js.Array(js.Array(lats.min, lons.min), js.Array(lats.max, lons.max)),
-      js.Dynamic.literal(padding = js.Array(20, 20)).asInstanceOf[js.Object]
-    )
-
     Leaflet
       .tileLayer(
         "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
@@ -241,10 +235,25 @@ object MapView:
     leafletMap = lMap
     markerLayer = mLayer
 
-    // Container is hidden (display:none) until this mount callback runs, so Leaflet
-    // needs a re-measure once the tab panel is actually visible in the layout.
-    dom.window.setTimeout(() => lMap.invalidateSize(), 150)
+    // The container can still report a width of 0 right at mount time (before the
+    // browser's first layout pass) - fitBounds would then pick a degenerate max-zoom
+    // view, and a later invalidateSize() alone doesn't fix the zoom. A fixed delay isn't
+    // reliably long enough, so poll until the container actually has a real width.
+    waitUntilSized("stations-map", triesLeft = 20): () =>
+      lMap.invalidateSize()
+      val lats = allStations.map(_.latitude)
+      val lons = allStations.map(_.longitude)
+      lMap.fitBounds(
+        js.Array(js.Array(lats.min, lons.min), js.Array(lats.max, lons.max)),
+        js.Dynamic.literal(padding = js.Array(20, 20)).asInstanceOf[js.Object]
+      )
   end initMap
+
+  // Not private - reused by ConfigEditorDialog's mini map (same zero-width-at-mount fix).
+  def waitUntilSized(elId: String, triesLeft: Int)(action: () => Unit): Unit =
+    val el = dom.document.getElementById(elId)
+    if (el != null && el.clientWidth > 0) || triesLeft <= 0 then action()
+    else dom.window.setTimeout(() => waitUntilSized(elId, triesLeft - 1)(action), 50)
 
   private def renderMarkers(
       stations: Seq[WeatherStationData],

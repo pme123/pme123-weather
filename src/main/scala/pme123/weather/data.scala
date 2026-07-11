@@ -56,7 +56,7 @@ lazy val altdorfHistory             = WeatherStationGroupDiff(
   windStations = Seq(altdorf)
 )
 
-lazy val allStations =
+def allStations: Seq[WeatherStation] =
   stationDiffs
     .flatMap(std =>
       std.stationDiffs.flatMap(d => Seq(d.station1, d.station2)) ++
@@ -64,7 +64,10 @@ lazy val allStations =
     )
     .distinct
 
-lazy val stationDiffs                      = Seq(
+// The hardcoded fallback configuration - used when no config file/folder is loaded, and
+// as the source of `info`/`forecastCalculator` for built-in areas loaded from JSON
+// (see WeatherConfig.fromConfig).
+lazy val defaultStationDiffs: Seq[WeatherStationGroupDiff] = Seq(
   urnersee,
   mittellandseen,
   WeatherStationGroupDiff(
@@ -158,6 +161,12 @@ lazy val stationDiffs                      = Seq(
     windStations = Seq(seglmaria)
   )
 )
+
+// Mutable: overwritten once at startup after ConfigStore resolves the loaded/default
+// configuration (see Main.scala). Everything else in the app reads this as if it were
+// the old hardcoded `lazy val`.
+var stationDiffs: Seq[WeatherStationGroupDiff] = defaultStationDiffs
+
 lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
   "Urnersee",
   "Diff. Lugano - Zurich > 4hPa South foehn | < -4hPa North foehn",

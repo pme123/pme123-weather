@@ -118,6 +118,84 @@ body {
 
 .header-sep { color: var(--border); }
 
+/* ── Header gear icon (opens ConfigDialog) ── */
+.header-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.header-icon-btn:hover { color: var(--accent); }
+
+/* ── Settings dialog: Synchronisierung section ── */
+.settings-section-hd {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-note { font-size: 0.8rem; color: var(--muted); }
+
+.folder-sync-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.folder-sync-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.folder-sync-actions { display: flex; gap: 8px; }
+
+.folder-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.folder-dot.connected { background: var(--green); }
+.folder-dot.needs-permission { background: var(--yellow); }
+
+.folder-status-label { font-size: 0.72rem; color: var(--muted); }
+
+.btn-secondary {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn-block { width: 100%; }
+
 /* ── Main Content ── */
 .main-content {
   flex: 1;
@@ -644,7 +722,9 @@ details.info-group > summary.info-group-title:hover { background: var(--surface2
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.55);
-  z-index: 200;
+  /* Leaflet's own panes/controls (in MapView) use z-index values up to ~1000,
+     so this needs to clear that regardless of where the modal sits in the DOM. */
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -705,6 +785,352 @@ details.info-group > summary.info-group-title:hover { background: var(--surface2
   background-color: var(--surface) !important;
   border: 1px solid var(--border) !important;
   border-radius: 6px !important;
+}
+
+/* ── Config editor dialog (analog pme123-windspotter) ── */
+.config-modal {
+  max-width: 900px;
+  max-height: 88vh;
+}
+
+.config-modal .info-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cfg-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cfg-toolbar-label { color: var(--muted); font-size: 0.78rem; }
+
+.cfg-toolbar-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.cfg-select,
+.cfg-input {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.78rem;
+  font-family: inherit;
+}
+
+.cfg-select:focus,
+.cfg-input:focus { outline: none; border-color: var(--accent); }
+
+.cfg-input:disabled,
+.cfg-select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cfg-btn {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.cfg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.cfg-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cfg-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.cfg-btn.primary:hover:not(:disabled) { color: #0f172a; filter: brightness(1.1); }
+.cfg-btn.danger:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
+
+.cfg-active-badge {
+  color: var(--green);
+  font-size: 0.72rem;
+  border: 1px solid var(--green);
+  border-radius: 999px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.cfg-hint {
+  color: var(--muted);
+  font-size: 0.78rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  line-height: 1.5;
+}
+
+.cfg-name-field { max-width: 320px; }
+
+.cfg-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.cfg-tab {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  padding: 4px 14px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.cfg-tab.active { border-color: var(--accent); color: var(--accent); }
+
+.cfg-editor {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.cfg-groups {
+  width: 230px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cfg-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cfg-panel-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* The wrapper around a selected area's fields/lists/map - spacing between ALL of its
+   sections (including after the "+ ... hinzufügen" buttons) comes from this gap, not
+   from ad-hoc margins on individual pieces. */
+.cfg-area-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cfg-sublist-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.cfg-map-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.cfg-stations-map {
+  height: 260px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cfg-group-list,
+.cfg-station-list,
+.cfg-diff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cfg-group-row,
+.cfg-station-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface2);
+}
+
+.cfg-group-row { cursor: pointer; }
+
+.cfg-group-row.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.cfg-group-name,
+.cfg-station-row .cfg-input { flex: 1; min-width: 0; }
+
+.cfg-count { color: var(--muted); font-size: 0.72rem; padding: 0 2px; }
+
+.cfg-icon-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.cfg-icon-btn:hover:not(:disabled) { color: var(--text); background: var(--surface); }
+.cfg-icon-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.cfg-area-fields {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface2);
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: 8px 10px;
+}
+
+.cfg-diff-row {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface2);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cfg-diff-station {
+  display: grid;
+  grid-template-columns: 16px 1fr 130px 130px;
+  gap: 6px;
+  align-items: center;
+}
+
+.cfg-diff-station-label {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cfg-diff-bottom {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.cfg-diff-color { max-width: 240px; }
+
+.cfg-diff-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.cfg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cfg-field-label { font-size: 0.68rem; color: var(--muted); }
+
+.cfg-add-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cfg-json {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.cfg-json-area {
+  width: 100%;
+  min-height: 340px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.cfg-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.cfg-message { min-height: 1em; }
+.cfg-msg { font-size: 0.78rem; }
+.cfg-msg.ok { color: var(--green); }
+.cfg-msg.error { color: var(--red); }
+
+.cfg-footer-actions { display: flex; gap: 8px; }
+
+.cfg-folder {
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.cfg-folder-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+}
+
+.cfg-folder-status .muted { color: var(--muted); }
+.cfg-folder-linked { color: var(--green); }
+
+.cfg-group-row.cfg-hidden { opacity: 0.55; }
+
+@media (max-width: 700px) {
+  .cfg-editor { flex-direction: column; }
+  .cfg-groups { width: 100%; }
+  .cfg-area-fields { grid-template-columns: 1fr; }
+  .cfg-diff-station { grid-template-columns: 1fr; }
+  .cfg-toolbar-actions { margin-left: 0; }
 }
 
 /* ── Mobile Responsive ── */

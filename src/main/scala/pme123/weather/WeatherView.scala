@@ -70,20 +70,28 @@ object WeatherView:
                           )
                         )
                       else div(),
-                      // Main pressure difference graph
-                      div(
-                        className := "graph-container",
-                        div(className := "card-title", wsDiff.label),
-                        child <-- stationOptions.signal.map: opts =>
-                          div(
-                            idAttr := wsDiff.id,
-                            onMountUnmountCallback(
-                              mount = ctx =>
-                                WeatherGraph(wsDiff, opts),
-                              unmount = _ => ()
+                      // Main pressure difference graph (needs at least one diff pair -
+                      // possible to have none for a freshly created custom area)
+                      if wsDiff.stationDiffs.nonEmpty then
+                        div(
+                          className := "graph-container",
+                          div(className := "card-title", wsDiff.label),
+                          child <-- stationOptions.signal.map: opts =>
+                            div(
+                              idAttr := wsDiff.id,
+                              onMountUnmountCallback(
+                                mount = ctx =>
+                                  WeatherGraph(wsDiff, opts),
+                                unmount = _ => ()
+                              )
                             )
-                          )
-                      ),
+                        )
+                      else
+                        div(
+                          className := "graph-container",
+                          div(className := "card-title", wsDiff.label),
+                          p(className := "settings-note", "Keine Druckdifferenz konfiguriert.")
+                        ),
                       // Wind stations
                       if wsDiff.windStations.nonEmpty then
                         div(
