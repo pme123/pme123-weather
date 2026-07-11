@@ -42,7 +42,23 @@ object ConfigEditorDialog:
       .map { case (cfg, idx) => cfg.areas.indices.contains(idx) }
       .distinct
 
-  private var configMapInstance: js.UndefOr[js.Dynamic] = js.undefined
+  // The stations already in the currently selected area (diff pairs + wind stations,
+  // deduplicated) - drives both the markers and the map extent in stationsMapSection.
+  private val currentAreaStationsSignal: Signal[Seq[ConfigStation]] =
+    draftVar.signal
+      .combineWith(selectedAreaIdxVar.signal)
+      .map { case (cfg, idx) =>
+        cfg.areas.lift(idx) match
+          case None => Seq.empty
+          case Some(a) =>
+            (a.diffs.flatMap(d => Seq(d.station1, d.station2)) ++ a.windStations)
+              .groupBy(s => (s.name, s.latitude, s.longitude))
+              .map((_, group) => group.head)
+              .toSeq
+      }
+
+  private var configMapInstance:   js.UndefOr[js.Dynamic] = js.undefined
+  private var configMarkerLayer:   js.UndefOr[js.Dynamic] = js.undefined
 
   def open(): Unit =
     selectConfig(ConfigStore.activeConfigVar.now().name)
@@ -509,8 +525,8 @@ object ConfigEditorDialog:
           )
     )
 
-  // Mini map with every known station as a grey dot (analog pme123-windalert's overview
-  // map) - hover shows the name, clicking adds it as a Windstation to whichever Gebiet is
+  // Mini map to pick coordinates by clicking - clicking anywhere adds a new Windstation
+  // (with a blank name, to be filled in below) at that point to whichever Gebiet is
   // currently selected in the left list. The map itself is only (re)created when
   // areaDetailsPanel's outer subtree is rebuilt (see hasSelectedAreaSignal), not on every
   // keystroke or area switch.
@@ -519,13 +535,16 @@ object ConfigEditorDialog:
       className := "cfg-map-section",
       div(
         className := "cfg-sublist-title",
-        child.text <-- selectedAreaSignal.map(a => s"Station auf der Karte zu '${a.map(_.id).getOrElse("")}' hinzufügen")
+        child.text <-- selectedAreaSignal.map(a => s"Auf der Karte klicken, um eine Station zu '${a.map(_.id).getOrElse("")}' hinzuzufügen")
       ),
       div(
         idAttr    := "config-stations-map",
         className := "cfg-stations-map",
         onMountUnmountCallback(
-          mount   = _ => initConfigMap(),
+          mount = ctx =>
+            initConfigMap()
+            currentAreaStationsSignal.foreach(renderConfigMapMarkers)(using ctx.owner)
+          ,
           unmount = _ => destroyConfigMap()
         )
       )
@@ -543,37 +562,58 @@ object ConfigEditorDialog:
       )
       .addTo(lMap)
 
-    KnownStations.all.foreach: station =>
-      val marker = Leaflet.marker(
-        js.Array(station.latitude, station.longitude),
-        js.Dynamic.literal(icon = MapView.greyDotIcon()).asInstanceOf[js.Object]
-      )
-      marker.bindTooltip(station.name)
-      marker.on("click", () => addKnownStationToSelectedArea(station))
-      marker.addTo(lMap)
+    lMap.on(
+      "click",
+      (e: js.Dynamic) =>
+        val latlng = e.latlng
+        addStationAtCoordinates(latlng.lat.asInstanceOf[Double], latlng.lng.asInstanceOf[Double])
+    )
+
+    val mLayer = Leaflet.layerGroup()
+    mLayer.addTo(lMap)
 
     configMapInstance = lMap
-
-    MapView.waitUntilSized("config-stations-map", triesLeft = 20): () =>
-      lMap.invalidateSize()
-      val lats = KnownStations.all.map(_.latitude)
-      val lons = KnownStations.all.map(_.longitude)
-      lMap.fitBounds(
-        js.Array(js.Array(lats.min, lons.min), js.Array(lats.max, lons.max)),
-        js.Dynamic.literal(padding = js.Array(10, 10)).asInstanceOf[js.Object]
-      )
+    configMarkerLayer = mLayer
   end initConfigMap
+
+  // Redraws the marker layer for the given stations (the currently selected area's own
+  // diff/wind stations) and fits the map extent to just those - so the "Kartenausschnitt"
+  // always reflects only this Gebiet, not every station in the whole configuration.
+  private def renderConfigMapMarkers(stations: Seq[ConfigStation]): Unit =
+    configMarkerLayer.foreach: mLayer =>
+      mLayer.clearLayers()
+      stations.foreach: station =>
+        val marker = Leaflet.marker(
+          js.Array(station.latitude, station.longitude),
+          js.Dynamic.literal(icon = MapView.greyDotIcon()).asInstanceOf[js.Object]
+        )
+        if station.name.nonEmpty then marker.bindTooltip(station.name)
+        mLayer.addLayer(marker)
+
+    configMapInstance.foreach: lMap =>
+      MapView.waitUntilSized("config-stations-map", triesLeft = 20): () =>
+        lMap.invalidateSize()
+        if stations.nonEmpty then
+          val lats = stations.map(_.latitude)
+          val lons = stations.map(_.longitude)
+          lMap.fitBounds(
+            js.Array(js.Array(lats.min, lons.min), js.Array(lats.max, lons.max)),
+            js.Dynamic.literal(padding = js.Array(30, 30)).asInstanceOf[js.Object]
+          )
+        else
+          lMap.setView(js.Array(46.82, 8.4), 7)
 
   private def destroyConfigMap(): Unit =
     configMapInstance.foreach(_.remove())
     configMapInstance = js.undefined
+    configMarkerLayer = js.undefined
 
-  private def addKnownStationToSelectedArea(station: WeatherStation): Unit =
+  private def addStationAtCoordinates(lat: Double, lon: Double): Unit =
     if !ConfigStore.isDefault(selectedNameVar.now()) then
+      def round(d: Double) = math.round(d * 1e6) / 1e6
       val aIdx = selectedAreaIdxVar.now()
       updateArea(aIdx): a =>
-        if a.windStations.exists(_.name.equalsIgnoreCase(station.name)) then a
-        else a.copy(windStations = a.windStations :+ ConfigStation(station.name, station.latitude, station.longitude))
+        a.copy(windStations = a.windStations :+ ConfigStation("", round(lat), round(lon)))
 
   private def areaFieldsForm(): HtmlElement =
     div(
