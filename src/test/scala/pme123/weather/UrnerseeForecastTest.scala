@@ -219,7 +219,8 @@ class UrnerseeForecastTest extends munit.FunSuite:
       surface_pressure = altdorfPress - 2.0,
       wind_speed_10m = altdorfWind,
       wind_gusts_10m = altdorfWind + 5.0,
-      wind_direction_10m = 180.0
+      wind_direction_10m = 180.0,
+      cloud_cover = 0.0
     ))
 
     val luganoData = Seq(HourlyDataSet(
@@ -229,7 +230,8 @@ class UrnerseeForecastTest extends munit.FunSuite:
       surface_pressure = luganoPress - 2.0,
       wind_speed_10m = 3.0,
       wind_gusts_10m = 8.0,
-      wind_direction_10m = 180.0
+      wind_direction_10m = 180.0,
+      cloud_cover = 0.0
     ))
 
     val zurichData = Seq(HourlyDataSet(
@@ -239,7 +241,8 @@ class UrnerseeForecastTest extends munit.FunSuite:
       surface_pressure = zurichPress - 2.0,
       wind_speed_10m = 4.0,
       wind_gusts_10m = 9.0,
-      wind_direction_10m = 270.0
+      wind_direction_10m = 270.0,
+      cloud_cover = 0.0
     ))
 
     val lucerneData = Seq(HourlyDataSet(
@@ -249,7 +252,8 @@ class UrnerseeForecastTest extends munit.FunSuite:
       surface_pressure = 1011.0,
       wind_speed_10m = 3.5,
       wind_gusts_10m = 8.5,
-      wind_direction_10m = 90.0
+      wind_direction_10m = 90.0,
+      cloud_cover = 0.0
     ))
 
     val guetschData = Seq(HourlyDataSet(
@@ -259,7 +263,8 @@ class UrnerseeForecastTest extends munit.FunSuite:
       surface_pressure = 898.0,
       wind_speed_10m = guetschWind,
       wind_gusts_10m = guetschWind + 5.0,
-      wind_direction_10m = 180.0
+      wind_direction_10m = 180.0,
+      cloud_cover = 0.0
     ))
 
     (altdorfData, luganoData, zurichData, lucerneData, guetschData)

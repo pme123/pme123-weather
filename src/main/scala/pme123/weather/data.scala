@@ -9,6 +9,7 @@ val andermatt  = station("AND")
 val altdorf    = station("ALT")
 val lucerne     = station("LUZ")
 val guetsch      = station("GUE")
+val pilatus      = station("PIL")
 
 //val altdorf = WeatherStation("Isleten", 46.9204, 8.5928)
 // mittelland
@@ -179,15 +180,27 @@ lazy val urnersee: WeatherStationGroupDiff = WeatherStationGroupDiff(
       "green"
     )
   ),
-  windStations = Seq(altdorf, lugano, zurich, lucerne, guetsch),
+  windStations = Seq(altdorf, lugano, zurich, lucerne, guetsch, pilatus),
   info = Some(info.urnersee),
-  forecastCalculator = Some(stationDataMap =>
-    UrnerseeForecastCalculator.calculateForecast(
-      altdorfData = stationDataMap.getOrElse("Altdorf", Seq.empty),
-      luganoData = stationDataMap.getOrElse("Lugano", Seq.empty),
-      zurichData = stationDataMap.getOrElse("Zürich", Seq.empty),
-      lucerneData = stationDataMap.getOrElse("Luzern", Seq.empty),
-      guetschData = stationDataMap.getOrElse("Gütsch", Seq.empty)
+  forecastCalculators = Seq(
+    // Default (first entry): Altdorf-Pilatus is the better-validated Thermik model, see UrnerseeForecastPilatus.scala
+    "Altdorf-Pilatus" -> (stationDataMap =>
+      UrnerseeForecastCalculatorPilatus.calculateForecast(
+        altdorfData = stationDataMap.getOrElse("Altdorf", Seq.empty),
+        pilatusData = stationDataMap.getOrElse("Pilatus", Seq.empty),
+        luganoData = stationDataMap.getOrElse("Lugano", Seq.empty),
+        zurichData = stationDataMap.getOrElse("Zürich", Seq.empty),
+        guetschData = stationDataMap.getOrElse("Gütsch", Seq.empty)
+      )
+    ),
+    "Standard" -> (stationDataMap =>
+      UrnerseeForecastCalculator.calculateForecast(
+        altdorfData = stationDataMap.getOrElse("Altdorf", Seq.empty),
+        luganoData = stationDataMap.getOrElse("Lugano", Seq.empty),
+        zurichData = stationDataMap.getOrElse("Zürich", Seq.empty),
+        lucerneData = stationDataMap.getOrElse("Luzern", Seq.empty),
+        guetschData = stationDataMap.getOrElse("Gütsch", Seq.empty)
+      )
     )
   )
 )

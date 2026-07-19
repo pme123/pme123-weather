@@ -14,5 +14,6 @@ case class HourlyData(
     surface_pressure: Vector[Double],
     wind_speed_10m: Vector[Double],
     wind_gusts_10m: Vector[Double],
-    wind_direction_10m: Vector[Double]
+    wind_direction_10m: Vector[Double],
+    cloud_cover: Vector[Double]
 )

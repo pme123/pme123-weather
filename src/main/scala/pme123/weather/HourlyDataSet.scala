@@ -7,6 +7,7 @@ case class HourlyDataSet(
     surface_pressure: Double,
     wind_speed_10m: Double,
     wind_gusts_10m: Double,
-    wind_direction_10m: Double
+    wind_direction_10m: Double,
+    cloud_cover: Double
 )
 

@@ -5,6 +5,7 @@ import be.doeraene.webcomponents.ui5.*
 import be.doeraene.webcomponents.ui5.configkeys.*
 import com.raquo.laminar.api.L.{*, given}
 import com.raquo.laminar.nodes.ReactiveHtmlElement
+import org.scalajs.dom
 import org.scalajs.dom.HTMLDivElement
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -45,29 +46,47 @@ object WeatherView:
                   .map: wsDiff =>
                     val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
                     val windStationOptions = Var(WindStationGraph.allNameOptions)
+                    val selectedAlgoVar     = Var(wsDiff.forecasts.headOption.map(_._1).getOrElse(""))
                     div(
                       className := "weather-view",
                       // Forecast panel at the top
-                      if wsDiff.forecast.isDefined then
+                      if wsDiff.forecasts.nonEmpty then
                         div(
                           className := "graph-container",
                           div(
                             className := "card-header",
                             div(className := "card-title", s"Forecast ${wsDiff.id}"),
+                            if wsDiff.forecasts.size > 1 then
+                              select(
+                                className := "cfg-select",
+                                onChange --> { ev =>
+                                  val sel = ev.target.asInstanceOf[dom.html.Select]
+                                  selectedAlgoVar.set(sel.value)
+                                },
+                                wsDiff.forecasts.map: (name, _) =>
+                                  option(
+                                    value := name,
+                                    name,
+                                    selected <-- selectedAlgoVar.signal.map(_ == name)
+                                  )
+                              )
+                            else emptyNode,
                             if wsDiff.id == "Urnersee" then
                               WindSpeedExplanationDialog()
                             else
                               emptyNode
                           ),
-                          div(
-                            idAttr := s"forecast-${wsDiff.id}",
-                            onMountUnmountCallback(
-                              mount = ctx =>
-                                WeatherLogger.debug(s"Mounting forecast for ${wsDiff.id} with ${wsDiff.forecast.get.size} days")
-                                ForecastGraph(wsDiff.id, wsDiff.forecast.get),
-                              unmount = _ => ()
+                          child <-- selectedAlgoVar.signal.map: algo =>
+                            val forecast = wsDiff.forecasts.find(_._1 == algo).map(_._2).getOrElse(Seq.empty)
+                            div(
+                              idAttr := s"forecast-${wsDiff.id}",
+                              onMountUnmountCallback(
+                                mount = ctx =>
+                                  WeatherLogger.debug(s"Mounting '$algo' forecast for ${wsDiff.id} with ${forecast.size} days")
+                                  ForecastGraph(wsDiff.id, forecast),
+                                unmount = _ => ()
+                              )
                             )
-                          )
                         )
                       else div(),
                       // Main pressure difference graph (needs at least one diff pair -

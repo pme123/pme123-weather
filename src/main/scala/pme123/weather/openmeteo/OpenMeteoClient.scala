@@ -24,7 +24,8 @@ object OpenMeteoClient extends MeteoClient:
           surface_pressure = response.hourly.surface_pressure(index),
           wind_speed_10m = response.hourly.wind_speed_10m(index),
           wind_gusts_10m = response.hourly.wind_gusts_10m(index),
-          wind_direction_10m = response.hourly.wind_direction_10m(index)
+          wind_direction_10m = response.hourly.wind_direction_10m(index),
+          cloud_cover = response.hourly.cloud_cover(index)
         )
 
   def fetchfromServer(
@@ -33,7 +34,7 @@ object OpenMeteoClient extends MeteoClient:
   ): Future[WeatherResponse] =
     val backend = FetchBackend()
     val url =
-      uri"$openMeteoForcastUrl?timezone=Europe/Berlin&latitude=$latitude&longitude=$longitude&hourly=temperature_2m,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m"
+      uri"$openMeteoForcastUrl?timezone=Europe/Berlin&latitude=$latitude&longitude=$longitude&hourly=temperature_2m,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover"
 
     val request = basicRequest.get(url).response(asJson[WeatherResponse])
 

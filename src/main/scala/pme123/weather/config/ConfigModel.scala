@@ -13,7 +13,7 @@ object ConfigStation:
 case class ConfigDiff(station1: ConfigStation, station2: ConfigStation, color: String)
 
 // JSON-serializable projection of a "Gebiet" (WeatherStationGroupDiff). `info` and
-// `forecastCalculator` are code, not data, so they aren't part of this model - see
+// `forecastCalculators` are code, not data, so they aren't part of this model - see
 // WeatherConfig.fromConfig for how built-in areas get them back.
 case class ConfigArea(
     id: String,
@@ -60,7 +60,7 @@ object WeatherConfig:
         ,
         windStations = area.windStations.map(_.toWeatherStation),
         info = builtin.flatMap(_.info),
-        forecastCalculator = builtin.flatMap(_.forecastCalculator)
+        forecastCalculators = builtin.map(_.forecastCalculators).getOrElse(Seq.empty)
       )
 
 end WeatherConfig

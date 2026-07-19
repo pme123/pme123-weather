@@ -20,7 +20,8 @@ case class WeatherStationGroupDiffData(
     stationDiffs: Seq[WeatherStationDiffData],
     windStations: Seq[WeatherStationData],
     info: Option[ReactiveHtmlElement[HTMLDivElement]],
-    forecast: Option[Seq[UrnerseeForecast]] = None
+    // Named forecast results, one per registered algorithm, in dropdown display order.
+    forecasts: Seq[(String, Seq[UrnerseeForecast])] = Seq.empty
 )
 
 case class WeatherStationData(
@@ -39,16 +40,13 @@ def createWeatherData (data: Seq[WeatherStationData]) =
     WeatherLogger.debug(s"Processing ${data.size} weather stations: ${data.map(_.station.name).mkString(", ")}")
     stationDiffs
       .map: wsGroupDiff =>
-        // Calculate forecast if calculator is provided
-        val forecast = wsGroupDiff.forecastCalculator.map: calculator =>
-          val stationDataMap = data.map(ws => ws.station.name -> ws.data).toMap
-          WeatherLogger.debug(s"Calculating forecast for ${wsGroupDiff.id}, stations: ${stationDataMap.keys.mkString(", ")}")
-          WeatherLogger.debug(s"Station data sizes: ${stationDataMap.map { case (k, v) => s"$k: ${v.size}" }.mkString(", ")}")
+        // Calculate a forecast for every registered algorithm
+        val stationDataMap = data.map(ws => ws.station.name -> ws.data).toMap
+        val forecasts = wsGroupDiff.forecastCalculators.map: (name, calculator) =>
+          WeatherLogger.debug(s"Calculating '$name' forecast for ${wsGroupDiff.id}, stations: ${stationDataMap.keys.mkString(", ")}")
           val result = calculator(stationDataMap)
-          WeatherLogger.debug(s"Forecast calculated for ${wsGroupDiff.id}: ${result.size} days")
-          result
-
-        WeatherLogger.debug(s"Forecast for ${wsGroupDiff.id}: ${forecast.map(_.size).getOrElse(0)} days")
+          WeatherLogger.debug(s"Forecast '$name' calculated for ${wsGroupDiff.id}: ${result.size} entries")
+          name -> result
 
         WeatherStationGroupDiffData(
           wsGroupDiff.id,
@@ -69,5 +67,5 @@ def createWeatherData (data: Seq[WeatherStationData]) =
               data.filter(d => ws == d.station)
                 .map(d => WeatherStationData(d.station, d.data)),
           info = wsGroupDiff.info,
-          forecast = forecast
+          forecasts = forecasts
         )

@@ -23,6 +23,7 @@ case class WeatherStationGroupDiff(
                                     stationDiffs: Seq[WeatherStationDiff],
                                     windStations: Seq[WeatherStation],
                                     info: Option[ReactiveHtmlElement[HTMLDivElement]] = None,
-                                    forecastCalculator: Option[ForecastCalculator] = None
+                                    // Named forecast algorithms, in dropdown display order. Empty if none apply.
+                                    forecastCalculators: Seq[(String, ForecastCalculator)] = Seq.empty
 )
 

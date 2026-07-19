@@ -272,7 +272,8 @@ object MeteoSwissClient extends MeteoClient:
         surface_pressure = data.surface_pressure,
         wind_speed_10m = data.wind_speed_10m,
         wind_gusts_10m = data.wind_gusts_10m,
-        wind_direction_10m = data.wind_direction_10m
+        wind_direction_10m = data.wind_direction_10m,
+        cloud_cover = 0.0 // Not available from MeteoSwiss ground stations; this client is unused in production
       )
 
   private def getLatestReferenceTime(): String =
