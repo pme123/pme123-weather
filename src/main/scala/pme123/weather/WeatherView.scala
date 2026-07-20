@@ -47,6 +47,12 @@ object WeatherView:
                     val stationOptions     = Var(wsDiff.stationDiffs.map(_.id))
                     val windStationOptions = Var(WindStationGraph.allNameOptions)
                     val selectedAlgoVar     = Var(wsDiff.forecasts.headOption.map(_._1).getOrElse(""))
+                    // A single named algorithm whose name differs from the group (e.g. "Sempachersee"
+                    // inside the generic "Mittellandseen" group) is more specific than the group id.
+                    val forecastTitle =
+                      wsDiff.forecasts match
+                        case Seq((name, _)) if name != wsDiff.id => s"Forecast $name"
+                        case _                                   => s"Forecast ${wsDiff.id}"
                     div(
                       className := "weather-view",
                       // Forecast panel at the top
@@ -55,7 +61,7 @@ object WeatherView:
                           className := "graph-container",
                           div(
                             className := "card-header",
-                            div(className := "card-title", s"Forecast ${wsDiff.id}"),
+                            div(className := "card-title", forecastTitle),
                             if wsDiff.forecasts.size > 1 then
                               select(
                                 className := "cfg-select",

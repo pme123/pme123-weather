@@ -2,7 +2,7 @@ package pme123.weather
 
 import scala.math.{abs, max}
 
-/** Wind type for Urnersee forecast */
+/** Wind type for lake forecasts (Urnersee, Sempachersee, ...) */
 enum WindType:
   case ThermikSchwach    // Weak thermal wind
   case ThermikGut        // Good thermal wind
@@ -13,6 +13,11 @@ enum WindType:
   case FöhnGut           // Good South Föhn
   case FöhnStark         // Strong South Föhn
   case FöhnSehrStark     // Very strong South Föhn (storm)
+  case BiseGut           // Bise (NE, high pressure driven)
+  case BiseStark         // Strong Bise
+  case WestwindGut       // Southwest/west synoptic wind
+  case WestwindStark     // Strong southwest/west synoptic wind
+  case Böig              // Real measured wind despite no Bise/Westwind pressure signal (e.g. local squall/thunderstorm gust)
   case Nothing           // No significant wind
 
 /** Forecast data for a specific hour */
@@ -47,6 +52,14 @@ private case class HourlyAnalysis(
  * by all Urnersee forecast algorithms (they differ only in how they detect Thermik).
  */
 private[weather] object UrnerseeForecastCommon:
+
+  /**
+   * Open-Meteo returns wind_speed_10m/wind_gusts_10m in km/h by default (no unit param is set
+   * on the request) - NOT m/s. Use this factor everywhere a measured wind gets converted to
+   * knots (1 kn = 1.852 km/h). Matches [[WindStationGraph.kmhToKn]], which the wind station
+   * graphs already convert correctly.
+   */
+  val KmhToKnots = 0.539957
 
   /**
    * Classify Föhn/Föhnbise conditions from the pressure gradients.
@@ -101,7 +114,7 @@ private[weather] object UrnerseeForecastCommon:
   /** Estimate Föhn force based on pressure gradient and mountain wind */
   def estimateFoehnForce(luganoZurichDiff: Double, guetschWind: Double): Double =
     val pressureComponent = (luganoZurichDiff - 8.0) * 3.0 // 3 knots per hPa above threshold
-    val windComponent = guetschWind * 1.94384 * 0.7 // 70% of mountain wind reaches valley
+    val windComponent = guetschWind * KmhToKnots * 0.7 // 70% of mountain wind reaches valley
     max(15.0, pressureComponent + windComponent) // Minimum 15 knots for Föhn
 
   /** Estimate Föhnbise force based on vacuum effect and pressure gradient strength */
@@ -111,7 +124,7 @@ private[weather] object UrnerseeForecastCommon:
       luganoZurichDiff: Double
   ): Double =
     val vacuumComponent = altdorfZurichDiffAbs * 2.5 // Stronger vacuum = stronger bise
-    val measuredWind = altdorfWind * 1.94384
+    val measuredWind = altdorfWind * KmhToKnots
 
     // Scale force based on pressure gradient strength
     val baseForce = max(vacuumComponent, measuredWind)
@@ -375,14 +388,14 @@ object UrnerseeForecastCalculator:
         }
         // No significant wind
         else {
-          (WindType.Nothing, max(altdorfWind * 1.94384, 0.0)) // Convert m/s to knots
+          (WindType.Nothing, max(altdorfWind * UrnerseeForecastCommon.KmhToKnots, 0.0))
         }
       }
 
   /** Estimate Thermik force based on temperature gradient */
   private def estimateThermikForce(tempDiff: Double, altdorfWind: Double): Double =
     val thermalComponent = (tempDiff - 5.0) * 2.0 + 10.0 // Base 10 knots at 5°C diff
-    val measuredWind = altdorfWind * 1.94384
+    val measuredWind = altdorfWind * UrnerseeForecastCommon.KmhToKnots
     max(thermalComponent, measuredWind)
 
 end UrnerseeForecastCalculator

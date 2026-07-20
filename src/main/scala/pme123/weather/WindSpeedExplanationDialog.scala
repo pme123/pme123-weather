@@ -46,7 +46,7 @@ object WindSpeedExplanationDialog:
                   className := "info-p",
                   marginBottom := "14px",
                   "Die Windgeschwindigkeit wird je nach ", b("Windtyp"), " unterschiedlich berechnet. ",
-                  "Alle Werte in ", b("Knoten"), " (1 m/s = 1.94384 kn)."
+                  "Alle Werte in ", b("Knoten"), " (Open-Meteo liefert km/h, 1 km/h = 0.539957 kn)."
                 ),
 
                 detailsTag(
@@ -58,7 +58,7 @@ object WindSpeedExplanationDialog:
                     p(className := "info-p", b("Berechnung:")),
                     ul(className := "info-ul",
                       li(b("Druckkomponente: "), "(Lugano-Zürich - 8.0) × 3.0 kn"),
-                      li(b("Windkomponente: "), "Gütsch-Wind × 1.94384 × 0.7 (70% erreicht das Tal)"),
+                      li(b("Windkomponente: "), "Gütsch-Wind × 0.539957 × 0.7 (70% erreicht das Tal)"),
                       li(b("Minimum: "), "15 kn")
                     ),
                     p(className := "info-p", b("Kategorien:")),
@@ -79,7 +79,7 @@ object WindSpeedExplanationDialog:
                     p(className := "info-p", b("Berechnung:")),
                     ul(className := "info-ul",
                       li(b("Vakuumkomponente: "), "|Altdorf-Zürich| × 2.5 kn"),
-                      li(b("Gemessener Wind: "), "Altdorf-Wind × 1.94384"),
+                      li(b("Gemessener Wind: "), "Altdorf-Wind × 0.539957"),
                       li(b("Skalierung: "), "×1.3 (stark), ×1.1 (gut), ×0.9 (schwach)"),
                       li(b("Minimum: "), "8 kn")
                     ),

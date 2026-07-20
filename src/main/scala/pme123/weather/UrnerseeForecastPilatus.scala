@@ -140,7 +140,7 @@ object UrnerseeForecastCalculatorPilatus:
   ): (WindType, Double) =
     UrnerseeForecastCommon.determineFoehnConditions(luganoZurichDiff, altdorfZurichDiff, altdorfWind, guetschWind)
       .getOrElse {
-        val measuredWindKnots = max(altdorfWind * 1.94384, 0.0)
+        val measuredWindKnots = max(altdorfWind * UrnerseeForecastCommon.KmhToKnots, 0.0)
         if (altdorfPilatusTempDiff <= ThermikFailsThreshold || altdorfCloudCover > CloudFailThreshold) {
           (WindType.Nothing, measuredWindKnots)
         } else {
@@ -192,7 +192,7 @@ object UrnerseeForecastCalculatorPilatus:
   /** Estimate Thermik force based on the Altdorf-Pilatus temperature gradient */
   private def estimateThermikForce(tempDiff: Double, altdorfWind: Double): Double =
     val thermalComponent = (tempDiff - ThermikFailsThreshold) * 3.0 + 8.0 // Base 8 knots right above the fail threshold
-    val measuredWind = altdorfWind * 1.94384
+    val measuredWind = altdorfWind * UrnerseeForecastCommon.KmhToKnots
     max(thermalComponent, measuredWind)
 
   private def createHourlyForecast(analysis: PilatusHourlyAnalysis): UrnerseeForecast =

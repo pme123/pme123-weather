@@ -226,5 +226,15 @@ lazy val mittellandseen: WeatherStationGroupDiff = WeatherStationGroupDiff(
       "lightgreen"
     )
   ),
-  windStations = Seq(neuchatel, mosen, guettingen)
+  windStations = Seq(neuchatel, mosen, guettingen),
+  info = Some(info.mittellandseen),
+  forecastCalculators = Seq(
+    "Sempachersee" -> (stationDataMap =>
+      SempacherseeForecastCalculator.calculateForecast(
+        guettingenData = stationDataMap.getOrElse("Güttingen", Seq.empty),
+        genfData = stationDataMap.getOrElse("Genève-Cointrin", Seq.empty),
+        mosenData = stationDataMap.getOrElse("Mosen", Seq.empty)
+      )
+    )
+  )
 )

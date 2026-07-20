@@ -74,6 +74,11 @@ object ForecastGraph:
       case WindType.ThermikSehrGut => "rgba(27, 94, 32, 0.85)"    // Dark Green (very good)
       case WindType.ThermikGut => "rgba(56, 142, 60, 0.8)"        // Medium Green (good)
       case WindType.ThermikSchwach => "rgba(129, 199, 132, 0.75)" // Light Green (weak)
+      case WindType.BiseStark => "rgba(0, 121, 107, 0.85)"        // Dark Teal (strong Bise)
+      case WindType.BiseGut => "rgba(38, 166, 154, 0.8)"          // Medium Teal (good Bise)
+      case WindType.WestwindStark => "rgba(106, 27, 154, 0.85)"   // Dark Purple (strong Westwind)
+      case WindType.WestwindGut => "rgba(156, 39, 176, 0.8)"      // Medium Purple (good Westwind)
+      case WindType.Böig => "rgba(255, 152, 0, 0.8)"              // Amber (unclassified gusty wind)
       case WindType.Nothing => "rgba(158, 158, 158, 0.6)"         // Gray
     }
     
