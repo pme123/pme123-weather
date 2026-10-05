@@ -222,7 +222,7 @@ object MapView:
       .tileLayer(
         "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         js.Dynamic
-          .literal(attribution = "&copy; OpenStreetMap contributors", maxZoom = 19)
+          .literal(attribution = "&copy; OpenStreetMap contributors", maxZoom = 19, opacity = 0.5)
           .asInstanceOf[js.Object]
       )
       .addTo(lMap)
