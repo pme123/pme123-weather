@@ -555,9 +555,9 @@ object ConfigEditorDialog:
 
     Leaflet
       .tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         js.Dynamic
-          .literal(attribution = "&copy; OpenStreetMap contributors &copy; CARTO", maxZoom = 19)
+          .literal(attribution = "&copy; OpenStreetMap contributors", maxZoom = 19)
           .asInstanceOf[js.Object]
       )
       .addTo(lMap)
