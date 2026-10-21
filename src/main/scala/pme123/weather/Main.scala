@@ -34,12 +34,12 @@ object Main:
           div(
             className := "z9-logo-wrap",
             img(
-              src       := "https://z9nai.ch/assets/logo_new-DwOlNuuy.png",
+              src       := "logo_new.png",
               alt       := "z9nai",
               className := "z9-logo-color"
             ),
             img(
-              src       := "https://z9nai.ch/assets/logo_new_white-BXK2S0Ym.png",
+              src       := "logo_new_white.png",
               alt       := "z9nai",
               className := "z9-logo-white"
             )
