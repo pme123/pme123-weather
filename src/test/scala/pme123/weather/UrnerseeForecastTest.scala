@@ -37,6 +37,36 @@ class UrnerseeForecastTest extends munit.FunSuite:
     assert(forecast.head.forceKnots > 0, "Föhn force should be positive")
   }
 
+  test("Föhn breaks through the Föhnbise once the Gegendruck has dropped to 0.5 hPa") {
+    val foehnData = createTestData(
+      time = "2026-01-26T14:00",
+      luganoPress = 1015.0,
+      zurichPress = 1010.0,  // Diff = +5 hPa (>= +4)
+      altdorfPress = 1009.5  // Diff = -0.5 hPa (Gegendruck 0.5 hPa)
+    )
+    val forecast = UrnerseeForecastCalculator.calculateForecast(
+      foehnData._1, foehnData._2, foehnData._3, foehnData._4, foehnData._5
+    )
+
+    assertEquals(forecast.head.windType, WindType.FöhnGut, "Should detect Föhn breakthrough at Altdorf-Zurich -0.5 hPa")
+    assert(forecast.head.info.contains("Föhn aktiv"))
+  }
+
+  test("Still Föhnbise while the Gegendruck is above 0.5 hPa") {
+    val foehnbiseData = createTestData(
+      time = "2026-01-26T14:00",
+      luganoPress = 1015.0,
+      zurichPress = 1010.0,  // Diff = +5 hPa (>= +4)
+      altdorfPress = 1009.3  // Diff = -0.7 hPa (Gegendruck 0.7 hPa)
+    )
+    val forecast = UrnerseeForecastCalculator.calculateForecast(
+      foehnbiseData._1, foehnbiseData._2, foehnbiseData._3, foehnbiseData._4, foehnbiseData._5
+    )
+
+    assertEquals(forecast.head.windType, WindType.FöhnbiseGut, "Should stay Föhnbise above 0.5 hPa Gegendruck")
+    assert(forecast.head.info.contains("Gegendruck 0.7 hPa"))
+  }
+
   test("No Föhn below +4 hPa even with positive Altdorf-Zurich") {
     val foehnbiseData = createTestData(
       time = "2026-01-26T14:00",

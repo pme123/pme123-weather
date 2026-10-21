@@ -62,10 +62,21 @@ private[weather] object UrnerseeForecastCommon:
   val KmhToKnots = 0.539957
 
   /**
+   * Altdorf-Zurich difference (the Gegendruck of the Föhnbise) at which the Föhn breaks
+   * through down to the lake. Observed at the Urnersee: during a Föhnbise the Föhn came
+   * through once the Gegendruck had dropped to ca. 0.5 hPa (Altdorf-Zurich ≈ -0.5 hPa) -
+   * Altdorf-Zurich doesn't have to turn positive.
+   */
+  val FoehnBreakthroughAltdorfZurichDiff = -0.5
+
+  /** Theory: No Föhn below +4 hPa Lugano-Zurich difference */
+  def isFoehnBreakthrough(luganoZurichDiff: Double, altdorfZurichDiff: Double): Boolean =
+    luganoZurichDiff > 8.0 ||
+      (luganoZurichDiff >= 4.0 && altdorfZurichDiff >= FoehnBreakthroughAltdorfZurichDiff)
+
+  /**
    * Classify Föhn/Föhnbise conditions from the pressure gradients.
    * Returns None if neither applies - caller should then evaluate its own Thermik detection.
-   *
-   * Theory: No Föhn below +4 hPa Lugano-Zurich difference
    */
   def determineFoehnConditions(
       luganoZurichDiff: Double,
@@ -73,7 +84,7 @@ private[weather] object UrnerseeForecastCommon:
       altdorfWind: Double,
       guetschWind: Double
   ): Option[(WindType, Double)] =
-    if (luganoZurichDiff > 8.0 || (luganoZurichDiff >= 4.0 && altdorfZurichDiff > 0)) {
+    if (isFoehnBreakthrough(luganoZurichDiff, altdorfZurichDiff)) {
       val force = estimateFoehnForce(luganoZurichDiff, guetschWind)
       // FöhnGut: 15-20 knots (moderate Föhn)
       // FöhnStark: 20-25 knots (strong Föhn)
@@ -99,12 +110,14 @@ private[weather] object UrnerseeForecastCommon:
 
   /** Human-readable Föhn/Föhnbise status line for the info text */
   def foehnStatusText(luganoZurichDiff: Double, altdorfZurichDiff: Double): String =
-    if (luganoZurichDiff > 8.0 || altdorfZurichDiff > 0) {
+    val gegendruck =
+      f" (Gegendruck ${-altdorfZurichDiff}%.1f hPa, Durchbruch ab ≤${-FoehnBreakthroughAltdorfZurichDiff}%.1f hPa)"
+    if (isFoehnBreakthrough(luganoZurichDiff, altdorfZurichDiff)) {
       "✓ Föhn aktiv"
     } else if (luganoZurichDiff >= 6.0 && altdorfZurichDiff < 0) {
-      "⚠️ Föhnbise stark - Durchbruch steht bevor!"
+      "⚠️ Föhnbise stark - Durchbruch steht bevor!" + gegendruck
     } else if (luganoZurichDiff >= 4.0 && altdorfZurichDiff < 0) {
-      "⚠️ Föhnbise gut - Durchbruch wahrscheinlich"
+      "⚠️ Föhnbise gut - Durchbruch wahrscheinlich" + gegendruck
     } else if (luganoZurichDiff >= 2.0 && altdorfZurichDiff < 0) {
       "Föhnbise schwach - Föhn in der Höhe"
     } else {
@@ -346,7 +359,8 @@ object UrnerseeForecastCalculator:
    * Determine wind conditions based on pressure and temperature differences
    *
    * Based on the theory from urnersee.scala:
-   * - Föhn: Lugano-Zurich > +8 hPa OR (Lugano-Zurich >= +4 hPa AND Altdorf-Zurich becomes positive)
+   * - Föhn: Lugano-Zurich > +8 hPa OR (Lugano-Zurich >= +4 hPa AND Altdorf-Zurich >= -0.5 hPa,
+   *   i.e. the Gegendruck of the Föhnbise has dropped to 0.5 hPa - observed breakthrough point)
    * - Föhnbise Stark: Lugano-Zurich +6 to +8 hPa AND Altdorf-Zurich negative (breakthrough imminent)
    * - Föhnbise Gut: Lugano-Zurich +4 to +6 hPa AND Altdorf-Zurich negative (high probability)
    * - Föhnbise Schwach: Lugano-Zurich +2 to +4 hPa AND Altdorf-Zurich negative (moderate probability)

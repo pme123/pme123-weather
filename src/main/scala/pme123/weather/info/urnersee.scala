@@ -55,14 +55,14 @@ def urnersee: ReactiveHtmlElement[HTMLDivElement] = div(
             td("Der Föhn tobt oben. Das Altdorf-Vakuum saugt stabil Nordluft an.")
           ),
           tr(
-            td("Alt-Zrh nähert sich 0"),
+            td("Alt-Zrh nähert sich -0.5"),
             td("Labilisierung"),
             td("Die Bise wird unruhig. Die Kaltluft wird dünner (Erosion). Durchbruch naht.")
           ),
           tr(
-            td("Alt-Zrh wird positiv"),
+            td("Alt-Zrh ≥ -0.5 (Gegendruck ≤ 0.5 hPa)"),
             td("Föhndurchbruch"),
-            td("Vakuum besiegt. Föhn flutet das Tal. Sofortiger Wechsel auf Süd.")
+            td("Vakuum besiegt. Föhn flutet das Tal. Sofortiger Wechsel auf Süd. Erfahrungswert: Alt-Zrh muss nicht positiv werden.")
           )
         )
       )
@@ -74,7 +74,7 @@ def urnersee: ReactiveHtmlElement[HTMLDivElement] = div(
       p(className := "info-p", "Achte auf den ", b("Crossover-Punkt"), ":"),
       div(
         className := "info-msg info-msg-info",
-        "Der Trend ist wichtiger als der Momentanwert! Steigt die Altdorf-Kurve stetig Richtung 0 hPa, steht der Wechsel bevor."
+        "Der Trend ist wichtiger als der Momentanwert! Steigt die Altdorf-Kurve stetig Richtung -0.5 hPa, steht der Wechsel bevor."
       ),
       ul(
         className := "info-ul",
